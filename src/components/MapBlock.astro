@@ -1,0 +1,36 @@
+---
+/** Self-hosted map built from OpenStreetMap data (scripts/build-map.mjs). Whole map links to Google Maps directions. */
+import mapUrl from '../assets/map/karte-basis.svg?url';
+import ov from '../data/map-overlay.json';
+import { googleDirectionsUrl } from '../data/site';
+interface Props { lang?: 'de' | 'en' }
+const { lang = 'de' } = Astro.props;
+const en = lang === 'en';
+const [sx, sy] = ov.shop; const [tx, ty] = ov.station;
+// Crop tightly around station → shop so labels stay legible.
+const x0 = Math.min(sx, tx) - 200, x1 = Math.max(sx, tx) + 260;
+const w = x1 - x0, h = Math.round(w * 0.75), y0 = Math.round((sy + ty) / 2 - h / 2);
+const viewBox = `${Math.round(x0)} ${y0} ${Math.round(w)} ${h}`;
+---
+<div class="map" data-map>
+  <svg class="map__overlay" viewBox={viewBox} preserveAspectRatio="xMidYMid slice" role="img" aria-label={en ? `Map: AlpenBox24 on Bayrischzeller Straße, about ${ov.routeMinutes} minutes' walk from Miesbach station` : `Karte: AlpenBox24 an der Bayrischzeller Straße, etwa ${ov.routeMinutes} Minuten zu Fuß vom Bahnhof Miesbach`}>
+    <image class="map__base" href={mapUrl} x="0" y="0" width={ov.width} height={ov.height} preserveAspectRatio="none" />
+    <path id="walk-route" class="map__route" pathLength="1" d={ov.route} />
+    <circle class="map__walker" r="9" style={`offset-path: path('${ov.route}')`} />
+    <g transform={`translate(${tx} ${ty})`}>
+      <circle r="12" fill="#0D0C0B" stroke="#F7F7F7" stroke-width="4" />
+      <text class="map__label" x="-24" y="-24" text-anchor="end">{en ? 'Miesbach station' : 'Bahnhof Miesbach'}</text>
+    </g>
+    <text class="map__label map__label--route" x={(sx + tx) / 2 - 30} y={(sy + ty) / 2 - 40} text-anchor="middle">{en ? `≈ ${ov.routeMinutes} min on foot` : `≈ ${ov.routeMinutes} Min. zu Fuß`}</text>
+    {ov.labels.stadtplatz && <text class="map__label" x={ov.labels.stadtplatz[0]} y={ov.labels.stadtplatz[1] - 30} text-anchor="middle">Stadtplatz</text>}
+    <text class="map__label" x={sx + 40} y={sy + 120}>B 472 · Bayrischzeller Str.</text>
+    <g transform={`translate(${sx} ${sy})`}>
+      <circle class="map__pin-pulse" r="14" />
+      <circle r="18" fill="#F68A2B" stroke="#0D0C0B" stroke-width="5" />
+      <circle r="6" fill="#0D0C0B" />
+      <text class="map__label map__label--shop" x="34" y="-18">AlpenBox24</text>
+    </g>
+  </svg>
+  <a class="map__attr" href="https://www.openstreetmap.org/copyright" rel="noopener" target="_blank">© OpenStreetMap-Mitwirkende</a>
+  <a href={googleDirectionsUrl} class="visually-hidden" rel="noopener" target="_blank">{en ? 'Open directions in Google Maps' : 'Route in Google Maps öffnen'}</a>
+</div>

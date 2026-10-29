@@ -1,0 +1,13 @@
+---
+interface Props { items: string[]; sun?: boolean; speed?: number }
+const { items, sun = false, speed = 38 } = Astro.props;
+const glyph = `<svg class="marquee__glyph" viewBox="14 30 287 105" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" d="M20.43 127.91L81.19 88.98L108.54 104.31L163.22 37.08L205.76 91.34L233.1 67.75L293.86 123.19"/></svg>`;
+const group = items.map((t) => `<span class="marquee__item">${t}</span>${glyph}`).join('');
+---
+<div class:list={['marquee', { 'marquee--sun': sun }]} style={`--speed:${speed}s`} role="presentation">
+  <span class="visually-hidden">{items.join(', ')}</span>
+  <div class="marquee__track" aria-hidden="true">
+    <div class="marquee__group" set:html={group} />
+    <div class="marquee__group" set:html={group} />
+  </div>
+</div>

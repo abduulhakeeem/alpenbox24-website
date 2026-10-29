@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+.research/
+config/alpenbox-mail.php
+.DS_Store
+*.log
+.env

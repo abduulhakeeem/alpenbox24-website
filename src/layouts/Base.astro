@@ -1,0 +1,219 @@
+---
+import '../styles/global.css';
+import '../styles/pages.css';
+import archivoUrl from '../assets/fonts/archivo.woff2?url';
+import ogDefault from '../assets/og/og-default.jpg';
+import { site, isTbc, googleDirectionsUrl, telHref, fullAddress } from '../data/site';
+import { mainNav, footerNav } from '../data/nav';
+import { u, abs, route, STAGING } from '../lib/url';
+import Mark from '../components/Mark.astro';
+import Icon from '../components/Icon.astro';
+import Ridge from '../components/Ridge.astro';
+import OpenNow from '../components/OpenNow.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  lang?: 'de' | 'en';
+  hero?: boolean;
+  noindex?: boolean;
+  breadcrumbs?: { name: string; href: string }[];
+  ogImage?: string;
+}
+const { title, description, lang = 'de', hero = false, noindex = false, breadcrumbs, ogImage } = Astro.props;
+const here = route(Astro.url.pathname);
+const canonical = abs(here, Astro.site);
+const og = ogImage ?? new URL(ogDefault.src, Astro.site).href;
+const year = new Date().getFullYear();
+const isEn = lang === 'en';
+
+const clean = (v: unknown) => (isTbc(v) && STAGING ? undefined : v);
+const store = {
+  '@context': 'https://schema.org',
+  '@type': 'ConvenienceStore',
+  '@id': abs('/', Astro.site) + '#store',
+  name: site.name,
+  alternateName: site.alternateName,
+  description: '24/7 Automaten-Minimarkt in Miesbach mit Snacks, Getränken und regionalen Produkten.',
+  url: abs('/', Astro.site),
+  image: [og],
+  logo: abs('/icons/icon-512.png', Astro.site),
+  telephone: clean(site.phone.e164),
+  email: clean(site.email),
+  priceRange: '€',
+  currenciesAccepted: 'EUR',
+  paymentAccepted: isTbc(site.payment.methods) ? (STAGING ? undefined : '[TBC]') : site.payment.methods.join(', '),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    postalCode: site.address.zip,
+    addressLocality: site.address.city,
+    addressRegion: site.address.region,
+    addressCountry: site.address.country,
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng },
+  hasMap: clean(site.googleMapsPlaceUrl),
+  openingHoursSpecification: site.hours.is24_7
+    ? [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '00:00', closes: '23:59' }]
+    : site.hours.weekly.map((h) => ({ '@type': 'OpeningHoursSpecification', dayOfWeek: h.days, opens: h.opens, closes: h.closes })),
+  areaServed: ['Miesbach', 'Landkreis Miesbach'],
+  sameAs: [site.social.instagram, site.social.facebook].filter(Boolean),
+};
+const crumbs = breadcrumbs && {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [{ name: 'Start', href: '/' }, ...breadcrumbs].map((b, i) => ({ '@type': 'ListItem', position: i + 1, name: b.name, item: abs(b.href, Astro.site) })),
+};
+const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-image-preview:large';
+---
+<!doctype html>
+<html lang={lang} class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    <link rel="canonical" href={canonical} />
+    {(here === '/' || here === '/en/') && (
+      <>
+        <link rel="alternate" hreflang="de" href={abs('/', Astro.site)} />
+        <link rel="alternate" hreflang="en" href={abs('/en/', Astro.site)} />
+        <link rel="alternate" hreflang="x-default" href={abs('/', Astro.site)} />
+      </>
+    )}
+    <meta name="theme-color" content="#0D0C0B" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="geo.region" content="DE-BY" />
+    <meta name="geo.placename" content="Miesbach" />
+    <meta name="geo.position" content={`${site.geo.lat};${site.geo.lng}`} />
+    <meta name="ICBM" content={`${site.geo.lat}, ${site.geo.lng}`} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AlpenBox24" />
+    <meta property="og:locale" content={isEn ? 'en_US' : 'de_DE'} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={og} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="AlpenBox24 Logo vor dem nächtlichen Oberland" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href={u('/favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={u('/icons/icon-32.png')} sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href={u('/icons/icon-180.png')} />
+    <link rel="manifest" href={u('/site.webmanifest')} />
+    <link rel="sitemap" href={u('/sitemap-index.xml')} />
+    <link rel="preload" href={archivoUrl} as="font" type="font/woff2" crossorigin />
+
+    <script type="application/ld+json" set:html={JSON.stringify(store)} />
+    {crumbs && <script type="application/ld+json" set:html={JSON.stringify(crumbs)} />}
+    <script src={u('/js/boot.js')}></script>
+    <slot name="head" />
+  </head>
+  <body class:list={{ 'no-hero': !hero }}>
+    <a class="skip" href="#inhalt">{isEn ? 'Skip to content' : 'Zum Inhalt springen'}</a>
+    <div class="progress" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href={u(isEn ? '/en/' : '/')} aria-label={isEn ? 'AlpenBox24 – home' : 'AlpenBox24 – zur Startseite'}>
+          <Mark />
+          <span class="brand__word" aria-hidden="true">ALPEN BOX <b>24</b></span>
+        </a>
+        {!isEn && (
+          <nav class="nav" aria-label="Hauptnavigation">
+            {mainNav.map((n) => <a href={u(n.href)} aria-current={here === n.href ? 'page' : undefined}>{n.label}</a>)}
+          </nav>
+        )}
+        <div class="header-actions">
+          <a class="lang-link" href={u(isEn ? '/' : '/en/')} hreflang={isEn ? 'de' : 'en'} lang={isEn ? 'de' : 'en'}>{isEn ? 'DE' : 'EN'}</a>
+          <span class="signpost-wrap header-cta"><a class="signpost" href={googleDirectionsUrl} rel="noopener" target="_blank">{isEn ? 'Directions' : 'Route planen'}</a></span>
+          {!isEn && (
+            <details class="menu">
+              <summary aria-label="Menü öffnen"><span class="menu__burger" aria-hidden="true"></span><span>Menü</span></summary>
+              <div class="menu__panel">
+                <OpenNow />
+                <nav aria-label="Menü">
+                  <ul role="list">
+                    {[{ href: '/', label: 'Start', hint: '' }, ...mainNav, { href: '/faq/', label: 'FAQ', hint: 'Häufige Fragen' }].map((n, i) => (
+                      <li style={`--i:${i}`}><a class="menu__big" href={u(n.href)} aria-current={here === n.href ? 'page' : undefined}>{n.label}<small>{n.hint}</small></a></li>
+                    ))}
+                  </ul>
+                </nav>
+                <div class="menu__meta">
+                  <span>{fullAddress}</span>
+                  <span>{site.hours.labelDe}</span>
+                  <a href={u('/en/')} hreflang="en" lang="en">English version</a>
+                </div>
+              </div>
+            </details>
+          )}
+        </div>
+      </div>
+    </header>
+
+    <main id="inhalt" tabindex="-1">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <Ridge draw />
+      <div class="wrap footer-grid">
+        <div>
+          <address class="footer-nap">
+            <strong>{site.legalBrand}</strong><br />
+            {site.address.street}<br />
+            {site.address.zip} {site.address.city}
+          </address>
+          <p class="footer-hours">{isEn ? site.hours.labelEn : site.hours.labelDe}</p>
+          <p class="muted mt-4">
+            {telHref ? <a href={telHref}>{site.phone.display}</a> : STAGING ? <span class="tbc">Telefon folgt</span> : '[TBC]'}
+            {' · '}
+            {isTbc(site.email) ? (STAGING ? <span class="tbc">E-Mail folgt</span> : '[TBC]') : <a href={`mailto:${site.email}`}>{site.email}</a>}
+          </p>
+        </div>
+        <nav aria-label={isEn ? 'Shop' : 'Laden'}>
+          <h2>{isEn ? 'Shop' : 'Laden'}</h2>
+          <ul>{footerNav.laden.map((n) => <li><a href={u(n.href)}>{n.label}</a></li>)}</ul>
+        </nav>
+        <nav aria-label="Infos">
+          <h2>Infos</h2>
+          <ul>{footerNav.infos.map((n) => <li><a href={u(n.href)}>{n.label}</a></li>)}</ul>
+        </nav>
+        <nav aria-label={isEn ? 'Legal' : 'Rechtliches'}>
+          <h2>{isEn ? 'Legal' : 'Rechtliches'}</h2>
+          <ul>{footerNav.recht.map((n) => <li><a href={u(n.href)}>{n.label}</a></li>)}</ul>
+        </nav>
+      </div>
+      <div class="wrap footer-mega" aria-hidden="true"><span>Alpen</span><span>24/7</span></div>
+      <div class="footer-legal">
+        <div class="wrap" style="display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;justify-content:space-between">
+          <span>© {year} AlpenBox24 · Miesbach, Oberbayern</span>
+          <span>{isEn ? 'Map data © OpenStreetMap contributors' : 'Kartendaten © OpenStreetMap-Mitwirkende'}</span>
+        </div>
+      </div>
+    </footer>
+
+    <nav class="mobile-bar" aria-label={isEn ? 'Quick actions' : 'Schnellzugriff'}>
+      <a href={googleDirectionsUrl} rel="noopener" target="_blank"><Icon name="route" />{isEn ? 'Directions' : 'Route'}</a>
+      <a href={telHref ?? u('/kontakt/#stoerung')}><Icon name="phone" />{isEn ? 'Call' : 'Anrufen'}</a>
+      <a href={u('/kontakt/#stoerung')}><Icon name="alert" />{isEn ? 'Problem' : 'Störung'}</a>
+    </nav>
+
+    <dialog class="lightbox" aria-label="Bildansicht" data-lightbox>
+      <div class="lightbox__bar"><span data-lb-count></span><button class="icon-btn" type="button" data-lb-close aria-label="Schließen"><Icon name="close" /></button></div>
+      <div class="lightbox__stage">
+        <button class="icon-btn lightbox__nav lightbox__nav--prev" type="button" data-lb-prev aria-label="Vorheriges Bild"><Icon name="arrowLeft" /></button>
+        <img alt="" data-lb-img />
+        <button class="icon-btn lightbox__nav lightbox__nav--next" type="button" data-lb-next aria-label="Nächstes Bild"><Icon name="arrowRight" /></button>
+      </div>
+      <p class="lightbox__cap" data-lb-cap></p>
+    </dialog>
+
+    <script src="../scripts/app.ts"></script>
+  </body>
+</html>

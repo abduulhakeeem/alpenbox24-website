@@ -1,0 +1,11 @@
+---
+/** "24/7 geöffnet" chip; app.ts upgrades it to a live Europe/Berlin clock ("Jetzt geöffnet · 03:14"). */
+import { site } from '../data/site';
+interface Props { lang?: 'de' | 'en'; class?: string }
+const { lang = 'de', class: cls } = Astro.props;
+const hours = JSON.stringify(site.hours.is24_7 ? '24/7' : site.hours.weekly);
+---
+<span class:list={['open-chip', cls]} data-clock data-lang={lang} data-hours={hours}>
+  <span class="open-chip__dot" aria-hidden="true"></span>
+  <span data-clock-text>{lang === 'en' ? 'Open 24/7' : '24/7 geöffnet'}</span>
+</span>

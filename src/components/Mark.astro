@@ -1,0 +1,11 @@
+---
+/** The AlpenBox24 mark (sun + ridge) from brand/logo/alpenbox24-mark.svg. Contains a Nacht mask → place on dark only. */
+interface Props { class?: string; label?: string }
+const { class: cls, label } = Astro.props;
+---
+<svg class={cls} viewBox="14 12 287 136" role={label ? 'img' : undefined} aria-label={label} aria-hidden={label ? undefined : 'true'}>
+  <circle class="mark__sun" cx="120.69" cy="79.54" r="62.28" fill="#F68A2B" />
+  <path fill="#0D0C0B" d="M20.43 142.06L20.43 127.91L81.19 88.98L108.54 104.31L163.22 37.08L205.76 91.34L233.1 67.75L293.86 123.19L293.86 142.06Z" />
+  <path fill="#F7F7F7" d="M163.22 40.62L157.14 76L126.77 118.47L166.26 93.7L178.41 80.72ZM233.1 70.11L245.25 93.7L275.63 123.19L248.29 87.8Z" />
+  <path class="mark__ridge" fill="none" stroke="#F7F7F7" stroke-width="7.6" stroke-linecap="round" stroke-linejoin="round" d="M20.43 127.91L81.19 88.98L108.54 104.31L163.22 37.08L205.76 91.34L233.1 67.75L293.86 123.19" />
+</svg>

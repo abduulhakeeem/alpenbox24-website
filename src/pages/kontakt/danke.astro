@@ -1,0 +1,15 @@
+---
+import Base from '../../layouts/Base.astro';
+import Tbc from '../../components/Tbc.astro';
+import { site, telHref } from '../../data/site';
+import { u } from '../../lib/url';
+---
+<Base title="Danke – AlpenBox24" description="Deine Nachricht an AlpenBox24 ist angekommen." noindex>
+  <section class="lost">
+    <div class="wrap-text stack">
+      <h1>Danke, deine Nachricht ist angekommen.</h1>
+      <p class="lead" style="margin-inline:auto">Wir melden uns so schnell wie möglich, in der Regel <Tbc value={site.refund.responseTimeDe} fallback="Antwortzeit folgt" />. Bei Störungen erreichst du uns am schnellsten {telHref ? <>unter <a href={telHref}>{site.phone.display}</a></> : 'telefonisch'}.</p>
+      <p><span class="signpost-wrap"><a class="signpost" href={u('/')}>Zur Startseite</a></span></p>
+    </div>
+  </section>
+</Base>

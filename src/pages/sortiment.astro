@@ -1,0 +1,87 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Machine from '../components/Machine.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import Marquee from '../components/Marquee.astro';
+import { u } from '../lib/url';
+
+const cats = [
+  { id: 'getraenke', icon: 'bottle', tone: '#7fc4e8', title: 'Getränke', text: 'Gekühltes Wasser, Softdrinks, Schorlen, Eistee und Energydrinks. Für die Wanderung, die Autofahrt, den Grillabend ohne Nachschub oder die Nacht, in der einfach nur was Kaltes hilft.' },
+  { id: 'snacks', icon: 'cookie', tone: '#f2c14e', title: 'Snacks & Süßes', text: 'Chips, Schokolade, Riegel, Nüsse, Gummibärchen und Herzhaftes für den kleinen Hunger. Für die Autofahrt, den Filmabend oder die Pause zwischendurch.' },
+  { id: 'regional', icon: 'cheese', tone: '#f7e3a0', title: 'Brotzeit & Regionales', text: 'Produkte von Erzeugern aus dem Landkreis Miesbach. Was genau es gibt, hängt von Saison und Hof ab. Wir bauen das gerade auf und stellen dir jeden Erzeuger mit Namen vor.' },
+  { id: 'alltag', icon: 'battery', tone: '#b5afa6', title: 'Alltag & Notfall', text: 'Die Kleinigkeiten, die immer dann fehlen, wenn alles zu hat. Welche Artikel genau ins Fach kommen, stimmen wir gerade ab. Arzneimittel gehören nicht dazu: Die dürfen in Deutschland grundsätzlich nicht aus dem Automaten verkauft werden.' },
+] as const;
+---
+<Base
+  title="Sortiment: Snacks, Getränke & mehr – AlpenBox24"
+  description="Was es bei AlpenBox24 in Miesbach gibt: kalte Getränke, Snacks, Brotzeit, Regionales und Dinge für den Notfall – 24/7 aus dem Automaten."
+  breadcrumbs={[{ name: 'Sortiment', href: '/sortiment/' }]}
+>
+  <PageHead
+    title="Unser Sortiment: Snacks, Getränke und mehr"
+    lead="Bei AlpenBox24 in Miesbach bekommst du rund um die Uhr, was du kurzfristig brauchst. Das Angebot wechselt mit der Saison und nach euren Wünschen. Preise stehen am Automaten."
+    crumbs={[{ name: 'Sortiment', href: '/sortiment/' }]}
+  >
+    <nav class="cta-row mt-6" aria-label="Kategorien">
+      {cats.map((c) => <a class="chip" href={`#${c.id}`}>{c.title}</a>)}
+      <a class="chip" href="#ab-18">Ab 18</a>
+    </nav>
+  </PageHead>
+
+  <section class="section" style="padding-top:0" aria-label="Interaktiver Automat">
+    <div class="wrap"><Machine /></div>
+  </section>
+
+  <Marquee items={['Kalt', 'Knusprig', 'Regional', 'Rund um die Uhr']} />
+
+  <section class="section">
+    <div class="wrap cats">
+      {cats.map((c, i) => (
+        <article id={c.id} class="grid-2" aria-labelledby={`h-${c.id}`}>
+          <div class:list={['stack', { 'cat-flip': i % 2 === 1 }]}>
+            <p class="kicker" data-reveal>Kategorie</p>
+            <h2 id={`h-${c.id}`} data-reveal style="--d:80">{c.title}</h2>
+            <p class="lead muted" data-reveal style="--d:160">{c.text}</p>
+            {c.id === 'regional' && <p data-reveal style="--d:220"><a class="link" href={u('/regional/')}>Unsere Erzeuger</a></p>}
+          </div>
+          {c.id === 'regional' ? (
+            <Photo name="brotzeit" alt="Brotzeitbrettl mit Bergkäse, Gurke, Tomate und Salat auf rot karierter Tischdecke" reveal="clip" ratio="4/3" />
+          ) : (
+            <div class="cat-visual" data-reveal="clip" style={`--tone:${c.tone}`} aria-hidden="true">
+              <Icon name={c.icon} />
+            </div>
+          )}
+        </article>
+      ))}
+
+      <article id="ab-18" class="ab18" aria-labelledby="h-ab18">
+        <h2 id="h-ab18">Produkte ab 18 Jahren</h2>
+        <p class="mt-5">Im Sortiment sind auch Tabakwaren und E-Zigaretten. Diese Produkte gibt der Automat nur nach erfolgreicher Altersprüfung aus. Eine Abgabe an Personen unter 18 Jahren ist ausgeschlossen.</p>
+        <p class="mt-4"><a class="link" href={u('/so-gehts/#alterspruefung')}>So funktioniert die Altersprüfung</a></p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section section--fels">
+    <div class="wrap grid-2">
+      <div class="stack">
+        <h2>Dir fehlt etwas?</h2>
+        <p class="lead muted">Sag uns, was du dir im Automaten wünschst. Wir lesen jede Nachricht und füllen nach, was gefragt ist.</p>
+      </div>
+      <div><span class="signpost-wrap"><a class="signpost" href={u('/kontakt/?anliegen=wunsch#formular')}>Sortimentswunsch schicken</a></span></div>
+    </div>
+  </section>
+</Base>
+<style>
+  .cats { display: grid; gap: var(--s-9); }
+  @media (min-width: 960px) { .cat-flip { order: 2; } }
+  .ab18 { max-width: 44rem; padding-top: var(--s-7); border-top: 1px solid var(--c-grat); }
+  .ab18 h2 { font-size: var(--fs-3); }
+  .cat-visual { aspect-ratio: 4/3; border-radius: 6px; display: grid; place-items: center; background: radial-gradient(60% 60% at 50% 40%, color-mix(in srgb, var(--tone) 22%, transparent), transparent 70%), #121416; border: 1px solid #25292c; overflow: hidden; position: relative; }
+  .cat-visual::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 calc(33.33% - 1px), #1f2326 calc(33.33% - 1px) 33.33%), repeating-linear-gradient(0deg, transparent 0 calc(50% - 1px), #1f2326 calc(50% - 1px) 50%); opacity: .6; }
+  .cat-visual :global(svg) { width: 34%; height: auto; color: var(--tone); filter: drop-shadow(0 0 30px var(--tone)); position: relative; animation: float 5s ease-in-out infinite; }
+  @keyframes float { 50% { transform: translateY(-10px) rotate(-4deg); } }
+  @media (prefers-reduced-motion: reduce) { .cat-visual :global(svg) { animation: none; } }
+</style>

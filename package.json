@@ -1,0 +1,32 @@
+{
+  "name": "alpenbox24-website",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build && node scripts/guard.mjs dist",
+    "build:preview": "node scripts/build-preview.mjs",
+    "preview": "astro preview",
+    "qa:html": "html-validate \"dist/**/*.html\"",
+    "qa:links": "linkinator ./dist --recurse --skip \"^https?://(?!localhost)\"",
+    "map": "node scripts/build-map.mjs",
+    "og": "node scripts/build-og.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^6.4.8",
+    "sharp": "^0.35.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@fontsource-variable/archivo": "^5.3.0",
+    "@fontsource-variable/atkinson-hyperlegible-next": "^5.3.0",
+    "html-validate": "^11.17.0",
+    "linkinator": "^8.1.0",
+    "typescript": "^6.0.3"
+  }
+}

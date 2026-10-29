@@ -1,0 +1,148 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import Horizon from '../components/Horizon.astro';
+import SplitText from '../components/SplitText.astro';
+import OpenNow from '../components/OpenNow.astro';
+import Marquee from '../components/Marquee.astro';
+import DayCycle from '../components/DayCycle.astro';
+import Machine from '../components/Machine.astro';
+import MapBlock from '../components/MapBlock.astro';
+import Icon from '../components/Icon.astro';
+import Tbc from '../components/Tbc.astro';
+import { site, googleDirectionsUrl, appleDirectionsUrl, telHref } from '../data/site';
+import { u } from '../lib/url';
+
+const strip = [
+  { name: 'wendelstein-sonne', alt: 'Die Sonne geht hinter dem Wendelstein unter, der Gipfel steht als dunkle Silhouette vor dem orangen Himmel', cap: 'Wendelstein bei Sonnenuntergang' },
+  { name: 'schliersee-abend', alt: 'Abendstimmung am Schliersee: Berge spiegeln sich im ruhigen Wasser, der Himmel glüht rosa', cap: 'Schliersee am Abend' },
+  { name: 'brotzeit', alt: 'Brotzeitbrettl mit Bergkäse, Gurke, Tomate und Salat auf einer rot karierten Tischdecke', cap: 'Brotzeit, wie sie sein soll' },
+  { name: 'miesbach-stadtplatz', alt: 'Häuserzeile mit Holzbalkonen am Stadtplatz in Miesbach, dahinter der Kirchturm', cap: 'Stadtplatz Miesbach' },
+  { name: 'brecherspitz-winter', alt: 'Verschneiter Grat der Brecherspitz über dem Schliersee im Dezember', cap: 'Brecherspitz im Winter' },
+  { name: 'hofautomat-eier', alt: 'Holzhütte mit zwei Warenautomaten und Schildern für Honig und frische Eier', cap: 'Automaten-Kultur am Hof' },
+];
+---
+<Base
+  title="AlpenBox24 – 24/7 Automatenshop in Miesbach"
+  description="Snacks, Getränke und Regionales rund um die Uhr: der Minimarkt an der Bayrischzeller Straße in Miesbach. Täglich 24 Stunden geöffnet, auch sonntags."
+  hero
+>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__media">
+      <Photo name="tegernsee-nacht" alt="" eager credit={false} widths={[640, 960, 1280, 1920, 2560]} sizes="100vw" position="60% 50%" />
+    </div>
+    <div class="hero__shade" aria-hidden="true"></div>
+    <div class="hero__grain" aria-hidden="true"></div>
+    <div class="wrap hero__content">
+      <OpenNow />
+      <h1 id="hero-title">
+        <span class="hero__big"><SplitText text="Immer offen." base={250} /></span>
+        <span class="hero__sub">Dein 24/7 Minimarkt in Miesbach.</span>
+      </h1>
+      <p class="lead">Snacks, kalte Getränke und Regionales aus dem Oberland. An der Bayrischzeller Straße, 24 Stunden am Tag, auch sonntags. Ohne Personal, ohne Schlange, ohne „Mir ham scho zua“.</p>
+      <div class="cta-row">
+        <span class="signpost-wrap"><a class="signpost" href={googleDirectionsUrl} rel="noopener" target="_blank">Route planen <Icon name="route" /></a></span>
+        <a class="btn" href={u('/so-gehts/')}>So funktioniert’s</a>
+      </div>
+    </div>
+    <Horizon />
+    <a class="hero__scroll" href="#warum">Runter scrollen</a>
+    <div class="hero__credit"><a class="photo__credit" href={u('/bildnachweise/#tegernsee-nacht')}>Foto: Tegernseer Tal bei Nacht, Sebastian Grünwald · CC BY 3.0</a></div>
+  </section>
+
+  <section class="section" id="warum" aria-labelledby="warum-title">
+    <div class="wrap">
+      <p class="kicker" data-reveal>Bayrischzeller Straße 2-8, Miesbach</p>
+      <h2 id="warum-title" class="statement" data-reveal style="--d:100">Um acht macht Miesbach zu. <em>Wir nicht.</em> Snacks, Getränke und Brotzeit aus der Region, <span class="c-laerche">rund um die Uhr</span>, mitten an der B&nbsp;472.</h2>
+      <div class="facts mt-8">
+        <div class="fact" data-reveal><span class="fact__big">24/7</span><span class="fact__label">Täglich 0–24 Uhr, auch an Sonn- und Feiertagen.</span></div>
+        <div class="fact" data-reveal style="--d:120"><span class="fact__big fact__big--sun"><span data-count={site.directions.walkMinutesFromStation}>{site.directions.walkMinutesFromStation}</span>&nbsp;Min.</span><span class="fact__label">zu Fuß vom Bahnhof Miesbach (RB 55), rund {site.directions.walkMetersFromStation}&nbsp;m.</span></div>
+        <div class="fact" data-reveal style="--d:240"><span class="fact__big fact__big--snow">B&nbsp;472</span><span class="fact__label">Direkt an der Straße von der A8 an den Schliersee und nach Bayrischzell.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <Marquee items={['Snacks', 'Getränke', 'Regionales', 'Täglich 0–24 Uhr', 'Auch sonntags', 'Miesbach']} />
+
+  <section class="section" aria-labelledby="automat-title">
+    <div class="wrap">
+      <div class="grid-2 grid-2--wide-left" style="align-items:end;margin-bottom:var(--s-7)">
+        <div>
+          <p class="kicker" data-reveal>Was du bei uns findest</p>
+          <h2 id="automat-title" data-reveal style="--d:80">Drück mal auf den Automaten.</h2>
+        </div>
+        <p class="muted" data-reveal style="--d:160">Kurz nach Ladenschluss, am Sonntag oder auf dem Heimweg vom Berg: Bei uns gibt’s, was gerade fehlt. Tipp ein Fach an oder gib den Code ein, wie im echten Laden.</p>
+      </div>
+      <div data-reveal style="--d:120"><Machine /></div>
+      <p class="mt-6"><a class="link" href={u('/sortiment/')}>Ganzes Sortiment ansehen</a></p>
+    </div>
+  </section>
+
+  <DayCycle />
+
+  <section class="section" aria-labelledby="regional-title">
+    <div class="wrap story">
+      <div class="story__stack">
+        <Photo name="kaeselager" alt="Lange Holzregale voller reifender Käselaibe in einem Gewölbekeller" reveal="clip" />
+        <Photo name="milchautomat" alt="Milch- und Käseautomat eines Hofes vor einer Fachwerkwand" sizes="(min-width: 960px) 25vw, 50vw" widths={[400, 700]} credit={false} />
+        <span class="story__badge">Aus dem Oberland</span>
+      </div>
+      <div class="stack">
+        <p class="kicker" data-reveal>Regional</p>
+        <h2 id="regional-title" data-reveal style="--d:80">Aus dem Oberland, nicht aus dem Katalog.</h2>
+        <p data-reveal style="--d:160">Im Landkreis Miesbach kaufen die Leute ihre Eier, ihren Käse und ihre Milch seit Jahren am Hof, oft am Automaten. Diese Idee holen wir an die Hauptstraße: ausgewählte Produkte von Erzeugern aus der Gegend, frisch aufgefüllt und zu jeder Uhrzeit zu haben.</p>
+        <p class="muted" data-reveal style="--d:220">Wir sprechen gerade mit Höfen und Manufakturen aus dem Landkreis. Wer dabei ist, stellen wir dir mit Namen und Gesicht vor. Versprochen: keine erfundenen Bauernhof-Geschichten.</p>
+        <p data-reveal style="--d:280"><a class="link" href={u('/regional/')}>Mehr über Regionales</a></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--fels" aria-labelledby="steps-title">
+    <div class="wrap">
+      <p class="kicker" data-reveal>Ohne Personal, trotzdem einfach</p>
+      <h2 id="steps-title" data-reveal style="--d:80">So einfach geht’s.</h2>
+      <ol class="steps mt-7" role="list">
+        <li class="step" data-reveal><span class="step__line" aria-hidden="true"></span><h3>Aussuchen.</h3><p>Produkt am Automaten wählen, per Display oder Fachnummer.</p></li>
+        <li class="step" data-reveal style="--d:120"><span class="step__line" aria-hidden="true"></span><h3>Bezahlen.</h3><p><Tbc value={site.payment.howtoDe} fallback="Zahlungsarten folgen" /></p></li>
+        <li class="step" data-reveal style="--d:240"><h3>Mitnehmen.</h3><p>Fach öffnet sich, fertig. Für Produkte ab 18 prüft der Automat vorher dein Alter.</p></li>
+      </ol>
+      <p class="mt-7"><a class="link" href={u('/so-gehts/')}>Alles zu Bezahlen, Altersprüfung und Störungen</a></p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="einblicke-title">
+    <div class="wrap" style="display:flex;justify-content:space-between;align-items:end;gap:1rem;flex-wrap:wrap">
+      <div>
+        <p class="kicker" data-reveal>Einblicke</p>
+        <h2 id="einblicke-title" data-reveal style="--d:80">Rund um die Box.</h2>
+      </div>
+      <a class="btn" href={u('/galerie/')}>Zur Galerie</a>
+    </div>
+    <div class="strip mt-6" role="list">
+      {strip.map((p) => (
+        <a role="listitem" href={u('/galerie/')}>
+          <Photo name={p.name as any} alt={p.alt} widths={[400, 700, 900]} sizes="(min-width: 960px) 26rem, 78vw" />
+          <figcaption>{p.cap}</figcaption>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <Marquee sun items={['Licht an', 'Fach auf', 'Mitnehmen', 'Servus Miesbach', 'Bis später']} speed={44} />
+
+  <section class="section" aria-labelledby="anfahrt-title">
+    <div class="wrap grid-2">
+      <div class="stack">
+        <p class="kicker" data-reveal>Anfahrt</p>
+        <h2 id="anfahrt-title" data-reveal style="--d:80">So findest du uns.</h2>
+        <p data-reveal style="--d:160"><strong>Bayrischzeller Straße 2-8, 83714 Miesbach.</strong> Direkt an der B&nbsp;472, auf dem Weg von der A8 Richtung Schliersee und Bayrischzell. Vom Bahnhof Miesbach sind es rund {site.directions.walkMetersFromStation}&nbsp;Meter, etwa {site.directions.walkMinutesFromStation}&nbsp;Minuten zu Fuß. Die Bushaltestelle „{site.directions.nearestBusStop}“ liegt um die Ecke.</p>
+        <div class="cta-row" data-reveal style="--d:240">
+          <span class="signpost-wrap"><a class="signpost" href={googleDirectionsUrl} rel="noopener" target="_blank">Route mit Google Maps</a></span>
+          <a class="btn" href={appleDirectionsUrl} rel="noopener" target="_blank">Apple Karten</a>
+          {telHref && <a class="btn" href={telHref}><Icon name="phone" />Anrufen</a>}
+        </div>
+      </div>
+      <div data-reveal style="--d:120"><MapBlock /></div>
+    </div>
+  </section>
+</Base>

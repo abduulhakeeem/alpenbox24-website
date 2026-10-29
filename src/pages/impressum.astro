@@ -1,0 +1,34 @@
+---
+/** Impressum per § 5 DDG. Template: docs/06-legal-pages.md §B. Have it checked before launch. */
+import Legal from '../layouts/Legal.astro';
+import Tbc from '../components/Tbc.astro';
+import { site, telHref, mailHref } from '../data/site';
+import { u } from '../lib/url';
+const l = site.legal;
+---
+<Legal title="Impressum – AlpenBox24" description="Anbieterkennzeichnung der AlpenBox24 gemäß § 5 DDG: Betreiber, Anschrift und Kontakt des 24/7 Minimarkts an der Bayrischzeller Straße in Miesbach." heading="Impressum">
+  <h2>Angaben gemäß § 5 DDG</h2>
+  <p>
+    <Tbc value={l.name} fallback="Name des Betreibers folgt" /><br />
+    <Tbc value={l.form} fallback="Rechtsform folgt" /><br />
+    <Tbc value={l.street} fallback="Straße folgt" /><br />
+    <Tbc value={l.zip} fallback="PLZ" /> <Tbc value={l.city} fallback="Ort" />
+  </p>
+  {l.managingDirectors.length > 0 && <p>Vertreten durch die Geschäftsführung: {l.managingDirectors.join(', ')}</p>}
+  {l.registerNumber && <p>Registergericht: Amtsgericht {l.registerCourt}<br />Registernummer: {l.registerNumber}</p>}
+
+  <h2>Kontakt</h2>
+  <p>Telefon: {telHref ? <a href={telHref}>{site.phone.display}</a> : <Tbc value={site.phone.display} fallback="folgt" />}<br />
+  E-Mail: {mailHref ? <a href={mailHref}>{site.email}</a> : <Tbc value={site.email} fallback="folgt" />}</p>
+
+  {l.vatId && <><h2>Umsatzsteuer-ID</h2><p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz: {l.vatId}</p></>}
+
+  <h2>Ladenadresse</h2>
+  <p>{site.legalBrand}, {site.address.street}, {site.address.zip} {site.address.city}</p>
+
+  <h2>Verbraucherstreitbeilegung</h2>
+  <p>Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+
+  <h2>Bildnachweise</h2>
+  <p>Fotos aus Wikimedia Commons unter den jeweils angegebenen freien Lizenzen, vollständige Angaben unter <a href={u('/bildnachweise/')}>Bildnachweise</a>. Kartendaten: © OpenStreetMap-Mitwirkende, verfügbar unter der Open Database License (ODbL). Logo: AlpenBox24.</p>
+</Legal>

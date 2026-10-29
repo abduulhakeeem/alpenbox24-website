@@ -1,0 +1,122 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import MapBlock from '../../components/MapBlock.astro';
+import Icon from '../../components/Icon.astro';
+import Tbc from '../../components/Tbc.astro';
+import OpenNow from '../../components/OpenNow.astro';
+import { site, googleDirectionsUrl, appleDirectionsUrl, telHref, mailHref, whatsappHref } from '../../data/site';
+import { u, STAGING } from '../../lib/url';
+---
+<Base
+  title="Kontakt & Anfahrt – AlpenBox24 Miesbach"
+  description="Bayrischzeller Straße 2-8, 83714 Miesbach. Route, Parken, Anreise mit der Bahn, Störung melden und Kontakt zum AlpenBox24 Team. Täglich rund um die Uhr geöffnet."
+  breadcrumbs={[{ name: 'Kontakt', href: '/kontakt/' }]}
+>
+  <PageHead title="Kontakt und Anfahrt" crumbs={[{ name: 'Kontakt', href: '/kontakt/' }]} lead="Hier findest du den Weg zu AlpenBox24 in Miesbach, Hilfe bei Störungen und einen direkten Draht zu uns." />
+
+  <section class="section" style="padding-top:0" id="route" aria-labelledby="route-title">
+    <div class="wrap grid-2" style="align-items:start">
+      <div class="card-nap">
+        <OpenNow />
+        <address><strong>{site.legalBrand}</strong>{site.address.street}<br />{site.address.zip} {site.address.city}</address>
+        <dl>
+          <dt>Geöffnet</dt><dd>{site.hours.labelDe}</dd>
+          <dt>Telefon</dt><dd>{telHref ? <a href={telHref}>{site.phone.display}</a> : <Tbc value={site.phone.display} fallback="folgt" />}</dd>
+          <dt>E-Mail</dt><dd>{mailHref ? <a href={mailHref}>{site.email}</a> : <Tbc value={site.email} fallback="folgt" />}</dd>
+        </dl>
+        <div class="cta-row">
+          <span class="signpost-wrap"><a class="signpost" href={googleDirectionsUrl} rel="noopener" target="_blank">Route mit Google Maps</a></span>
+          <a class="btn" href={appleDirectionsUrl} rel="noopener" target="_blank">Route mit Apple Karten</a>
+        </div>
+      </div>
+      <MapBlock />
+    </div>
+
+    <div class="wrap mt-8">
+      <h2 id="route-title">Anfahrt</h2>
+      <ul class="icon-list mt-6 anfahrt" role="list">
+        <li><Icon name="car" /><div><strong>Mit dem Auto</strong><p>A8 München–Salzburg, Ausfahrt Weyarn oder Irschenberg, weiter nach Miesbach. Wir liegen an der Bayrischzeller Straße (B&nbsp;472). Parken: <Tbc value={site.directions.parkingDe} fallback="Info folgt" /></p></div></li>
+        <li><Icon name="train" /><div><strong>Mit der Bahn</strong><p>RB 55 München–Bayrischzell bis Bahnhof Miesbach, dann rund {site.directions.walkMetersFromStation}&nbsp;Meter, etwa {site.directions.walkMinutesFromStation}&nbsp;Minuten zu Fuß.</p></div></li>
+        <li><Icon name="bus" /><div><strong>Mit dem Bus</strong><p>Haltestelle „{site.directions.nearestBusStop}“, von dort sind es nur wenige Schritte.</p></div></li>
+        <li><Icon name="bike" /><div><strong>Mit dem Rad</strong><p><Tbc value={site.directions.bikeParkingDe} fallback="Info zu Radstellplätzen folgt" /></p></div></li>
+        <li><Icon name="hand" /><div><strong>Barrierefreiheit</strong><p><Tbc value={site.directions.accessibilityDe} fallback="Angabe zum Zugang folgt" /></p></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--fels" id="stoerung" aria-labelledby="stoer-title">
+    <div class="wrap grid-2" style="align-items:start">
+      <div class="stack">
+        <p class="kicker">Hilfe</p>
+        <h2 id="stoer-title">Störung melden</h2>
+        <p class="lead muted">Automat hat nicht ausgegeben oder etwas ist kaputt? Am schnellsten geht’s per Telefon{whatsappHref ? ' oder WhatsApp' : ''}.</p>
+      </div>
+      <div class="stack">
+        <p class="phone-big">{telHref ? <a href={telHref}>{site.phone.display}</a> : <Tbc value={site.phone.display} fallback="Störungsnummer folgt" />}</p>
+        <p>Bitte nenne <strong>Automatennummer</strong>, <strong>Uhrzeit</strong> und <strong>Zahlungsart</strong>. Bei Kartenzahlung reichen die letzten vier Ziffern.</p>
+        <div class="cta-row">
+          {telHref && <a class="btn" href={telHref}><Icon name="phone" />Anrufen</a>}
+          {whatsappHref && <a class="btn" href={whatsappHref} rel="noopener" target="_blank"><Icon name="chat" />WhatsApp</a>}
+          <a class="btn" href="?anliegen=stoerung#formular"><Icon name="mail" />Per Formular</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="formular" aria-labelledby="form-title">
+    <div class="wrap-text">
+      <h2 id="form-title">Schreib uns</h2>
+      <p class="muted mt-4">Für Sortimentswünsche, Anfragen von Erzeugern oder alles andere. Felder mit * sind Pflicht.</p>
+      <p class="notice mt-5" data-form-error hidden role="alert">Das hat nicht geklappt. Bitte versuch es noch einmal{telHref ? ` oder ruf uns an: ${site.phone.display}` : ''}.</p>
+      {STAGING && <p class="notice mt-5">Vorschau: Das Formular verschickt erst nach dem Go-live auf dem Hostinger-Server E-Mails.</p>}
+      <form class="form mt-6" method="post" action={u('/api/kontakt.php')} data-form>
+        <div class="field">
+          <label for="anliegen">Anliegen *</label>
+          <select class="select" id="anliegen" name="anliegen" required>
+            <option value="stoerung">Störung / Erstattung</option>
+            <option value="wunsch">Sortimentswunsch</option>
+            <option value="erzeuger">Erzeuger werden</option>
+            <option value="sonstiges" selected>Sonstiges</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="name">Name *</label>
+          <input class="input" id="name" name="name" autocomplete="name" required maxlength="120" />
+          <span class="error">Bitte gib deinen Namen an.</span>
+        </div>
+        <div class="field">
+          <label for="email">E-Mail *</label>
+          <input class="input" id="email" name="email" type="email" autocomplete="email" required maxlength="200" />
+          <span class="error">Bitte gib eine gültige E-Mail-Adresse an, z. B. name@beispiel.de.</span>
+        </div>
+        <div class="field">
+          <label for="telefon">Telefon <span class="muted">(optional)</span></label>
+          <input class="input" id="telefon" name="telefon" type="tel" autocomplete="tel" maxlength="40" />
+        </div>
+        <div class="field" data-show-if="stoerung">
+          <label for="automat">Automatennummer <span class="muted">(bei Störung)</span></label>
+          <input class="input" id="automat" name="automat" maxlength="20" />
+        </div>
+        <div class="field">
+          <label for="nachricht">Nachricht *</label>
+          <textarea class="textarea" id="nachricht" name="nachricht" required maxlength="4000"></textarea>
+          <span class="error">Bitte schreib uns kurz, worum es geht.</span>
+          <span class="hint">Gib bei Kartenzahlungen nie die vollständige Kartennummer an.</span>
+        </div>
+        <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off" /></div>
+        <input type="hidden" name="_ts" value="" />
+        <div class="check">
+          <input type="checkbox" id="dsgvo" name="dsgvo" required />
+          <label for="dsgvo">Ich habe die <a href={u('/datenschutz/#kontakt')}>Datenschutzerklärung</a> gelesen. *</label>
+        </div>
+        <div><span class="signpost-wrap"><button class="signpost" type="submit" style="border:0">Nachricht senden</button></span></div>
+      </form>
+    </div>
+  </section>
+</Base>
+<style>
+  .phone-big { font-family: var(--ff-display); font-weight: 900; font-stretch: 118%; font-size: var(--fs-2); }
+  .phone-big a { color: var(--c-laerche); text-decoration: none; }
+  @media (min-width: 900px) { .anfahrt { grid-template-columns: repeat(2, 1fr); column-gap: 3rem; } }
+</style>

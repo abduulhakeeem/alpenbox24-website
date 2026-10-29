@@ -1,0 +1,61 @@
+---
+/** Datenschutzerklärung. Template: docs/06-legal-pages.md §C. Must reflect reality — update "Stand" with every change. */
+import Legal from '../layouts/Legal.astro';
+import Tbc from '../components/Tbc.astro';
+import { site, whatsappHref, telHref, mailHref } from '../data/site';
+const l = site.legal;
+const updated = '29.10.2026';
+---
+<Legal title="Datenschutzerklärung – AlpenBox24" description="Informationen zur Verarbeitung personenbezogener Daten auf der Website von AlpenBox24 und im AlpenBox24 Minimarkt in Miesbach: Hosting, Kontakt, Rechte." heading="Datenschutzerklärung" updated={updated}>
+  <nav class="toc" aria-label="Inhalt">
+    <ol>
+      <li><a href="#verantwortlicher">Verantwortlicher</a></li>
+      <li><a href="#ueberblick">Überblick</a></li>
+      <li><a href="#hosting">Hosting und Server-Logfiles</a></li>
+      <li><a href="#kontakt">Kontaktformular, E-Mail, Telefon</a></li>
+      <li><a href="#links">Links zu Kartendiensten</a></li>
+      <li><a href="#schriften">Schriftarten</a></li>
+      <li><a href="#videoueberwachung">Videoüberwachung im Laden</a></li>
+      <li><a href="#rechte">Deine Rechte</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="verantwortlicher">1. Verantwortlicher</h2>
+  <p><Tbc value={l.name} fallback="Name des Betreibers folgt" />, <Tbc value={l.street} fallback="Anschrift folgt" />, <Tbc value={l.zip} fallback="PLZ" /> <Tbc value={l.city} fallback="Ort" /><br />
+  Telefon {telHref ? site.phone.display : <Tbc value={site.phone.display} fallback="folgt" />}, E-Mail {mailHref ? site.email : <Tbc value={site.email} fallback="folgt" />}</p>
+
+  <h2 id="ueberblick">2. Überblick</h2>
+  <p>Diese Website kommt ohne Cookies, ohne Tracking und ohne eingebettete Inhalte von Drittanbietern aus. Schriften und Karte werden von unserem eigenen Server geladen. Personenbezogene Daten verarbeiten wir nur, wenn du die Website aufrufst (technische Server-Logs) und wenn du uns kontaktierst.</p>
+
+  <h2 id="hosting">3. Hosting und Server-Logfiles</h2>
+  <p>Unsere Website wird bei {site.hosting.name} gehostet (<Tbc value={site.hosting.address} fallback="Firmierung und Anschrift laut Auftragsverarbeitungsvertrag folgen" />). Mit dem Hoster besteht ein Vertrag zur Auftragsverarbeitung nach Art. 28 DSGVO.</p>
+  <p>Beim Aufruf der Website verarbeitet der Server automatisch: IP-Adresse, Datum und Uhrzeit, aufgerufene Seite, übertragene Datenmenge, Referrer-URL, Browser und Betriebssystem. Das ist technisch notwendig, um die Website auszuliefern und ihre Sicherheit zu gewährleisten. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einem sicheren und stabilen Betrieb). Die Logfiles werden nach kurzer Zeit automatisch gelöscht.</p>
+  <p>Die Verbindung zu dieser Website ist per TLS verschlüsselt (https).</p>
+
+  <h2 id="kontakt">4. Kontaktformular, E-Mail, Telefon</h2>
+  <p>Wenn du uns über das Formular, per E-Mail oder telefonisch kontaktierst, verarbeiten wir deine Angaben (Name, E-Mail-Adresse, ggf. Telefonnummer, Automatennummer und deine Nachricht), um dein Anliegen zu bearbeiten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, soweit es um eine Erstattung oder ein Vertragsverhältnis geht, ansonsten Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an der Beantwortung von Anfragen).</p>
+  <p>Die Formulardaten werden nicht in einer Datenbank gespeichert, sondern als E-Mail an uns übermittelt. Wir löschen Anfragen, sobald sie erledigt sind, sofern keine gesetzlichen Aufbewahrungspflichten (z. B. bei Erstattungen nach Handels- und Steuerrecht) entgegenstehen. Bitte übermittle keine vollständigen Kartennummern.</p>
+  {whatsappHref && <p>Wenn du uns per WhatsApp schreibst, werden Daten an WhatsApp Ireland Ltd. bzw. Meta übermittelt; dabei gelten deren Datenschutzbestimmungen. Wenn du das nicht möchtest, nutze Telefon, E-Mail oder das Formular.</p>}
+
+  <h2 id="links">5. Links zu Kartendiensten</h2>
+  <p>Wir binden keine Karten oder Social-Media-Inhalte ein. Die Karte auf unserer Website ist eine Grafik auf Basis von OpenStreetMap-Daten, die von unserem Server geladen wird. Erst wenn du auf „Route mit Google Maps“ oder „Route mit Apple Karten“ klickst, verlässt du unsere Website; dann gelten die Datenschutzbestimmungen des jeweiligen Anbieters.</p>
+
+  <h2 id="schriften">6. Schriftarten</h2>
+  <p>Wir verwenden die Schriften „Archivo“ und „Atkinson Hyperlegible Next“. Sie liegen auf unserem eigenen Server; beim Laden wird keine Verbindung zu Google oder anderen Dritten aufgebaut.</p>
+
+  <h2 id="videoueberwachung">7. Videoüberwachung im Laden</h2>
+  {site.cctv.enabled === true ? (
+    <p>Zwecke: Schutz vor Vandalismus, Diebstahl und Einbruch, Aufklärung von Straftaten, Klärung von Störungen und Erstattungen. Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO. Speicherdauer: {site.cctv.retentionDe}, danach automatische Löschung, es sei denn, Aufnahmen werden zur Aufklärung eines konkreten Vorfalls benötigt. Keine Tonaufnahmen. Empfänger: im Einzelfall Strafverfolgungsbehörden.</p>
+  ) : site.cctv.enabled === false ? (
+    <p>Im Laden findet keine Videoüberwachung statt.</p>
+  ) : (
+    <p><Tbc value={site.cctv.enabled} fallback="Angaben zur Videoüberwachung folgen (nur falls vorhanden)" /></p>
+  )}
+
+  <h2 id="rechte">8. Deine Rechte</h2>
+  <p>Du hast das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) und <strong>Widerspruch</strong> gegen Verarbeitungen auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO (Art. 21). Wende dich dafür an die oben genannte E-Mail-Adresse.</p>
+  <p>Du kannst dich außerdem bei einer Datenschutz-Aufsichtsbehörde beschweren. Für uns zuständig ist das Bayerische Landesamt für Datenschutzaufsicht (BayLDA), Promenade 18, 91522 Ansbach.</p>
+
+  <h2>9. Änderungen</h2>
+  <p>Wir passen diese Datenschutzerklärung an, wenn sich unsere Website oder die Rechtslage ändert.</p>
+</Legal>

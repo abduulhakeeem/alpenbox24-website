@@ -1,0 +1,17 @@
+---
+/**
+ * Renders a client fact from site.ts. If the fact is still TBC:
+ *  - staging: a visible, honest "folgt" marker (never a made-up value)
+ *  - production: the literal "[TBC]", which makes scripts/guard.mjs fail the build (R8)
+ */
+import { isTbc, TBC } from '../data/site';
+import { STAGING } from '../lib/url';
+
+interface Props {
+  value: unknown;
+  fallback: string;
+}
+const { value, fallback } = Astro.props;
+const missing = isTbc(value) || value === undefined || value === '';
+---
+{missing ? (STAGING ? <span class="tbc" title="Angabe vom Betreiber folgt">{fallback}</span> : <span>{TBC}</span>) : <slot>{String(value)}</slot>}

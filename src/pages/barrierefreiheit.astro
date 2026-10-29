@@ -1,0 +1,12 @@
+---
+import Legal from '../layouts/Legal.astro';
+import Tbc from '../components/Tbc.astro';
+import { site, mailHref, telHref } from '../data/site';
+---
+<Legal title="Barrierefreiheit – AlpenBox24" description="Wie wir die Website von AlpenBox24 aus Miesbach zugänglich gestalten, was wir dafür tun und wie du uns Barrieren melden kannst. Freiwillige Erklärung." heading="Barrierefreiheit" updated="29.10.2026">
+  <p>Wir möchten, dass alle unsere Website gut nutzen können. Sie ist nach den Richtlinien WCAG 2.2, Stufe AA, gestaltet: ausreichende Kontraste, Bedienung per Tastatur, Bildbeschreibungen, eine klare Überschriftenstruktur und Rücksicht auf die Systemeinstellung „Bewegung reduzieren“.</p>
+  <h2>Bekannte Einschränkungen</h2>
+  <p>Die interaktiven Elemente (Automat, Tagesverlauf) sind Zusatzangebote. Alle Inhalte stehen auch als normaler Text und als Links zur Verfügung, auch ohne JavaScript.</p>
+  <h2>Barriere gefunden?</h2>
+  <p>Schreib uns an {mailHref ? <a href={mailHref}>{site.email}</a> : <Tbc value={site.email} fallback="E-Mail folgt" />} oder ruf an unter {telHref ? <a href={telHref}>{site.phone.display}</a> : <Tbc value={site.phone.display} fallback="Telefon folgt" />}. Wir kümmern uns darum.</p>
+</Legal>

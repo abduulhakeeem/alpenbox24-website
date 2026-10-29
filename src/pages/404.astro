@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import { googleDirectionsUrl } from '../data/site';
+import { u } from '../lib/url';
+---
+<Base title="Seite nicht gefunden – AlpenBox24" description="Diese Seite gibt es nicht. Der Laden an der Bayrischzeller Straße in Miesbach hat trotzdem offen." noindex>
+  <section class="lost">
+    <div class="wrap stack">
+      <p class="lost__num" aria-hidden="true">404</p>
+      <h1>Hier geht’s nicht weiter.</h1>
+      <p class="lead" style="margin-inline:auto">Die Seite gibt es nicht (mehr). Der Laden schon: rund um die Uhr an der Bayrischzeller Straße.</p>
+      <div class="cta-row" style="justify-content:center">
+        <span class="signpost-wrap"><a class="signpost" href={googleDirectionsUrl} rel="noopener" target="_blank">Route planen</a></span>
+        <a class="btn" href={u('/')}>Zur Startseite</a>
+      </div>
+    </div>
+  </section>
+</Base>

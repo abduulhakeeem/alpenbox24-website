@@ -1,0 +1,25 @@
+---
+/** Attribution for every photo (CC BY / CC BY-SA require author, licence, source). */
+import Legal from '../layouts/Legal.astro';
+import Photo from '../components/Photo.astro';
+import credits from '../data/photo-credits.json';
+const entries = Object.entries(credits) as [keyof typeof credits, (typeof credits)[keyof typeof credits]][];
+---
+<Legal title="Bildnachweise – AlpenBox24" description="Urheber, Lizenzen und Quellen aller Fotos auf der Website von AlpenBox24 in Miesbach. Freie Fotos aus Wikimedia Commons und Kartendaten von OpenStreetMap." heading="Bildnachweise">
+  <p>Die Fotos auf dieser Website stammen aus Wikimedia Commons und stehen unter freien Lizenzen. Wir haben sie für die Website zugeschnitten und komprimiert; bei Lizenzen mit „SA“ (Share Alike) stehen auch unsere Zuschnitte unter derselben Lizenz. Fotos vom AlpenBox24-Laden selbst folgen.</p>
+  <ul class="credits mt-6">
+    {entries.map(([key, c]) => (
+      <li id={key}>
+        <Photo name={key} alt="" widths={[200]} sizes="6rem" credit={false} />
+        <div>
+          <strong>{c.title.replace(/\.(jpe?g|JPG)$/i, '')}</strong><br />
+          <span class="muted">Foto: {c.author} · Lizenz: {c.licenseUrl ? <a href={c.licenseUrl} rel="noopener license" target="_blank">{c.license}</a> : c.license} · <a href={c.page} rel="noopener" target="_blank">Quelle</a></span>
+        </div>
+      </li>
+    ))}
+  </ul>
+  <h2>Karte</h2>
+  <p>Kartengrafik erstellt aus Daten von <a href="https://www.openstreetmap.org/copyright" rel="noopener" target="_blank">© OpenStreetMap-Mitwirkende</a> (ODbL). Fußweg berechnet mit OSRM auf OpenStreetMap-Daten.</p>
+  <h2>Schriften</h2>
+  <p>Archivo (Omnibus-Type) und Atkinson Hyperlegible Next (Braille Institute), beide unter der SIL Open Font License, lokal eingebunden.</p>
+</Legal>

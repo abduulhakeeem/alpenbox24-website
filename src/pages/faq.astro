@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Tbc from '../components/Tbc.astro';
+import { site, isTbc, telHref } from '../data/site';
+import { u } from '../lib/url';
+---
+<Base
+  title="Häufige Fragen – AlpenBox24 Miesbach"
+  description="Sonntags offen? Wie bezahle ich? Was passiert bei einer Störung? Antworten zu Öffnungszeiten, Bezahlung, Altersprüfung und Sortiment bei AlpenBox24 in Miesbach."
+  breadcrumbs={[{ name: 'FAQ', href: '/faq/' }]}
+>
+  <PageHead title="Häufige Fragen" lead="Kurz und ehrlich beantwortet: alles rund um Öffnungszeiten, Bezahlen, Altersprüfung und Störungen bei AlpenBox24 in Miesbach." crumbs={[{ name: 'FAQ', href: '/faq/' }]} />
+  <section class="section" style="padding-top:0">
+    <div class="wrap-text" style="margin-inline:max(1.25rem, calc((100vw - 84rem) / 2))">
+      <div class="faq-group">
+        <h2 id="oeffnungszeiten">Öffnungszeiten</h2>
+        <details class="qa" name="faq" id="immer-offen" open><summary>Habt ihr wirklich immer offen?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Ja. {site.hours.labelDe}.</p></div></details>
+        <details class="qa" name="faq" id="sonntag"><summary>Kann ich in Miesbach sonntags einkaufen?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Bei uns ja. Snacks, Getränke und Regionales bekommst du auch am Sonntag und an Feiertagen, rund um die Uhr. Möglich macht das das bayerische Ladenschlussgesetz, das kleine Läden ohne Personal seit dem 1. August 2025 erlaubt.</p></div></details>
+        <details class="qa" name="faq" id="nachts-auffuellen"><summary>Füllt ihr auch nachts nach?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Nein. Nachgefüllt und geputzt wird tagsüber, nachts arbeitet hier niemand. Wenn ein Fach leer ist, sag uns gern Bescheid.</p></div></details>
+      </div>
+      <div class="faq-group">
+        <h2 id="bezahlen">Bezahlen</h2>
+        <details class="qa" name="faq" id="zahlungsarten"><summary>Wie kann ich bezahlen?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p><Tbc value={site.payment.methods} fallback="Zahlungsarten folgen">{!isTbc(site.payment.methods) && site.payment.methods.join(', ')}</Tbc></p></div></details>
+        <details class="qa" name="faq" id="bargeld"><summary>Nehmen die Automaten Bargeld?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>{site.payment.cash === true ? 'Ja, und sie geben Wechselgeld zurück.' : site.payment.cash === false ? 'Nein, bezahlt wird mit Karte oder Handy.' : <Tbc value={site.payment.cash} fallback="Angabe folgt" />}</p></div></details>
+        <details class="qa" name="faq" id="preise"><summary>Wo sehe ich die Preise?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Direkt am Automaten, an jedem Fach.</p></div></details>
+      </div>
+      <div class="faq-group">
+        <h2 id="alterspruefung">Altersprüfung</h2>
+        <details class="qa" name="faq" id="wie-alterspruefung"><summary>Wie funktioniert die Altersprüfung?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p><Tbc value={site.ageCheck.howtoDe} fallback="Ablauf folgt" /></p></div></details>
+        <details class="qa" name="faq" id="warum-alter"><summary>Warum muss ich mein Alter nachweisen?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Für Tabakwaren und E-Zigaretten{site.sellsAlcohol === true ? ' sowie Alkohol' : ''} verlangt das Jugendschutzgesetz, dass Kinder und Jugendliche sie am Automaten nicht bekommen können. Deshalb prüft der Automat vorher technisch dein Alter.</p></div></details>
+        <details class="qa" name="faq" id="ausweisdaten"><summary>Werden meine Ausweisdaten gespeichert?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>{site.ageCheck.storesNoIdData === true ? 'Nein, wir speichern keine Ausweisdaten.' : <Tbc value={site.ageCheck.storesNoIdData} fallback="Antwort folgt nach Bestätigung des Geräteherstellers" />}</p></div></details>
+      </div>
+      <div class="faq-group">
+        <h2 id="sortiment">Sortiment</h2>
+        <details class="qa" name="faq" id="regional"><summary>Gibt es regionale Produkte?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Das bauen wir gerade auf, mit Erzeugern aus dem Landkreis Miesbach. Wer dabei ist, siehst du unter <a href={u('/regional/')}>Regional</a>.</p></div></details>
+        <details class="qa" name="faq" id="wunsch"><summary>Kann ich mir Produkte wünschen?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Gern. Schreib uns über das <a href={u('/kontakt/?anliegen=wunsch#formular')}>Kontaktformular</a>.</p></div></details>
+        <details class="qa" name="faq" id="medikamente"><summary>Gibt es Kopfschmerztabletten?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Nein. Arzneimittel dürfen in Deutschland grundsätzlich nicht über Automaten verkauft werden. Nachts hilft dir die Notdienst-Apotheke weiter.</p></div></details>
+      </div>
+      <div class="faq-group">
+        <h2 id="stoerung">Störung & Erstattung</h2>
+        <details class="qa" name="faq" id="nicht-ausgegeben"><summary>Der Automat hat nicht ausgegeben. Was jetzt?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Notiere Automatennummer und Uhrzeit und melde dich {telHref ? <>unter <a href={telHref}>{site.phone.display}</a></> : 'telefonisch'} oder über das <a href={u('/kontakt/?anliegen=stoerung#formular')}>Formular</a>. Wir erstatten <Tbc value={site.refund.methodDe} fallback="Erstattungsweg folgt" />.</p></div></details>
+        <details class="qa" name="faq" id="doppelt"><summary>Mir wurde doppelt abgebucht.<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Melde dich mit Uhrzeit, Betrag und den letzten vier Ziffern deiner Karte. Wir klären das mit dem Zahlungsdienstleister.</p></div></details>
+      </div>
+      <div class="faq-group">
+        <h2 id="anfahrt">Anfahrt</h2>
+        <details class="qa" name="faq" id="parken"><summary>Wo kann ich parken?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p><Tbc value={site.directions.parkingDe} fallback="Info folgt" /></p></div></details>
+        <details class="qa" name="faq" id="bahnhof"><summary>Wie weit ist es vom Bahnhof?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Rund {site.directions.walkMetersFromStation} Meter, etwa {site.directions.walkMinutesFromStation} Minuten zu Fuß vom Bahnhof Miesbach (RB 55 München–Bayrischzell).</p></div></details>
+      </div>
+      <p class="mt-8">Deine Frage war nicht dabei? <a class="link" href={u('/kontakt/#formular')}>Schreib uns</a>.</p>
+    </div>
+  </section>
+</Base>
