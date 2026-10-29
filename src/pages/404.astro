@@ -2,14 +2,14 @@
 import Base from '../layouts/Base.astro';
 import { u } from '../lib/url';
 ---
-<Base title="Seite nicht gefunden – AlpenBox24" description="Diese Seite gibt es nicht. Unsere Automaten schon." noindex>
+<Base title="Seite nicht gefunden – AlpenBox24" description="Diese Seite gibt es nicht. Unsere Automaten schon, rund um die Uhr." noindex>
   <section class="lost">
     <div class="wrap stack">
       <p class="lost__num" aria-hidden="true">404</p>
       <h1>Fach leer.</h1>
       <p class="lead" style="margin-inline:auto">Diese Seite gibt es nicht (mehr).</p>
       <div class="cta-row" style="justify-content:center">
-        <span class="signpost-wrap"><a class="signpost" href={u('/automaten/')}>Automaten ansehen</a></span>
+        <span class="signpost-wrap"><a class="signpost" href={u('/standorte/')}>Standorte ansehen</a></span>
         <a class="btn" href={u('/')}>Zur Startseite</a>
       </div>
     </div>

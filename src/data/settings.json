@@ -30,5 +30,15 @@
     "logo": "",
     "favicon": ""
   },
-  "updatedAt": "2026-10-29T00:00:00Z"
+  "updatedAt": "2026-10-29T00:00:00Z",
+  "locations": [
+    {
+      "name": "AlpenBox24 Miesbach",
+      "street": "Bayrischzeller Straße 2-8",
+      "zip": "83714",
+      "city": "Miesbach",
+      "hours": "Täglich 0–24 Uhr",
+      "note": "Unser 24/7-Minimarkt: Snacks, Getränke und Regionales."
+    }
+  ]
 }

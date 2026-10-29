@@ -4,7 +4,7 @@ declare(strict_types=1);
 /**
  * AlpenBox24 — Verwaltung (admin panel)
  *
- * Lets the owner edit company details, contact data, social links, directions, logo and favicon.
+ * Lets the owner edit company details, contact data, social links, locations, directions, logo and favicon.
  * Saving commits src/data/settings.json (and uploaded images under public/uploads/) to GitHub in one
  * commit. GitHub Actions then rebuilds the static site and Hostinger deploys it (≈ 2–3 minutes).
  *
@@ -21,6 +21,7 @@ declare(strict_types=1);
 const SETTINGS_PATH = 'src/data/settings.json';
 const UPLOAD_DIR = 'public/uploads';
 const MAX_UPLOAD = 1024 * 1024; // 1 MB
+const MAX_LOCATIONS = 8;
 
 header('X-Robots-Tag: noindex, nofollow');
 header('Cache-Control: no-store');
@@ -181,6 +182,17 @@ function build_settings(array $cur, array $post, array $files): array
 
     foreach (['parking', 'bikeParking', 'accessibility'] as $k) $s['directions'][$k] = $in('directions_' . $k, 300);
 
+    $locs = [];
+    for ($i = 0; $i < MAX_LOCATIONS; $i++) {
+        $l = [];
+        foreach (['name' => 80, 'street' => 120, 'zip' => 10, 'city' => 80, 'hours' => 80, 'note' => 200] as $k => $max) $l[$k] = $in("loc_{$i}_{$k}", $max);
+        if ($l['name'] === '' && $l['city'] === '') continue;
+        if ($l['name'] === '' || $l['city'] === '') { $errors[] = 'Jeder Standort braucht mindestens Name und Ort.'; continue; }
+        $locs[] = $l;
+    }
+    if (!$locs) $errors[] = 'Mindestens ein Standort ist nötig.';
+    $s['locations'] = $locs;
+
     $out = [];
     foreach (['logo' => ['png', 'svg', 'webp'], 'favicon' => ['png', 'svg', 'ico']] as $k => $exts) {
         if (!empty($post['remove_' . $k])) $s['branding'][$k] = '';
@@ -276,6 +288,24 @@ function field(string $name, string $label, string $value, string $type = 'text'
     return '<label class="f"><span>' . h($label) . ($required ? ' *' : '') . '</span><input type="' . $type . '" name="' . h($name) . '" value="' . h($value) . '"' . ($required ? ' required' : '') . '>' . ($hint ? '<small>' . h($hint) . '</small>' : '') . '</label>';
 }
 
+function locations_form(array $locs): string
+{
+    $out = '<section class="card"><h2>Standorte</h2><p class="muted">Der erste Standort ist die Box in Miesbach (mit Karte). Leere Zeilen werden ignoriert.</p>';
+    for ($i = 0; $i < MAX_LOCATIONS; $i++) {
+        $l = $locs[$i] ?? [];
+        $v = fn(string $k) => (string) ($l[$k] ?? '');
+        $out .= '<fieldset class="loc"><legend>Standort ' . ($i + 1) . '</legend><div class="grid">'
+            . field("loc_{$i}_name", 'Name', $v('name'), 'text', $i === 0 ? 'z. B. AlpenBox24 Miesbach' : '')
+            . field("loc_{$i}_street", 'Straße und Nr.', $v('street'))
+            . field("loc_{$i}_zip", 'PLZ', $v('zip'))
+            . field("loc_{$i}_city", 'Ort', $v('city'))
+            . field("loc_{$i}_hours", 'Öffnungszeiten', $v('hours'), 'text', 'z. B. Täglich 0–24 Uhr')
+            . field("loc_{$i}_note", 'Kurzbeschreibung', $v('note'), 'text', 'Ein Satz, z. B. was es dort gibt.')
+            . '</div></fieldset>';
+    }
+    return $out . '</section>';
+}
+
 function login_form(string $error): string
 {
     return '<form method="post" class="card narrow"><h1>Verwaltung</h1><p class="muted">AlpenBox24 Website</p>'
@@ -316,7 +346,8 @@ function dashboard(array $s, ?array $flash, string $csrf): string
         . field('social_tiktok', 'TikTok', $g($so, 'tiktok'), 'url', 'https://www.tiktok.com/@…')
         . field('social_googleBusiness', 'Google-Unternehmensprofil', $g($so, 'googleBusiness'), 'url', 'Teilen-Link aus Google Maps')
         . '</div></section>'
-        . '<section class="card"><h2>Anfahrt</h2><div class="grid">'
+        . locations_form($s['locations'] ?? [])
+        . '<section class="card"><h2>Anfahrt (Miesbach)</h2><div class="grid">'
         . field('directions_parking', 'Parken', $g($d, 'parking'), 'text', 'z. B. „Kostenlose Parkplätze direkt vor dem Laden.“ Leer = wird nicht angezeigt.')
         . field('directions_bikeParking', 'Fahrradstellplätze', $g($d, 'bikeParking'))
         . field('directions_accessibility', 'Barrierefreiheit', $g($d, 'accessibility'), 'text', 'Nur eintragen, was wirklich stimmt, z. B. „Stufenloser Zugang“.')
@@ -348,6 +379,6 @@ input:focus{outline:2px solid var(--o);outline-offset:2px}input[type=file]{color
 .btn{min-height:3rem;padding:.7rem 1.4rem;border:0;border-radius:4px;background:var(--l);color:var(--n);font-weight:800;font-size:1rem;cursor:pointer}.btn:hover{background:#d7ff00}
 .bar{position:sticky;bottom:0;display:flex;gap:1rem;align-items:center;flex-wrap:wrap;padding:1rem 0;background:var(--n);border-top:1px solid var(--g)}
 .msg{padding:.8rem 1rem;border-radius:6px;border-left:4px solid}.ok{background:#1b2208;border-color:var(--l)}.err{background:#2a1608;border-color:var(--o)}
-.muted{color:var(--st)}.prev{max-height:64px;max-width:220px;background:#000;padding:.4rem;border-radius:6px;border:1px solid var(--g2)}.chk{display:flex;gap:.5rem;align-items:center;color:var(--st)}
+.muted{color:var(--st)}fieldset.loc{border:1px solid var(--g);border-radius:6px;padding:1rem;margin:0 0 1rem}fieldset.loc legend{color:var(--o);font-weight:700;padding:0 .4rem}.prev{max-height:64px;max-width:220px;background:#000;padding:.4rem;border-radius:6px;border:1px solid var(--g2)}.chk{display:flex;gap:.5rem;align-items:center;color:var(--st)}
 </style></head><body><main>' . $body . '</main></body></html>';
 }

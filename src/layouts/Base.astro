@@ -43,14 +43,14 @@ const postal = {
   addressRegion: site.address.region,
   addressCountry: site.address.country,
 };
-/** Main entity: the vending-machine sales & installation business. The 24/7 box is its department. */
+/** Main entity: AlpenBox24, operator of vending machines; every location is a department (24/7 store). */
 const store = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
   '@id': abs('/', Astro.site) + '#business',
   name: site.name,
   alternateName: site.alternateName,
-  description: 'Verkauf, Lieferung und Aufstellung von Verkaufsautomaten: Snack-, Getränke-, Regional- und Fächerautomaten sowie 24/7-Automatenshops.',
+  description: 'AlpenBox24 betreibt Verkaufsautomaten für Snacks, Getränke und Regionales, rund um die Uhr geöffnet. Unser 24/7-Minimarkt steht in Miesbach.',
   url: abs('/', Astro.site),
   image: [og],
   logo: abs('/icons/icon-512.png', Astro.site),
@@ -58,22 +58,14 @@ const store = {
   email: clean(site.email),
   address: postal,
   geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng },
-  makesOffer: [
-    { '@type': 'Offer', itemOffered: { '@type': 'Product', name: 'Verkaufsautomaten' } },
-    { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Lieferung und Aufstellung von Verkaufsautomaten' } },
-  ],
-  department: {
+  department: site.locations.map((l, i) => ({
     '@type': 'ConvenienceStore',
-    '@id': abs('/miesbach/', Astro.site) + '#store',
-    name: 'AlpenBox24 Miesbach',
-    url: abs('/miesbach/', Astro.site),
-    address: postal,
-    hasMap: clean(site.googleMapsPlaceUrl),
-    paymentAccepted: site.payment.methods.join(', '),
-    openingHoursSpecification: site.hours.is24_7
-      ? [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '00:00', closes: '23:59' }]
-      : site.hours.weekly.map((h) => ({ '@type': 'OpeningHoursSpecification', dayOfWeek: h.days, opens: h.opens, closes: h.closes })),
-  },
+    name: l.name,
+    url: abs('/standorte/', Astro.site),
+    address: { '@type': 'PostalAddress', streetAddress: l.street, postalCode: l.zip, addressLocality: l.city, addressCountry: 'DE' },
+    ...(i === 0 ? { hasMap: clean(site.googleMapsPlaceUrl), paymentAccepted: site.payment.methods.join(', '), geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng } } : {}),
+    ...(/0.24|24\/7|24 Stunden/.test(l.hours) ? { openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '00:00', closes: '23:59' }] } : {}),
+  })),
   sameAs: [site.social.instagram, site.social.facebook, site.social.tiktok, site.googleMapsPlaceUrl].filter(Boolean),
 };
 const crumbs = breadcrumbs && {
@@ -151,7 +143,7 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
         )}
         <div class="header-actions">
           <a class="lang-link" href={u(isEn ? '/' : '/en/')} hreflang={isEn ? 'de' : 'en'} lang={isEn ? 'de' : 'en'}>{isEn ? 'DE' : 'EN'}</a>
-          <span class="signpost-wrap header-cta"><a class="signpost" href={u('/kontakt/?anliegen=kauf#formular')}>{isEn ? 'Enquire' : 'Automat anfragen'}</a></span>
+          <span class="signpost-wrap header-cta"><a class="signpost" href={u('/standorte/')}>{isEn ? 'Locations' : 'Standorte'}</a></span>
           {!isEn && (
             <details class="menu">
               <summary aria-label="Menü öffnen"><span class="menu__burger" aria-hidden="true"></span><span>Menü</span></summary>
@@ -189,12 +181,12 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
             {site.address.street}<br />
             {site.address.zip} {site.address.city}
           </address>
-          <p class="footer-hours">{isEn ? 'Vending machines: sales & setup' : 'Verkaufsautomaten: Verkauf & Aufbau'}</p>
+          <p class="footer-hours">{isEn ? '24/7 vending machines' : '24/7-Automaten an mehreren Standorten'}</p>
           <p class="muted mt-4">
             {telHref && <><a href={telHref}>{site.phone.display}</a>{' · '}</>}
             {mailHref && <a href={mailHref}>{site.email}</a>}
           </p>
-          <p class="muted">{isEn ? 'Our 24/7 box in Miesbach: open 24 hours' : 'Unsere Box in Miesbach: täglich 0–24 Uhr'}</p>
+          <p class="muted">{isEn ? 'Open 24 hours, every day' : site.hours.labelDe}</p>
           {socials.length > 0 && (
             <ul class="socials" role="list">
               {socials.map((x) => <li><a href={x.href} rel="noopener me" target="_blank" aria-label={x.label}><Icon name={x.icon} /></a></li>)}
@@ -224,9 +216,9 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
     </footer>
 
     <nav class="mobile-bar" aria-label={isEn ? 'Quick actions' : 'Schnellzugriff'}>
-      <a href={u('/kontakt/?anliegen=kauf#formular')}><Icon name="mail" />{isEn ? 'Enquire' : 'Anfragen'}</a>
-      {telHref ? <a href={telHref}><Icon name="phone" />{isEn ? 'Call' : 'Anrufen'}</a> : <a href={u('/automaten/')}><Icon name="sparkle" />{isEn ? 'Machines' : 'Automaten'}</a>}
-      <a href={u('/miesbach/')}><Icon name="pin" />Miesbach</a>
+      <a href={u('/standorte/')}><Icon name="pin" />{isEn ? 'Locations' : 'Standorte'}</a>
+      <a href={u('/automaten/')}><Icon name="sparkle" />{isEn ? 'Machines' : 'Automaten'}</a>
+      {telHref ? <a href={telHref}><Icon name="phone" />{isEn ? 'Call' : 'Anrufen'}</a> : <a href={u('/kontakt/')}><Icon name="mail" />{isEn ? 'Contact' : 'Kontakt'}</a>}
     </nav>
 
     <dialog class="lightbox" aria-label="Bildansicht" data-lightbox>

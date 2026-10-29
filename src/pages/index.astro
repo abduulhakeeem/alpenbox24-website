@@ -11,12 +11,13 @@ import { machines } from '../data/machines';
 import { site } from '../data/site';
 import { u } from '../lib/url';
 
-const tiles = machines.filter((m) => m.id !== 'wunsch').slice(0, 6);
+const tiles = machines.filter((m) => m.id !== 'standort').slice(0, 6);
+const main = site.locations[0];
 const strip = ['automat-tokio-nacht', 'regiomat-holz', 'automat-grabgo', 'automat-reihe-akita', 'kartoffelautomat', 'automat-metro'] as const;
 ---
 <Base
-  title="AlpenBox24 – Verkaufsautomaten kaufen & aufstellen"
-  description="Snack-, Getränke- und Regionalautomaten kaufen und aufstellen lassen: AlpenBox24 aus Miesbach liefert, baut auf und bringt deinen Automaten zum Laufen."
+  title="AlpenBox24 – 24/7 Automaten in Miesbach und Umgebung"
+  description="AlpenBox24: Snacks, Getränke und Regionales aus unseren Automaten, rund um die Uhr. Unser 24/7-Minimarkt in Miesbach und weitere Standorte im Überblick."
   hero
 >
   <section class="hero" aria-labelledby="hero-title">
@@ -28,12 +29,12 @@ const strip = ['automat-tokio-nacht', 'regiomat-holz', 'automat-grabgo', 'automa
     <div class="wrap hero__content">
       <h1 id="hero-title">
         <span class="hero__big"><SplitText text="Nie geschlossen." base={200} /></span>
-        <span class="hero__sub">Verkaufsautomaten kaufen und aufstellen lassen.</span>
+        <span class="hero__sub">Unsere Automaten. Rund um die Uhr.</span>
       </h1>
-      <p class="lead">Wir liefern deinen Automaten, bauen ihn auf und bringen ihn zum Laufen. Von Miesbach aus, überall hin.</p>
+      <p class="lead">Snacks, Getränke und Regionales aus den Automaten von AlpenBox24. In Miesbach und an weiteren Standorten, Tag und Nacht.</p>
       <div class="cta-row">
-        <span class="signpost-wrap"><a class="signpost" href={u('/kontakt/?anliegen=kauf#formular')}>Automat anfragen</a></span>
-        <a class="btn" href={u('/automaten/')}>Automaten ansehen</a>
+        <span class="signpost-wrap"><a class="signpost" href={u('/standorte/')}>Standorte ansehen</a></span>
+        <a class="btn" href={u('/automaten/')}>Unsere Automaten</a>
       </div>
     </div>
     <Horizon />
@@ -41,11 +42,11 @@ const strip = ['automat-tokio-nacht', 'regiomat-holz', 'automat-grabgo', 'automa
     <div class="hero__credit"><a class="photo__credit" href={u('/bildnachweise/#automat-drei-nacht')}>Beispielfoto: mrhayata · CC BY-SA 2.0</a></div>
   </section>
 
-  <Marquee items={['Snackautomaten', 'Getränkeautomaten', 'Regionalautomaten', '24/7-Shops', 'Lieferung & Aufbau']} />
+  <Marquee items={['Snacks', 'Getränke', 'Regionales', '24 Stunden', 'Mehrere Standorte']} />
 
   <section class="section" id="typen" aria-labelledby="typen-title">
     <div class="wrap">
-      <h2 id="typen-title" class="statement" data-reveal>Für jedes Produkt <em>der passende Automat.</em></h2>
+      <h2 id="typen-title" class="statement" data-reveal>Unsere Automaten. <em>Immer offen.</em></h2>
       <div class="bento mt-7">
         {tiles.map((m, i) => (
           <a class:list={['bento__tile', `bento__tile--${i}`]} href={u(`/automaten/#${m.id}`)} data-reveal="clip" style={`--d:${i * 90}`}>
@@ -58,29 +59,18 @@ const strip = ['automat-tokio-nacht', 'regiomat-holz', 'automat-grabgo', 'automa
     </div>
   </section>
 
-  <section class="section section--fels" aria-labelledby="steps-title">
-    <div class="wrap">
-      <h2 id="steps-title" data-reveal>So einfach geht’s.</h2>
-      <ol class="steps mt-7" role="list">
-        <li class="step" data-reveal><span class="step__line" aria-hidden="true"></span><h3>Anfragen</h3><p>Sag uns, was du verkaufen willst und wo.</p></li>
-        <li class="step" data-reveal style="--d:120"><span class="step__line" aria-hidden="true"></span><h3>Liefern & aufbauen</h3><p>Wir bringen den Automaten und stellen ihn auf.</p></li>
-        <li class="step" data-reveal style="--d:240"><h3>Verkaufen</h3><p>Befüllen, Preise setzen, fertig. Ab jetzt rund um die Uhr.</p></li>
-      </ol>
-    </div>
-  </section>
-
   <DayCycle />
 
   <section class="band" aria-label="Für wen">
     <Photo name="regiomat-holz" alt="" sizes="100vw" widths={[800, 1280, 1920]} credit={false} position="50% 40%" />
     <div class="wrap band__text">
-      <p class="statement" data-reveal>Hofladen. Firma. Hotel. Verein. Gemeinde. <em>Überall, wo jemand etwas braucht.</em></p>
+      <p class="statement" data-reveal>Wenn alles zu hat, <em>haben wir offen.</em></p>
     </div>
   </section>
 
   <section class="section" aria-labelledby="einblicke-title">
     <div class="wrap" style="display:flex;justify-content:space-between;align-items:end;gap:1rem;flex-wrap:wrap">
-      <h2 id="einblicke-title" data-reveal>Automaten, überall.</h2>
+      <h2 id="einblicke-title" data-reveal>Licht an, Fach auf.</h2>
       <a class="btn" href={u('/galerie/')}>Zur Galerie</a>
     </div>
     <div class="strip mt-6" role="list">
@@ -97,11 +87,12 @@ const strip = ['automat-tokio-nacht', 'regiomat-holz', 'automat-grabgo', 'automa
   <section class="section" aria-labelledby="miesbach-title">
     <div class="wrap grid-2">
       <div class="stack">
-        <p class="kicker" data-reveal>Live ansehen</p>
-        <h2 id="miesbach-title" data-reveal style="--d:80">Unsere eigene Box läuft in Miesbach.</h2>
-        <p class="muted" data-reveal style="--d:160">{site.address.street}, {site.address.zip} {site.address.city}. Täglich 0–24 Uhr. Schau vorbei und sieh dir an, wie es funktioniert.</p>
+        <p class="kicker" data-reveal>Standorte</p>
+        <h2 id="miesbach-title" data-reveal style="--d:80">Hier findest du uns.</h2>
+        {main && <p class="muted" data-reveal style="--d:160"><strong>{main.name}</strong><br />{main.address}{main.hours && <><br />{main.hours}</>}</p>}
         <div class="cta-row" data-reveal style="--d:240">
-          <a class="btn" href={u('/miesbach/')}><Icon name="pin" />AlpenBox24 Miesbach</a>
+          <span class="signpost-wrap"><a class="signpost" href={u('/standorte/')}>Alle Standorte</a></span>
+          {main && <a class="btn" href={main.mapsUrl} rel="noopener" target="_blank"><Icon name="route" />Route</a>}
         </div>
       </div>
       <div data-reveal style="--d:120"><MapBlock /></div>
@@ -110,8 +101,8 @@ const strip = ['automat-tokio-nacht', 'regiomat-holz', 'automat-grabgo', 'automa
 
   <section class="section section--fels" aria-labelledby="cta-title">
     <div class="wrap center stack">
-      <h2 id="cta-title" class="statement" style="margin-inline:auto">Du willst einen Automaten? <em>Schreib uns.</em></h2>
-      <p class="cta-row" style="justify-content:center"><span class="signpost-wrap"><a class="signpost" href={u('/kontakt/?anliegen=kauf#formular')}>Automat anfragen</a></span></p>
+      <h2 id="cta-title" class="statement" style="margin-inline:auto">Platz für einen Automaten? <em>Sprich uns an.</em></h2>
+      <p class="cta-row" style="justify-content:center"><span class="signpost-wrap"><a class="signpost" href={u('/kontakt/?anliegen=standort#formular')}>Standort anbieten</a></span><a class="btn" href={u('/kontakt/')}>Kontakt</a></p>
     </div>
   </section>
 </Base>

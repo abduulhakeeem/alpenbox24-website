@@ -7,7 +7,8 @@ The owner can change the basic company details without touching code:
 | Firma (Impressum) | Name/Firma, Rechtsform, Anschrift, Geschäftsführung, Registergericht/-nummer, USt-IdNr. | Impressum, Datenschutz (Verantwortlicher) |
 | Kontakt | E-Mail, Telefon, WhatsApp | Footer, Kontakt, Impressum, FAQ, So geht's, mobile action bar, JSON-LD. Empty phone = no phone shown, "Kontakt" button instead of "Anrufen". |
 | Social Media & Google | Instagram, Facebook, TikTok, Google Business Profile link | Footer icons, JSON-LD `sameAs` / `hasMap` |
-| Anfahrt | Parken, Fahrradstellplätze, Barrierefreiheit | Kontakt, FAQ (each only shown when filled) |
+| Standorte | Up to 8 locations: Name, Straße, PLZ, Ort, Öffnungszeiten, Kurzbeschreibung | /standorte/, home page, JSON-LD (first = Miesbach box with map) |
+| Anfahrt (Miesbach) | Parken, Fahrradstellplätze, Barrierefreiheit | /standorte/ (each only shown when filled) |
 | Logo & Favicon | Upload PNG/SVG/WebP logo, PNG/SVG/ICO favicon (≤ 1 MB) | Header logo; favicon + generated app icons (32/180/192/512 px) |
 
 ## How it works (and why the site stays static)

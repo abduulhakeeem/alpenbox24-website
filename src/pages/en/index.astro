@@ -5,18 +5,18 @@ import Horizon from '../../components/Horizon.astro';
 import { machines } from '../../data/machines';
 import { site, mailHref } from '../../data/site';
 import { u } from '../../lib/url';
-const tiles = machines.filter((m) => m.id !== 'wunsch').slice(0, 6);
-const en: Record<string, string> = { snack: 'Snack machine', getraenke: 'Drinks machine', regional: 'Farm shop machine', faecher: 'Locker machine', brot: 'Bread machine', shop: '24/7 vending shop' };
+const tiles = machines.filter((m) => m.id !== 'standort').slice(0, 6);
+const en: Record<string, string> = { snack: 'Snack machine', getraenke: 'Drinks machine', regional: 'Local produce', faecher: 'Locker vending', brot: 'Bread machine', shop: '24/7 vending shop' };
 ---
-<Base lang="en" hero title="AlpenBox24 – Vending machines: sales & setup" description="AlpenBox24 from Miesbach, Bavaria sells vending machines and sets them up for you: snacks, drinks, farm produce or a whole 24/7 vending shop. Get in touch.">
+<Base lang="en" hero title="AlpenBox24 – 24/7 vending machines in Miesbach, Bavaria" description="AlpenBox24 runs vending machines for snacks, cold drinks and local Bavarian products, open 24 hours a day. Our 24/7 mini market is in Miesbach, Upper Bavaria.">
   <section class="hero" aria-labelledby="en-title">
     <div class="hero__media"><Photo name="automat-drei-nacht" alt="" eager credit={false} widths={[640, 1280, 1920]} sizes="100vw" position="62% 50%" /></div>
     <div class="hero__shade" aria-hidden="true"></div>
     <div class="wrap hero__content">
-      <h1 id="en-title"><span class="hero__big">Never closed.</span><span class="hero__sub">Vending machines, sold and set up.</span></h1>
-      <p class="lead">We deliver your machine, install it and get it running. From Miesbach, Bavaria.</p>
+      <h1 id="en-title"><span class="hero__big">Never closed.</span><span class="hero__sub">Our vending machines, open 24/7.</span></h1>
+      <p class="lead">Snacks, cold drinks and local products. In Miesbach and more locations, day and night.</p>
       <div class="cta-row">
-        <span class="signpost-wrap"><a class="signpost" href={mailHref}>Email us</a></span>
+        <span class="signpost-wrap"><a class="signpost" href={u('/standorte/')} hreflang="de">Locations</a></span>
         <a class="btn" href={u('/')} hreflang="de" lang="de">Deutsch</a>
       </div>
     </div>
@@ -33,7 +33,7 @@ const en: Record<string, string> = { snack: 'Snack machine', getraenke: 'Drinks 
           </a>
         ))}
       </div>
-      <p class="muted mt-6">Our own 24/7 vending box: {site.address.street}, {site.address.zip} {site.address.city}, open 24 hours. Email: <a href={mailHref}>{site.email}</a>. <a href={u('/impressum/')} hreflang="de">Legal notice</a> · <a href={u('/datenschutz/')} hreflang="de">Privacy</a></p>
+      <p class="muted mt-6">Our 24/7 mini market: {site.address.street}, {site.address.zip} {site.address.city}, open 24 hours. Email: <a href={mailHref}>{site.email}</a>. <a href={u('/impressum/')} hreflang="de">Legal notice</a> · <a href={u('/datenschutz/')} hreflang="de">Privacy</a></p>
     </div>
   </section>
 </Base>

@@ -1,8 +1,8 @@
 # AlpenBox24 — Website Build (Claude Code master instructions)
 
-You are building the public website for **AlpenBox24**, which **sells and sets up vending machines** for customers
-wherever they need them. AlpenBox24 also runs its own staffless 24/7 minimarket at **Bayrischzeller Straße 2-8,
-83714 Miesbach** — a live showcase (`/miesbach/`). **Read `docs/14-refocus-vending-sales.md` first: it overrides
+You are building the public website for **AlpenBox24**, which **operates its own vending machines at several locations**
+(it sets up, stocks and runs them itself). Its flagship is the staffless 24/7 minimarket at **Bayrischzeller Straße 2-8,
+83714 Miesbach**. The site is a photo-led showcase of that business (`/standorte/` lists the locations). **Read `docs/14-refocus-vending-sales.md` first: it overrides
 shop-customer assumptions in docs 00–13.**
 Range on the client's own signage: Snacks, Getränke, Vapes, Regionales.
 
@@ -55,7 +55,7 @@ Full detail: `docs/08-tech-spec.md`.
 
 ## 4. Pages
 
-`/` · `/automaten/` · `/galerie/` · `/miesbach/` · `/ueber-uns/` · `/kontakt/` (+ `/kontakt/danke/`) · `/en/`
+`/` · `/automaten/` · `/galerie/` · `/standorte/` · `/ueber-uns/` · `/kontakt/` (+ `/kontakt/danke/`) · `/en/`
 · `/impressum/` · `/datenschutz/` · `/barrierefreiheit/` · `/bildnachweise/` · `404` · admin: `/admin/` (PHP)
 
 Sitemap, wireframes, components: `docs/03-information-architecture.md`. Final copy: `docs/05-content-copy-de.md`.

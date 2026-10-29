@@ -6,11 +6,11 @@ import { site, telHref, mailHref, whatsappHref } from '../../data/site';
 import { u, STAGING } from '../../lib/url';
 ---
 <Base
-  title="Automat anfragen – Kontakt | AlpenBox24"
-  description="Du willst einen Verkaufsautomaten kaufen oder aufstellen lassen? Schreib AlpenBox24 aus Miesbach: Snack-, Getränke-, Regionalautomat oder 24/7-Shop."
+  title="Kontakt – AlpenBox24"
+  description="Frage zu einem Automaten, Produktwunsch oder Platz für einen neuen Standort? Schreib AlpenBox24 aus Miesbach, wir melden uns so schnell wie möglich."
   breadcrumbs={[{ name: 'Kontakt', href: '/kontakt/' }]}
 >
-  <PageHead title="Automat anfragen" lead="Sag uns, was du verkaufen willst und wo. Wir melden uns." crumbs={[{ name: 'Kontakt', href: '/kontakt/' }]} />
+  <PageHead title="Kontakt" lead="Schreib uns. Wir melden uns." crumbs={[{ name: 'Kontakt', href: '/kontakt/' }]} />
 
   <section class="section" style="padding-top:0" id="formular" aria-label="Anfrage">
     <div class="wrap grid-2" style="align-items:start">
@@ -21,9 +21,9 @@ import { u, STAGING } from '../../lib/url';
           <div class="field">
             <label for="anliegen">Worum geht’s? *</label>
             <select class="select" id="anliegen" name="anliegen" required>
-              <option value="kauf" selected>Automat kaufen</option>
-              <option value="aufstellen">Automat aufstellen lassen</option>
-              <option value="shop">24/7-Automatenshop planen</option>
+              <option value="frage" selected>Frage zu einem Automaten</option>
+              <option value="wunsch">Produktwunsch</option>
+              <option value="standort">Standort anbieten</option>
               <option value="sonstiges">Sonstiges</option>
             </select>
           </div>
@@ -43,11 +43,11 @@ import { u, STAGING } from '../../lib/url';
           </div>
           <div class="field">
             <label for="ort">Standort <span class="muted">(optional)</span></label>
-            <input class="input" id="ort" name="ort" maxlength="120" placeholder="z. B. Hofladen in Hausham" />
+            <input class="input" id="ort" name="ort" maxlength="120" placeholder="z. B. Miesbach oder deine Adresse" />
           </div>
           <div class="field">
             <label for="nachricht">Nachricht *</label>
-            <textarea class="textarea" id="nachricht" name="nachricht" required maxlength="4000" placeholder="Was willst du verkaufen? Drinnen oder draußen?"></textarea>
+            <textarea class="textarea" id="nachricht" name="nachricht" required maxlength="4000" placeholder="Worum geht’s?"></textarea>
             <span class="error">Bitte schreib uns kurz, worum es geht.</span>
           </div>
           <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off" /></div>
@@ -56,7 +56,7 @@ import { u, STAGING } from '../../lib/url';
             <input type="checkbox" id="dsgvo" name="dsgvo" required />
             <label for="dsgvo">Ich habe die <a href={u('/datenschutz/#kontakt')}>Datenschutzerklärung</a> gelesen. *</label>
           </div>
-          <div><span class="signpost-wrap"><button class="signpost" type="submit" style="border:0">Anfrage senden</button></span></div>
+          <div><span class="signpost-wrap"><button class="signpost" type="submit" style="border:0">Nachricht senden</button></span></div>
         </form>
       </div>
       <div class="card-nap">

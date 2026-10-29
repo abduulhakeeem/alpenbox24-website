@@ -59,12 +59,12 @@ if ($ts !== '' && ctype_digit($ts)) {
 }
 
 $anliegenMap = [
-    'kauf'       => 'Automat kaufen',
-    'aufstellen' => 'Automat aufstellen lassen',
-    'shop'       => '24/7-Automatenshop planen',
+    'frage'      => 'Frage zu einem Automaten',
+    'wunsch'     => 'Produktwunsch',
+    'standort'   => 'Standort anbieten',
     'sonstiges'  => 'Sonstiges',
 ];
-$prefixMap = ['kauf' => '[Kauf]', 'aufstellen' => '[Aufstellen]', 'shop' => '[24/7-Shop]', 'sonstiges' => '[Kontakt]'];
+$prefixMap = ['frage' => '[Frage]', 'wunsch' => '[Wunsch]', 'standort' => '[Standort]', 'sonstiges' => '[Kontakt]'];
 
 $anliegen = field('anliegen', 20);
 $name     = field('name', 120);

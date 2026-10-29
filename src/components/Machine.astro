@@ -24,7 +24,7 @@ import { u } from '../lib/url';
         <p class="kicker">Fach {m.code}</p>
         <h3>{m.name}</h3>
         <p>{m.line}</p>
-        <a class="link" href={u(`/kontakt/?anliegen=kauf#formular`)}>Diesen Automaten anfragen</a>
+        <a class="link" href={u(m.id === 'standort' ? '/kontakt/?anliegen=standort#formular' : '/standorte/')}>{m.id === 'standort' ? 'Standort anbieten' : 'Zu den Standorten'}</a>
       </div>
     ))}
     <div class="machine__panel">

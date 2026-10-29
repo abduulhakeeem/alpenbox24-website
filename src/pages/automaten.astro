@@ -8,33 +8,33 @@ import { machines } from '../data/machines';
 import { u } from '../lib/url';
 ---
 <Base
-  title="Automaten kaufen: Snack, Getränke, Regional – AlpenBox24"
-  description="Snackautomat, Getränkeautomat, Regionalautomat für Hofläden, Fächer- oder Brotautomat und 24/7-Shops: AlpenBox24 liefert und stellt deinen Automaten auf."
+  title="Unsere Automaten: Snacks, Getränke, Regional – AlpenBox24"
+  description="Snacks, kalte Getränke, Regionales, Brot und mehr: Diese Automaten betreibt AlpenBox24 rund um die Uhr. Schau, was drin ist, und finde den nächsten Standort."
   breadcrumbs={[{ name: 'Automaten', href: '/automaten/' }]}
 >
-  <PageHead title="Welcher Automat darf’s sein?" lead="Wir liefern und bauen auf. Du verkaufst." crumbs={[{ name: 'Automaten', href: '/automaten/' }]}>
+  <PageHead title="Unsere Automaten" lead="Was drin ist, rund um die Uhr." crumbs={[{ name: 'Automaten', href: '/automaten/' }]}>
     <nav class="cta-row mt-6" aria-label="Automatentypen">
-      {machines.filter((m) => m.id !== 'wunsch').map((m) => <a class="chip" href={`#${m.id}`}>{m.name}</a>)}
+      {machines.filter((m) => m.id !== 'standort').map((m) => <a class="chip" href={`#${m.id}`}>{m.name}</a>)}
     </nav>
   </PageHead>
 
   <section class="section" style="padding-top:0">
     <div class="wrap types">
-      {machines.filter((m) => m.id !== 'wunsch').map((m) => (
+      {machines.filter((m) => m.id !== 'standort').map((m) => (
         <article class="type" id={m.id} aria-labelledby={`h-${m.id}`}>
           <Photo name={m.photo as any} alt={m.alt} reveal="clip" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 58vw, 100vw" />
           <div>
             <span class="type__code" aria-hidden="true">{m.code}</span>
             <h2 id={`h-${m.id}`} data-reveal>{m.name}</h2>
             <p data-reveal style="--d:100">{m.line}</p>
-            <p class="mt-5" data-reveal style="--d:180"><a class="link" href={u('/kontakt/?anliegen=kauf#formular')}>Anfragen</a></p>
+            <p class="mt-5" data-reveal style="--d:180"><a class="link" href={u('/standorte/')}>Zu den Standorten</a></p>
           </div>
         </article>
       ))}
     </div>
   </section>
 
-  <Marquee items={['Liefern', 'Aufbauen', 'Anschließen', 'Verkaufen']} />
+  <Marquee items={['Aussuchen', 'Fach auf', 'Mitnehmen', '24/7']} />
 
   <section class="section" aria-labelledby="spiel-title">
     <div class="wrap">
@@ -45,8 +45,8 @@ import { u } from '../lib/url';
 
   <section class="section section--fels">
     <div class="wrap grid-2">
-      <h2 class="statement">Nicht dabei? <em>Erzähl uns deine Idee.</em></h2>
-      <div><span class="signpost-wrap"><a class="signpost" href={u('/kontakt/?anliegen=kauf#formular')}>Automat anfragen</a></span></div>
+      <h2 class="statement">Wo steht der nächste? <em>Hier entlang.</em></h2>
+      <div><span class="signpost-wrap"><a class="signpost" href={u('/standorte/')}>Standorte ansehen</a></span></div>
     </div>
   </section>
 </Base>

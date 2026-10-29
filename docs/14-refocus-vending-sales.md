@@ -1,34 +1,40 @@
-# 14 — Refocus: vending-machine sales & installation (29.10.2026)
+# 14 — Business model & site focus (client corrections, 29.10.2026)
 
-**Client correction:** AlpenBox24's business is *selling and setting up vending machines* for customers,
-wherever they need them. The 24/7 minimarket at Bayrischzeller Straße 2-8 in Miesbach is AlpenBox24's own
-box and now serves as a live showcase. Docs 00–13 were written for a shop-customer site; where they conflict,
-this file wins.
+**What AlpenBox24 is:** the *operator* of its own vending machines at several locations. AlpenBox24 sets up,
+stocks and runs the machines itself. It does **not** sell or install machines for other businesses.
+The 24/7 minimarket at Bayrischzeller Straße 2-8, 83714 Miesbach is its flagship location.
 
-## What changed
+**What the website is:** a photo-led showcase of that business: what's in the machines, where they stand,
+and that they never close. Where docs 00–13 assume a shop-customer service site (payment, age checks,
+refunds, fault reports) or a machine-sales site, this file wins.
 
-| Before | Now |
+## Structure
+
+| Route | Purpose |
 |---|---|
-| Audience: shop customers at night | Audience: buyers of vending machines (farm shops, companies, hotels, clubs, municipalities, 24/7-shop founders) |
-| Pages: Sortiment, Regional, So geht's, FAQ | Removed; 301 → `/automaten/`, `/kontakt/` (see `.htaccess`) |
-| — | New: `/automaten/` (machine types + interactive machine), `/miesbach/` (the 24/7 box: address, hours, map) |
-| Payment, age check, refunds, fault reports | Removed (not relevant for buyers) |
-| Long copy | Short: one headline + one line per block |
-| Region photos | 19 licensed vending-machine photos (Wikimedia Commons) lead; region photos only as accents |
-| JSON-LD `ConvenienceStore` | `LocalBusiness` (sales + setup) with the box as `department` (`ConvenienceStore`, 24/7) |
-| Form: Störung / Wunsch / Erzeuger | Form: Automat kaufen / aufstellen lassen / 24/7-Shop planen / Sonstiges; optional Standort |
+| `/` | Hero, machine photo grid, 24-hour scroll story, gallery strip, locations teaser, "Standort anbieten" |
+| `/automaten/` | Machine types as large photos + one line each, interactive machine |
+| `/standorte/` | All locations from `settings.json` (editable in `/admin/`); first = Miesbach with OSM map |
+| `/galerie/` | Machines first, then farm/regional machines, then Oberland |
+| `/ueber-uns/`, `/kontakt/` (Frage / Produktwunsch / Standort anbieten / Sonstiges), `/en/`, legal pages |
 
-## Machine types (src/data/machines.ts)
-Snackautomat · Getränkeautomat · Regionalautomat · Fächerautomat · Brotautomat · 24/7-Automatenshop ·
-Outdoor-Automat · Frische & Food · "Deine Idee". These are generic categories, not a product catalogue — no brands,
-models or prices are claimed. Replace photos with real AlpenBox24 installations as soon as they exist
-(new gallery category "projekte"), and confirm with the client which types they actually offer.
+Removed and redirected (301 in `.htaccess`): `/sortiment/`, `/regional/`, `/so-gehts/`, `/faq/` → `/automaten/` or
+`/kontakt/`; `/miesbach/` → `/standorte/`.
 
-## Keywords (new primary set, volumes not verified)
-Verkaufsautomat kaufen · Automaten aufstellen lassen · Snackautomat kaufen · Getränkeautomat kaufen ·
-Regionalautomat / Hofladen Automat · 24/7 Automatenshop eröffnen · Automaten Miesbach / Oberbayern.
+## Content rules
+- Very short copy: one headline + one line per block. Photos carry the page.
+- No payment walkthrough, age-check/KYC detail, refund or fault-report process.
+- Machine photos are licensed examples (Wikimedia Commons) and are captioned/credited as such. Replace them with
+  photos of AlpenBox24's own machines as soon as they exist.
+- Don't claim machine types, counts, products or locations the client hasn't confirmed. The machine-type grid is
+  generic; confirm with the client which types they actually run.
+- "Standort anbieten" (offer a location) is a soft, common operator CTA. Remove it if the client doesn't want it.
+
+## Structured data
+`LocalBusiness` "AlpenBox24" (operator) with one `ConvenienceStore` `department` per location; the first carries
+geo, map link and 24/7 opening hours.
 
 ## Open points for the client
-- Which machine types, brands and services (delivery area, maintenance, financing, rental) they really offer.
-- Photos of their own installations and of the Miesbach box.
+- Further locations (enter them in `/admin/` → Standorte).
+- Photos of their own machines and the Miesbach box.
 - Operator's legal name for the Impressum (§ 5 DDG).

@@ -1,20 +1,20 @@
 export const mainNav = [
-  { href: '/automaten/', label: 'Automaten', hint: 'Welche es gibt' },
+  { href: '/automaten/', label: 'Automaten', hint: 'Was drin ist' },
   { href: '/galerie/', label: 'Galerie', hint: 'Bilder' },
-  { href: '/miesbach/', label: 'Miesbach', hint: 'Unsere 24/7-Box' },
+  { href: '/standorte/', label: 'Standorte', hint: 'Wo unsere Automaten stehen' },
   { href: '/ueber-uns/', label: 'Über uns', hint: 'Wer wir sind' },
-  { href: '/kontakt/', label: 'Kontakt', hint: 'Automat anfragen' },
+  { href: '/kontakt/', label: 'Kontakt', hint: 'Schreib uns' },
 ];
 
 export const footerNav = {
   laden: [
     { href: '/automaten/', label: 'Automaten' },
     { href: '/galerie/', label: 'Galerie' },
-    { href: '/miesbach/', label: 'AlpenBox24 Miesbach' },
+    { href: '/standorte/', label: 'Standorte' },
     { href: '/ueber-uns/', label: 'Über uns' },
   ],
   infos: [
-    { href: '/kontakt/', label: 'Automat anfragen' },
+    { href: '/kontakt/', label: 'Kontakt' },
     { href: '/en/', label: 'English' },
   ],
   recht: [

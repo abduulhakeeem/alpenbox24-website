@@ -128,6 +128,23 @@ export const site = {
   /** Uploaded in the admin panel; paths are relative to public/. Empty = built-in logo/favicon. */
   branding: { logo: settings.branding.logo.trim(), favicon: settings.branding.favicon.trim() },
 
+  /** Machine locations, edited in the admin panel. The first entry is the Miesbach box (has the OSM map). */
+  locations: (settings.locations ?? [])
+    .filter((l) => l.name.trim() && l.city.trim())
+    .map((l) => {
+      const address = [l.street.trim(), `${l.zip.trim()} ${l.city.trim()}`.trim()].filter(Boolean).join(', ');
+      return {
+        name: l.name.trim(),
+        street: l.street.trim(),
+        zip: l.zip.trim(),
+        city: l.city.trim(),
+        hours: l.hours.trim(),
+        note: l.note.trim(),
+        address,
+        mapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(`${l.name.trim()}, ${address}`),
+      };
+    }),
+
   /** Regional producers — only real, consenting partners. Empty → "im Aufbau" fallback. */
   producers: [] as {
     name: string;
