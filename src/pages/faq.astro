@@ -39,7 +39,7 @@ import { u } from '../lib/url';
       <div class="faq-group">
         <h2 id="stoerung">Störung & Erstattung</h2>
         <details class="qa" name="faq" id="nicht-ausgegeben"><summary>Der Automat hat nicht ausgegeben. Was jetzt?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Notiere Automatennummer und Uhrzeit und melde dich {telHref ? <>unter <a href={telHref}>{site.phone.display}</a></> : <>per E-Mail an <a href={mailHref}>{site.email}</a></>} oder über das <a href={u('/kontakt/?anliegen=stoerung#formular')}>Formular</a>. Wir erstatten {site.refund.methodDe}.</p></div></details>
-        <details class="qa" name="faq" id="doppelt"><summary>Mir wurde doppelt abgebucht.<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Melde dich mit Uhrzeit, Betrag und den letzten vier Ziffern deiner Karte. Wir klären das mit dem Zahlungsdienstleister.</p></div></details>
+        <details class="qa" name="faq" id="wechselgeld"><summary>Der Automat hat kein Wechselgeld gegeben.<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Melde dich mit Uhrzeit, Automatennummer und Betrag. Wir klären das und erstatten dir den Rest in bar oder per Überweisung.</p></div></details>
       </div>
       <div class="faq-group">
         <h2 id="anfahrt">Anfahrt</h2>

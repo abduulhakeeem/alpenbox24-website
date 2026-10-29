@@ -54,7 +54,7 @@ import { u, STAGING } from '../../lib/url';
       </div>
       <div class="stack">
         <p class="phone-big">{telHref ? <a href={telHref}>{site.phone.display}</a> : <a href={mailHref}>{site.email}</a>}</p>
-        <p>Bitte nenne <strong>Automatennummer</strong>, <strong>Uhrzeit</strong> und <strong>Zahlungsart</strong>. Bei Kartenzahlung reichen die letzten vier Ziffern.</p>
+        <p>Bitte nenne <strong>Automatennummer</strong>, <strong>Uhrzeit</strong> und <strong>Betrag</strong>.</p>
         <div class="cta-row">
           {telHref && <a class="btn" href={telHref}><Icon name="phone" />Anrufen</a>}
           {whatsappHref && <a class="btn" href={whatsappHref} rel="noopener" target="_blank"><Icon name="chat" />WhatsApp</a>}
@@ -102,7 +102,7 @@ import { u, STAGING } from '../../lib/url';
           <label for="nachricht">Nachricht *</label>
           <textarea class="textarea" id="nachricht" name="nachricht" required maxlength="4000"></textarea>
           <span class="error">Bitte schreib uns kurz, worum es geht.</span>
-          <span class="hint">Gib bei Kartenzahlungen nie die vollständige Kartennummer an.</span>
+          <span class="hint">Für eine Erstattung per Überweisung schicken wir dir eine kurze Rückfrage. Bitte keine Bankdaten ins Formular.</span>
         </div>
         <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off" /></div>
         <input type="hidden" name="_ts" value="" />

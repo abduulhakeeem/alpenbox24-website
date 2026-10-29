@@ -68,7 +68,7 @@ import { u } from '../lib/url';
         <ol class="steps" role="list" style="grid-template-columns:1fr;gap:var(--s-6)">
           <li class="step"><h3>Notieren</h3><p>Automatennummer (Aufkleber am Gerät) und Uhrzeit merken oder ein Foto machen.</p></li>
           <li class="step"><h3>Melden</h3><p>{telHref && <>Ruf an unter <a href={telHref}>{site.phone.display}</a>, </>}{telHref ? 'schreib' : 'Schreib'} an <a href={mailHref}>{site.email}</a> oder nutze das Formular.</p></li>
-          <li class="step"><h3>Zahlungsart nennen</h3><p>Bei Kartenzahlung reichen die letzten vier Ziffern der Karte. Nie die volle Nummer schicken.</p></li>
+          <li class="step"><h3>Betrag nennen</h3><p>Sag uns, wie viel du eingeworfen hast und welches Produkt es sein sollte.</p></li>
         </ol>
         <p>Wir melden uns {site.refund.responseTimeDe} und erstatten dir den Betrag {site.refund.methodDe}.</p>
         <div class="cta-row">
