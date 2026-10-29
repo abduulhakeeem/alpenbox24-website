@@ -1,7 +1,8 @@
 /**
  * Generates the self-hosted dark map of the shop surroundings from OpenStreetMap data (ODbL).
  * Input: .research/osm.json (Overpass "out geom") + .research/route.json (OSRM foot route).
- * Output: public/map/karte-basis.svg (static layers) + src/data/map-overlay.json (route, pins, labels).
+ * Output: src/assets/map/karte-miesbach.svg (dark base map, cropped to station → shop, lazy-loaded)
+ *       + src/data/map-overlay.json (route, pins, labels, crop).
  * Run once: node scripts/build-map.mjs  — re-run only if the map area changes.
  */
 import fs from 'node:fs';
@@ -41,7 +42,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${VW} ${VH}" p
 <rect width="100%" height="100%" fill="#0d0c0b"/>
 ${g('gr', L.green)}${g('wa', L.water)}${g('pa', L.path)}${g('mi', L.minor)}${g('md', L.mid)}${g('ma', L.major)}${g('b4', L.b472)}${g('ra', L.rail)}${g('bd', L.bld)}
 </svg>`;
-fs.writeFileSync('public/map/karte-basis.svg', svg);
+// Base map is written after the crop is known (end of file).
 
 const route = JSON.parse(fs.readFileSync('.research/route.json', 'utf8')).routes[0];
 const centroid = (name) => { const a = named[name]; if (!a) return null; const x = a.reduce((s, p) => s + p[0], 0) / a.length, y = a.reduce((s, p) => s + p[1], 0) / a.length; return [f(x), f(y)]; };
@@ -55,3 +56,17 @@ const overlay = {
 };
 fs.writeFileSync('src/data/map-overlay.json', JSON.stringify(overlay, null, 1));
 console.log('map', VW + 'x' + VH, (svg.length / 1024).toFixed(0) + ' KB', overlay.labels, overlay.routeMinutes + ' min');
+
+// Crop around station → shop (same formula as MapBlock.astro) and drop paths outside the crop.
+{
+  const [sx, sy] = overlay.shop, [tx, ty] = overlay.station;
+  const x0 = Math.min(sx, tx) - 200, x1 = Math.max(sx, tx) + 260, w = x1 - x0, h = Math.round(w * 0.75), y0 = Math.round((sy + ty) / 2 - h / 2);
+  const inBox = (d) => { const n = d.match(/-?d+(.d+)?/g).map(Number); for (let i = 0; i < n.length; i += 2) if (n[i] >= x0 - 40 && n[i] <= x1 + 40 && n[i + 1] >= y0 - 40 && n[i + 1] <= y0 + h + 40) return true; return false; };
+  const cropped = svg
+    .replace(/viewBox="[^"]+"/, `viewBox="${Math.round(x0)} ${y0} ${Math.round(w)} ${h}" width="${Math.round(w)}" height="${h}"`)
+    .replace('<rect width="100%" height="100%" fill="#0d0c0b"/>', `<rect x="${Math.round(x0)}" y="${y0}" width="${Math.round(w)}" height="${h}" fill="#0d0c0b"/>`)
+    .replace(/d="([^"]+)"/g, (m, d) => `d="${d.split(/(?=M)/).filter(inBox).join('')}"`);
+  fs.writeFileSync('src/assets/map/karte-miesbach.svg', cropped);
+  overlay.crop = `${Math.round(x0)} ${y0} ${Math.round(w)} ${h}`;
+  fs.writeFileSync('src/data/map-overlay.json', JSON.stringify(overlay, null, 1));
+}

@@ -80,7 +80,9 @@ for await (const file of walk(DIST)) {
   if (title.length > 60) warnings.push(`SEO title ${title.length} chars on ${rel}: "${title}"`);
   const desc = (html.match(/<meta[^>]+name="description"[^>]*content="([^"]*)"/i) || [])[1] || '';
   if (!/noindex/i.test(html) && (desc.length < 120 || desc.length > 160)) warnings.push(`SEO description ${desc.length} chars on ${rel}`);
-  const inlineExec = all(/<script(?![^>]*\bsrc=)(?![^>]*type="application\/ld\+json")[^>]*>([\s\S]*?)<\/script>/gi, html).filter((s) => s.trim());
+  // The one-line no-js→js boot script is allowed: its sha256 is whitelisted in public/.htaccess (CSP).
+  const BOOT = "document.documentElement.classList.replace('no-js','js')";
+  const inlineExec = all(/<script(?![^>]*\bsrc=)(?![^>]*type="application\/ld\+json")[^>]*>([\s\S]*?)<\/script>/gi, html).filter((s) => s.trim() && s.trim() !== BOOT);
   if (inlineExec.length) warnings.push(`CSP ${inlineExec.length} inline executable <script> on ${rel} — move to file or hash in CSP`);
 }
 

@@ -30,7 +30,7 @@ import { u } from '../lib/url';
     <div class="machine__panel">
       <div class="machine__screen" data-screen aria-live="polite">Fach wählen</div>
       <div class="keypad" role="group" aria-label="Tastenfeld">
-        {['A', 'B', 'C', '1', '2', '3', 'DEL', 'OK'].map((k) => <button type="button" data-key={k} aria-label={k === 'DEL' ? 'Eingabe löschen' : k === 'OK' ? 'Bestätigen' : `Taste ${k}`}>{k === 'DEL' ? '⌫' : k}</button>)}
+        {['A', 'B', 'C', '1', '2', '3', 'DEL', 'OK'].map((k) => <button type="button" data-key={k} aria-label={k === 'DEL' ? 'Eingabe löschen' : k === 'OK' ? 'OK, bestätigen' : `Taste ${k}`}>{k === 'DEL' ? '⌫' : k}</button>)}
       </div>
       <div class="machine__tray" data-tray aria-hidden="true"></div>
     </div>

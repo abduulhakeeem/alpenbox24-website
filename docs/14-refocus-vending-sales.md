@@ -38,3 +38,20 @@ geo, map link and 24/7 opening hours.
 - Further locations (enter them in `/admin/` → Standorte).
 - Photos of their own machines and the Miesbach box.
 - Operator's legal name for the Impressum (§ 5 DDG).
+
+## Technical SEO & performance (verified 29.10.2026, production build)
+
+| Check | Result |
+|---|---|
+| Lighthouse mobile (slow 4G, local server without gzip) | Performance 94–99 · Accessibility 100 · Best Practices 96–100 · SEO 100 on /, /automaten/, /standorte/, /kontakt/, /galerie/, /ueber-uns/ |
+| CLS / TBT | 0 / ≤ 110 ms |
+| HTML validation (`npx html-validate`, `.htmlvalidate.json`) | 0 errors on all pages |
+| Links (`npm run qa:links`) | 462 links, 0 broken |
+| Canonical / H1 / meta / sitemap / hreflang | one absolute canonical and one H1 per page; titles ≤ 60, descriptions 120–160; sitemap = 11 indexable pages with lastmod; DE↔EN hreflang reciprocal + x-default |
+| Structured data | valid JSON-LD: LocalBusiness + ConvenienceStore department(s) + BreadcrumbList |
+| Weight | HTML+CSS+JS 18–24 KB gz per page; JS 2.9 KB gz; hero AVIF 25 KB (phone) – 125 KB (1920 px) |
+
+Speed measures in place: CSS inlined (no render-blocking request), one-line boot script inlined with its sha256 in the
+CSP, both fonts preloaded and self-hosted, LCP images eager + `fetchpriority="high"`, everything else lazy,
+pre-cropped responsive images, lazy SVG map (47 KB gz), long-cache headers for fingerprinted assets and gzip in
+`.htaccess`. Re-run: `npm run build`, `npx astro preview`, then Lighthouse against it.

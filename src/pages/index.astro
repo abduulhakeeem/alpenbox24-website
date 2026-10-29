@@ -24,13 +24,13 @@ const strip = stripNames.map((n) => gallery.find((g) => g.name === n)!).filter(B
 >
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero__media">
-      <Photo name="automat-drei-nacht" alt="" eager credit={false} widths={[640, 960, 1280, 1920, 2560]} sizes="100vw" position="62% 50%" />
+      <Photo name="automat-drei-nacht" alt="" eager credit={false} widths={[640, 960, 1280, 1600, 1920]} quality={55} sizes="100vw" position="62% 50%" />
     </div>
     <div class="hero__shade" aria-hidden="true"></div>
     <div class="hero__grain" aria-hidden="true"></div>
     <div class="wrap hero__content">
       <h1 id="hero-title">
-        <span class="hero__big"><SplitText text="Nie geschlossen." base={200} /></span>
+        <span class="hero__big"><SplitText text="Nie geschlossen." base={40} /></span>
         <span class="hero__sub">Unsere Automaten. Rund um die Uhr.</span>
       </h1>
       <p class="lead">Snacks, kalte Getränke und Regionales, direkt aus unseren Automaten. In Miesbach und an weiteren Standorten.</p>
@@ -52,7 +52,7 @@ const strip = stripNames.map((n) => gallery.find((g) => g.name === n)!).filter(B
       <div class="bento mt-7">
         {tiles.map((m, i) => (
           <a class:list={['bento__tile', `bento__tile--${i}`]} href={u(`/automaten/#${m.id}`)} data-reveal="clip" style={`--d:${i * 90}`}>
-            <Photo name={m.photo as any} alt={m.alt} credit={false} widths={[480, 800, 1200]} sizes="(min-width: 960px) 40vw, 100vw" />
+            <Photo name={m.photo as any} alt={m.alt} credit={false} widths={[400, 700, 1000, 1400]} sizes={i === 0 ? '(min-width: 900px) min(50vw, 672px), 100vw' : i === 2 || i === 3 ? '(min-width: 900px) min(25vw, 336px), 50vw' : '(min-width: 900px) min(50vw, 672px), 50vw'} />
             <span class="bento__label"><strong>{m.name}</strong><span>{m.line}</span></span>
           </a>
         ))}

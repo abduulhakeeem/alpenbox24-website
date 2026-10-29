@@ -20,9 +20,9 @@ import { u } from '../lib/url';
 
   <section class="section" style="padding-top:0">
     <div class="wrap types">
-      {machines.filter((m) => m.id !== 'standort').map((m) => (
+      {machines.filter((m) => m.id !== 'standort').map((m, i) => (
         <article class="type" id={m.id} aria-labelledby={`h-${m.id}`}>
-          <Photo name={m.photo as any} alt={m.alt} reveal="clip" widths={[600, 1000, 1400]} sizes="(min-width: 900px) 58vw, 100vw" />
+          <Photo name={m.photo as any} alt={m.alt} reveal={i === 0 ? undefined : 'clip'} eager={i === 0} crop={4 / 3} widths={[480, 800, 1200, 1600]} sizes="(min-width: 900px) min(56vw, 790px), 100vw" />
           <div>
             <span class="type__code" aria-hidden="true">{m.code}</span>
             <h2 id={`h-${m.id}`} data-reveal>{m.name}</h2>

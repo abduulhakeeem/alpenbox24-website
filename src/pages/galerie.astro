@@ -30,17 +30,17 @@ const items = await Promise.all(
   <section class="section" style="padding-top:0">
     <div class="wrap">
       <nav class="filters" data-filter-bar aria-label="Bilder filtern">
-        <a class="chip" href="#alle" data-filter="alle" aria-pressed="true">Alle</a>
-        {cats.map((c) => <a class="chip" href={`#${c.id}`} data-filter={c.id} aria-pressed="false">{c.label}</a>)}
+        <a class="chip" href="#alle" data-filter="alle" aria-current="true">Alle</a>
+        {cats.map((c) => <a class="chip" href={`#${c.id}`} data-filter={c.id}>{c.label}</a>)}
       </nav>
       <div class="masonry">
         {cats.map((c) => (
           <>
             <h2 class="cat-head" id={c.id} data-cat-head={c.id}>{c.label}</h2>
-            {items.filter((i) => i.cat === c.id).map((i) => (
+            {items.filter((i) => i.cat === c.id).map((i, n) => (
               <figure data-cat={i.cat}>
                 <a href={i.full} data-lb data-alt={i.alt} data-caption={i.caption} data-credit={i.credit}>
-                  <Picture src={i.src} alt={i.alt} widths={[400, 700, 1000]} width={1000} height={Math.round(1000 * i.h / i.w)} sizes="(min-width: 1300px) 22vw, (min-width: 900px) 30vw, 50vw" formats={['avif', 'webp']} fallbackFormat="webp" quality={70} loading="lazy" />
+                  <Picture src={i.src} alt={i.alt} widths={[400, 700, 1000]} width={1000} height={Math.round(1000 * i.h / i.w)} sizes="(min-width: 1300px) 22vw, (min-width: 900px) 30vw, 50vw" formats={['avif', 'webp']} fallbackFormat="webp" quality={70} loading={c.id === cats[0].id && n < 3 ? 'eager' : 'lazy'} fetchpriority={c.id === cats[0].id && n === 0 ? 'high' : 'auto'} />
                 </a>
                 <figcaption><strong>{i.caption}</strong><a href={u('/bildnachweise/') + '#' + i.name} class="muted" style="text-decoration:none">{i.credit}</a></figcaption>
               </figure>

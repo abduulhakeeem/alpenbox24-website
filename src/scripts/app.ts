@@ -149,7 +149,7 @@ const filterBar = document.querySelector('[data-filter-bar]');
 if (filterBar) {
   const items = $$('[data-cat]');
   const apply = (cat: string) => {
-    $$('[data-filter]', filterBar).forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === cat)));
+    $$('[data-filter]', filterBar).forEach((b) => (b.dataset.filter === cat ? b.setAttribute('aria-current', 'true') : b.removeAttribute('aria-current')));
     items.forEach((it) => (it.hidden = cat !== 'alle' && it.dataset.cat !== cat));
     $$('[data-cat-head]').forEach((h) => (h.hidden = cat !== 'alle' ? h.dataset.catHead !== cat : false));
   };

@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import '../styles/pages.css';
 import archivoUrl from '../assets/fonts/archivo.woff2?url';
+import atkinsonUrl from '../assets/fonts/atkinson.woff2?url';
 import ogDefault from '../assets/og/og-default.jpg';
 import { site, has, telHref, mailHref, fullAddress } from '../data/site';
 import { mainNav, footerNav } from '../data/nav';
@@ -117,10 +118,11 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
     <link rel="manifest" href={u('/site.webmanifest')} />
     <link rel="sitemap" href={u('/sitemap-index.xml')} />
     <link rel="preload" href={archivoUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={atkinsonUrl} as="font" type="font/woff2" crossorigin />
 
     <script type="application/ld+json" set:html={JSON.stringify(store)} />
     {crumbs && <script type="application/ld+json" set:html={JSON.stringify(crumbs)} />}
-    <script src={u('/js/boot.js')}></script>
+    <script is:inline>document.documentElement.classList.replace('no-js','js')</script>
     <slot name="head" />
   </head>
   <body class:list={{ 'no-hero': !hero }}>
@@ -129,7 +131,7 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
 
     <header class="site-header">
       <div class="wrap">
-        <a class="brand" href={u(isEn ? '/en/' : '/')} aria-label={isEn ? 'AlpenBox24 – home' : 'AlpenBox24 – zur Startseite'}>
+        <a class="brand" href={u(isEn ? '/en/' : '/')} aria-label={isEn ? 'Alpen Box 24 – home' : 'Alpen Box 24 – Startseite'}>
           {site.branding.logo ? (
             <img class="brand__logo" src={u('/' + site.branding.logo)} alt="" height="40" />
           ) : (
@@ -146,7 +148,7 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
           <span class="signpost-wrap header-cta"><a class="signpost" href={u('/standorte/')}>{isEn ? 'Locations' : 'Standorte'}</a></span>
           {!isEn && (
             <details class="menu">
-              <summary aria-label="Menü öffnen"><span class="menu__burger" aria-hidden="true"></span><span>Menü</span></summary>
+              <summary><span class="menu__burger" aria-hidden="true"></span><span>Menü</span></summary>
               <div class="menu__panel">
                 <OpenNow />
                 <nav aria-label="Menü">

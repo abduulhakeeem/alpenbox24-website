@@ -16,6 +16,9 @@ shows "AlpenBox24 Minimarkt" with the shop address. Enter the real name and lega
 
 ## 1. GitHub → Hostinger (one-time, ~5 minutes)
 
+**DNS is already done:** `alpenbox24.de` uses Hostinger's nameservers (`hyperion.dns-parking.com`, `atlas.dns-parking.com`)
+and points at a Hostinger server, so no nameserver change is needed. Hostinger only has to be told to serve this repo.
+
 Every push to `main` (including saves from the admin panel) runs **"Build & publish static site to deploy
 branch"** and updates the branch `deploy` with the finished site.
 

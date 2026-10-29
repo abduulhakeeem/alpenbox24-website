@@ -1,6 +1,6 @@
 ---
-/** Self-hosted map built from OpenStreetMap data (scripts/build-map.mjs). Whole map links to Google Maps directions. */
-import mapUrl from '../assets/map/karte-basis.svg?url';
+/** Self-hosted map built from OpenStreetMap data (scripts/build-map.mjs → cropped karte-miesbach.svg, lazy-loaded). */
+import mapUrl from '../assets/map/karte-miesbach.svg?url';
 import ov from '../data/map-overlay.json';
 import { googleDirectionsUrl } from '../data/site';
 interface Props { lang?: 'de' | 'en' }
@@ -13,8 +13,8 @@ const w = x1 - x0, h = Math.round(w * 0.75), y0 = Math.round((sy + ty) / 2 - h /
 const viewBox = `${Math.round(x0)} ${y0} ${Math.round(w)} ${h}`;
 ---
 <div class="map" data-map>
+  <img class="map__base" src={mapUrl} alt="" width={Math.round(w)} height={h} loading="lazy" decoding="async" />
   <svg class="map__overlay" viewBox={viewBox} preserveAspectRatio="xMidYMid slice" role="img" aria-label={en ? `Map: AlpenBox24 on Bayrischzeller Straße, about ${ov.routeMinutes} minutes' walk from Miesbach station` : `Karte: AlpenBox24 an der Bayrischzeller Straße, etwa ${ov.routeMinutes} Minuten zu Fuß vom Bahnhof Miesbach`}>
-    <image class="map__base" href={mapUrl} x="0" y="0" width={ov.width} height={ov.height} preserveAspectRatio="none" />
     <path id="walk-route" class="map__route" pathLength="1" d={ov.route} />
     <circle class="map__walker" r="9" style={`offset-path: path('${ov.route}')`} />
     <g transform={`translate(${tx} ${ty})`}>

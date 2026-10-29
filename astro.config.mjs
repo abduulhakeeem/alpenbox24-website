@@ -16,10 +16,12 @@ export default defineConfig({
   base: BASE,
   output: 'static', // R1: static only. Never add an adapter.
   trailingSlash: 'always',
-  build: { format: 'directory', inlineStylesheets: 'auto' },
+  build: { format: 'directory', inlineStylesheets: 'always' }, // CSS inline: no render-blocking request
   integrations: [
     sitemap({
       filter: (page) => !page.includes('/kontakt/danke/') && !page.endsWith('/404/'),
+      lastmod: new Date(),
+      changefreq: 'monthly',
     }),
   ],
   prefetch: false,
