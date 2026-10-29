@@ -10,11 +10,11 @@ import { u } from '../lib/url';
 const [main, ...more] = site.locations;
 ---
 <Base
-  title="Standorte – AlpenBox24 Automaten"
+  title="Standorte: 24/7-Automaten in Miesbach – AlpenBox24"
   description="Hier stehen die Automaten von AlpenBox24: der 24/7-Minimarkt an der Bayrischzeller Straße in Miesbach und weitere Standorte. Rund um die Uhr geöffnet."
   breadcrumbs={[{ name: 'Standorte', href: '/standorte/' }]}
 >
-  <PageHead title="Unsere Standorte" lead="Hier findest du unsere Automaten. Rund um die Uhr." crumbs={[{ name: 'Standorte', href: '/standorte/' }]} />
+  <PageHead title="Unsere Standorte in Miesbach und Umgebung" lead="Hier findest du unsere Automaten. Rund um die Uhr geöffnet." crumbs={[{ name: 'Standorte', href: '/standorte/' }]} />
 
   {main && (
     <section class="section" style="padding-top:0" aria-labelledby="loc-0">
@@ -25,7 +25,9 @@ const [main, ...more] = site.locations;
           {main.note && <p class="muted">{main.note}</p>}
           <dl>
             {main.hours && <><dt>Geöffnet</dt><dd>{main.hours}</dd></>}
+            <dt>Lage</dt><dd>Direkt an der B&nbsp;472 (Richtung Schliersee)</dd>
             <dt>Bahnhof Miesbach</dt><dd>ca. {site.directions.walkMinutesFromStation} Min. zu Fuß</dd>
+            <dt>Bus</dt><dd>Haltestelle „{site.directions.nearestBusStop}“</dd>
             {site.directions.parkingDe && <><dt>Parken</dt><dd>{site.directions.parkingDe}</dd></>}
           </dl>
           <div class="cta-row">

@@ -31,9 +31,9 @@ const strip = stripNames.map((n) => gallery.find((g) => g.name === n)!).filter(B
     <div class="wrap hero__content">
       <h1 id="hero-title">
         <span class="hero__big"><SplitText text="Nie geschlossen." base={40} /></span>
-        <span class="hero__sub">Unsere Automaten. Rund um die Uhr.</span>
+        <span class="hero__sub">Unsere Automaten in Miesbach. Rund um die Uhr.</span>
       </h1>
-      <p class="lead">Snacks, kalte Getränke und Regionales, direkt aus unseren Automaten. In Miesbach und an weiteren Standorten.</p>
+      <p class="lead">Snacks, kalte Getränke und Regionales, direkt aus dem Automaten. An der Bayrischzeller Straße in Miesbach und an weiteren Standorten.</p>
       <div class="cta-row">
         <span class="signpost-wrap"><a class="signpost" href={u('/standorte/')}>Standorte ansehen</a></span>
         <a class="btn" href={u('/automaten/')}>Unsere Automaten</a>
@@ -44,7 +44,7 @@ const strip = stripNames.map((n) => gallery.find((g) => g.name === n)!).filter(B
     <div class="hero__credit"><a class="photo__credit" href={u('/bildnachweise/#automat-drei-nacht')}>Beispielfoto: mrhayata · CC BY-SA 2.0</a></div>
   </section>
 
-  <Marquee items={['Snacks', 'Getränke', 'Regionales', '24 Stunden', 'Mehrere Standorte']} />
+  <Marquee items={['Snacks', 'Getränke', 'Regionales', '24 Stunden', 'Miesbach']} />
 
   <section class="section" id="typen" aria-labelledby="typen-title">
     <div class="wrap">
@@ -93,6 +93,7 @@ const strip = stripNames.map((n) => gallery.find((g) => g.name === n)!).filter(B
         <p class="kicker" data-reveal>Standorte</p>
         <h2 id="miesbach-title" data-reveal style="--d:80">Hier findest du uns.</h2>
         {main && <p class="muted" data-reveal style="--d:160"><strong>{main.name}</strong><br />{main.address}{main.hours && <><br />{main.hours}</>}</p>}
+        <p class="muted" data-reveal style="--d:200">Direkt an der B&nbsp;472, auf dem Weg nach Schliersee und Bayrischzell. Vom Bahnhof Miesbach sind es rund {site.directions.walkMinutesFromStation} Minuten zu Fuß.</p>
         <div class="cta-row" data-reveal style="--d:240">
           <span class="signpost-wrap"><a class="signpost" href={u('/standorte/')}>Alle Standorte</a></span>
           {main && <a class="btn" href={main.mapsUrl} rel="noopener" target="_blank"><Icon name="route" />Route planen</a>}

@@ -67,7 +67,17 @@ const store = {
     ...(i === 0 ? { hasMap: clean(site.googleMapsPlaceUrl), paymentAccepted: site.payment.methods.join(', '), geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng } } : {}),
     ...(/0.24|24\/7|24 Stunden/.test(l.hours) ? { openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '00:00', closes: '23:59' }] } : {}),
   })),
+  areaServed: [{ '@type': 'City', name: 'Miesbach' }, { '@type': 'AdministrativeArea', name: 'Landkreis Miesbach' }],
   sameAs: [site.social.instagram, site.social.facebook, site.social.tiktok, site.googleMapsPlaceUrl].filter(Boolean),
+};
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': abs('/', Astro.site) + '#website',
+  name: site.name,
+  url: abs('/', Astro.site),
+  inLanguage: ['de-DE', 'en'],
+  publisher: { '@id': abs('/', Astro.site) + '#business' },
 };
 const crumbs = breadcrumbs && {
   '@context': 'https://schema.org',
@@ -84,7 +94,7 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="robots" content={robots} />
-    <link rel="canonical" href={canonical} />
+    {here !== "/404/" && <link rel="canonical" href={canonical} />}
     {(here === '/' || here === '/en/') && (
       <>
         <link rel="alternate" hreflang="de" href={abs('/', Astro.site)} />
@@ -121,6 +131,7 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
     <link rel="preload" href={atkinsonUrl} as="font" type="font/woff2" crossorigin />
 
     <script type="application/ld+json" set:html={JSON.stringify(store)} />
+    {here === '/' && <script type="application/ld+json" set:html={JSON.stringify(website)} />}
     {crumbs && <script type="application/ld+json" set:html={JSON.stringify(crumbs)} />}
     <script is:inline>document.documentElement.classList.replace('no-js','js')</script>
     <slot name="head" />
@@ -183,7 +194,7 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
             {site.address.street}<br />
             {site.address.zip} {site.address.city}
           </address>
-          <p class="footer-hours">{isEn ? '24/7 vending machines' : '24/7-Automaten an mehreren Standorten'}</p>
+          <p class="footer-hours">{isEn ? '24/7 vending machines in Miesbach' : '24/7-Automaten in Miesbach und Umgebung'}</p>
           <p class="muted mt-4">
             {telHref && <><a href={telHref}>{site.phone.display}</a>{' · '}</>}
             {mailHref && <a href={mailHref}>{site.email}</a>}

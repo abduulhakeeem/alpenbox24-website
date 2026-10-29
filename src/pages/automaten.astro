@@ -8,11 +8,11 @@ import { machines } from '../data/machines';
 import { u } from '../lib/url';
 ---
 <Base
-  title="Unsere Automaten: Snacks, Getränke, Regional – AlpenBox24"
-  description="Snacks, kalte Getränke, Regionales, Brot und mehr: Diese Automaten betreibt AlpenBox24 rund um die Uhr. Schau, was drin ist, und finde den nächsten Standort."
+  title="Automaten in Miesbach: Snacks & Getränke – AlpenBox24"
+  description="Snacks, kalte Getränke, Regionales und mehr aus dem Automaten: Das bietet AlpenBox24 in Miesbach und Umgebung, rund um die Uhr. Finde den nächsten Standort."
   breadcrumbs={[{ name: 'Automaten', href: '/automaten/' }]}
 >
-  <PageHead title="Unsere Automaten" lead="Was drinsteckt und wie es funktioniert. Rund um die Uhr." crumbs={[{ name: 'Automaten', href: '/automaten/' }]}>
+  <PageHead title="Unsere Automaten in Miesbach" lead="Snacks, Getränke, Regionales und mehr. Rund um die Uhr, auch an Sonn- und Feiertagen." crumbs={[{ name: 'Automaten', href: '/automaten/' }]}>
     <nav class="cta-row mt-6" aria-label="Automatentypen">
       {machines.filter((m) => m.id !== 'standort').map((m) => <a class="chip" href={`#${m.id}`}>{m.name}</a>)}
     </nav>
