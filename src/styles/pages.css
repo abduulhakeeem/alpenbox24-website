@@ -53,45 +53,6 @@
   .statement em { font-style: normal; color: var(--c-sonne); }
   .statement .c-laerche { color: var(--c-laerche); }
 
-  /* ───────── Day cycle ───────── */
-  .day { position: relative; background: var(--c-nacht); }
-  .day__intro { padding-block: var(--section) 2rem; }
-  .day__list { list-style: none; padding: 0; display: grid; gap: var(--s-7); padding-bottom: var(--section); }
-  .moment__time { font-family: var(--ff-display); font-weight: 900; font-stretch: 125%; font-size: clamp(2.6rem, 2rem + 3vw, 4rem); color: var(--c-laerche); line-height: 1; font-variant-numeric: tabular-nums; }
-  .moment h3 { margin-top: 0.4rem; font-size: var(--fs-2); }
-  .moment p { color: var(--c-stein); margin-top: 0.6rem; max-width: 46ch; font-size: var(--fs-lead); }
-
-  .day.is-live { height: 640vh; }
-  .day.is-live .day__intro { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  .day__stage { display: none; }
-  .day.is-live .day__stage { display: block; position: sticky; top: 0; height: 100svh; overflow: clip; isolation: isolate; }
-  .day.is-live .day__list { position: sticky; top: 0; height: 100svh; margin-top: -100svh; padding: 0; display: block; width: 100%; max-width: none; z-index: 2; }
-  .day__sky { position: absolute; inset: 0; z-index: -3; transition: background 1.2s var(--ease-in-out);
-    background: radial-gradient(120% 90% at 50% 110%, #1a2a3a 0%, var(--c-nacht) 60%); }
-  .day[data-phase='dawn'] .day__sky { background: radial-gradient(120% 90% at 50% 110%, #f68a2b 0%, #6a3a3a 30%, #1d2235 62%, var(--c-nacht) 100%); }
-  .day[data-phase='day'] .day__sky { background: radial-gradient(120% 90% at 50% 110%, #7fb2d6 0%, #2f5f86 40%, #13263a 80%, var(--c-nacht) 100%); }
-  .day[data-phase='dusk'] .day__sky { background: radial-gradient(120% 90% at 50% 110%, #ff7a2b 0%, #a2384a 28%, #3a1f3d 58%, var(--c-nacht) 100%); }
-  .day__stars { position: absolute; inset: 0; z-index: -2; opacity: 0.8; transition: opacity 1.2s;
-    background-image: radial-gradient(1.2px 1.2px at 12% 18%, #fff, transparent), radial-gradient(1px 1px at 34% 8%, #fff, transparent), radial-gradient(1.4px 1.4px at 58% 22%, #fff, transparent), radial-gradient(1px 1px at 72% 12%, #fff, transparent), radial-gradient(1.2px 1.2px at 88% 30%, #fff, transparent), radial-gradient(1px 1px at 22% 36%, #fff, transparent), radial-gradient(1px 1px at 46% 40%, #fff, transparent), radial-gradient(1.3px 1.3px at 80% 44%, #fff, transparent), radial-gradient(1px 1px at 6% 48%, #fff, transparent), radial-gradient(1px 1px at 64% 4%, #fff, transparent); }
-  .day[data-phase='day'] .day__stars, .day[data-phase='dawn'] .day__stars { opacity: 0; }
-  .day__orb { position: absolute; z-index: -1; left: 50%; bottom: -20vh; width: 120vmin; height: 120vmin; translate: -50% 50%; transform: rotate(calc(var(--p, 0) * 360deg - 120deg)); pointer-events: none; }
-  .day__orb::before { content: ''; position: absolute; top: 0; left: 50%; width: clamp(70px, 10vmin, 140px); aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; background: var(--c-sonne); box-shadow: 0 0 90px 30px rgb(246 138 43 / 0.45); transition: background 1s, box-shadow 1s; }
-  .day[data-phase='night'] .day__orb::before { background: #e8e6df; box-shadow: 0 0 60px 10px rgb(232 230 223 / 0.25); }
-  .day__ridge { position: absolute; left: 0; bottom: 0; width: 100%; height: 32vh; z-index: 0; }
-  .day__ridge path:first-child { fill: var(--c-nacht); }
-  .day__ridge path:last-child { fill: none; stroke: var(--c-schnee); stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
-  .day__clock { position: absolute; z-index: 1; left: 50%; top: calc(var(--header-h) + 3vh); translate: -50% 0; text-align: center; }
-  .day__clock span:first-child { display: block; color: var(--c-stein); font-weight: 700; font-size: 1rem; }
-  .day__clock strong { display: block; font-family: var(--ff-display); font-weight: 900; font-stretch: 125%; font-size: clamp(4rem, 2rem + 11vw, 11rem); line-height: 0.9; font-variant-numeric: tabular-nums; letter-spacing: -0.03em; text-shadow: 0 6px 40px rgb(0 0 0 / 0.35); }
-  .day__progress { position: absolute; z-index: 2; left: 50%; bottom: 4vh; translate: -50% 0; width: min(80vw, 28rem); height: 3px; background: rgb(255 255 255 / 0.15); border-radius: 3px; overflow: hidden; }
-  .day__progress::after { content: ''; position: absolute; inset: 0; background: var(--c-laerche); transform-origin: left; transform: scaleX(var(--p, 0)); }
-  .day.is-live .moment { position: absolute; z-index: 2; left: 50%; top: 52%; translate: -50% -50%; width: min(100% - 2.5rem, 40rem); text-align: center; opacity: 0; transform: translateY(40px) scale(0.97); filter: blur(6px); transition: opacity 600ms var(--ease-out), transform 800ms var(--ease-out), filter 600ms; pointer-events: none; }
-  .day.is-live .moment.is-active { opacity: 1; transform: none; filter: none; }
-  .day.is-live .moment .moment__time { display: none; }
-  .day.is-live .moment p { margin-inline: auto; color: #ecebe7; text-shadow: 0 2px 20px rgb(0 0 0 / 0.6); }
-  .day.is-live .moment h3 { text-shadow: 0 2px 24px rgb(0 0 0 / 0.5); }
-  @media (prefers-reduced-motion: reduce) { .day.is-live .moment { transition: none; } }
-
   /* ───────── Vending machine ───────── */
   .machine { display: grid; gap: clamp(1.5rem, 4vw, 3rem); }
   @media (min-width: 1000px) { .machine { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); align-items: start; } }

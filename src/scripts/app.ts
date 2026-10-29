@@ -88,28 +88,76 @@ const tickClock = () => clocks.forEach((c) => {
 $$('[data-time-now]').forEach((el) => (el.textContent = fmt.format(new Date())));
 if (clocks.length) { tickClock(); setInterval(tickClock, 15000); }
 
-/* Day cycle: scroll-scrubbed 24 h story */
+/* Day cycle: scroll-scrubbed 24 h scene. The clock ticks through the day, the sky blends
+   continuously, sun and moon follow real arcs, the machine glows at night. Reduced motion → static list. */
 const day = document.querySelector<HTMLElement>('[data-day]');
-if (day) {
+if (day && !reduce) {
   day.classList.add('is-live');
   const moments = $$('[data-moment]', day);
-  const label = day.querySelector('[data-day-time]');
-  let ticking = false;
-  const update = () => {
+  const jumps = $$<HTMLButtonElement>('[data-jump]', day);
+  const clock = day.querySelector('[data-day-time]');
+  const mins: number[] = JSON.parse(day.dataset.mins || '[]');
+  const n = moments.length;
+  const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const ease = (t: number) => t * t * (3 - 2 * t);
+  const hex = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const mix = (a: string, b: string, t: number) => `rgb(${hex(a).map((v, i) => Math.round(v + (hex(b)[i] - v) * t)).join(' ')})`;
+  // Sky by minute of day: [minute, top, horizon]
+  const SKY: [number, string, string][] = [
+    [0, '#04060d', '#0e1428'], [270, '#05081a', '#141a3a'], [330, '#121a3d', '#4a2f55'], [375, '#2b3a6e', '#f08a3c'],
+    [450, '#4b7fb5', '#f4c58e'], [600, '#3f86c8', '#a9d2ef'], [960, '#3a7fc0', '#b8dcf2'], [1110, '#4a6fa8', '#f3c07a'],
+    [1185, '#3a3470', '#ff7a2b'], [1240, '#1a1d45', '#7a3550'], [1320, '#090d22', '#1a1c3a'], [1440, '#04060d', '#0e1428'],
+  ];
+  const sky = (m: number) => {
+    let i = SKY.findIndex(([t]) => t > m); if (i < 1) i = SKY.length - 1;
+    const [t0, a0, b0] = SKY[i - 1], [t1, a1, b1] = SKY[i];
+    const t = ease(clamp((m - t0) / (t1 - t0)));
+    return [mix(a0, a1, t), mix(b0, b1, t)];
+  };
+  const RISE = 375, SET = 1195; // 06:15 – 19:55
+  const fmt = (m: number) => { const d = ((Math.round(m) % 1440) + 1440) % 1440; return `${String(Math.floor(d / 60)).padStart(2, '0')}:${String(d % 60).padStart(2, '0')}`; };
+  let lastClock = '', lastIdx = -1, visible = false, ticking = false;
+
+  const render = () => {
     ticking = false;
     const r = day.getBoundingClientRect();
-    const total = r.height - innerHeight;
-    const p = Math.min(Math.max(-r.top / total, 0), 1);
-    day.style.setProperty('--p', p.toFixed(4));
-    const idx = Math.min(moments.length - 1, Math.floor(p * moments.length * 0.999));
-    moments.forEach((m, i) => m.classList.toggle('is-active', i === idx));
-    const active = moments[idx];
-    if (label && active) label.textContent = active.dataset.moment || '';
-    day.dataset.phase = active?.dataset.phase || 'night';
+    const p = clamp(-r.top / (r.height - innerHeight));
+    const seg = Math.min(n - 1, Math.floor(p * n));
+    const local = clamp(p * n - seg);
+    // Time: hold each moment briefly, then run to the next one
+    const m = seg < n - 1 ? mins[seg] + (mins[seg + 1] - mins[seg]) * ease(clamp((local - 0.15) / 0.85)) : mins[n - 1];
+    const md = ((m % 1440) + 1440) % 1440;
+    const [top, bot] = sky(md);
+    const night = 1 - clamp(Math.min((md - 270) / 150, (1290 - md) / 120)); // dark 21:30–04:30, dusk from 19:30
+    const sf = clamp((md - RISE) / (SET - RISE));
+    const sunUp = md > RISE - 20 && md < SET + 20;
+    const mf = clamp(((md < 720 ? md + 1440 : md) - 1200) / 600); // moon 20:00 – 06:00
+    const s = day.style;
+    s.setProperty('--p', p.toFixed(4));
+    s.setProperty('--top', top); s.setProperty('--bot', bot);
+    s.setProperty('--night', night.toFixed(3));
+    s.setProperty('--sun-x', `${8 + sf * 84}%`); s.setProperty('--sun-y', `${80 - Math.sin(Math.PI * sf) * 48}%`);
+    s.setProperty('--sun-o', sunUp ? clamp(Math.min(sf, 1 - sf) * 14 + 0.15).toFixed(3) : '0');
+    s.setProperty('--glow', `rgb(246 138 43 / ${(0.12 + (1 - Math.sin(Math.PI * sf)) * 0.55).toFixed(3)})`);
+    s.setProperty('--moon-x', `${12 + mf * 76}%`); s.setProperty('--moon-y', `${72 - Math.sin(Math.PI * mf) * 38}%`);
+    s.setProperty('--moon-o', (night * clamp(Math.min(mf, 1 - mf) * 10)).toFixed(3));
+    const label = seg === n - 1 && local > 0.05 ? 'Sonntag' : fmt(m);
+    if (clock && label !== lastClock) { clock.textContent = label; lastClock = label; }
+    if (seg !== lastIdx) {
+      moments.forEach((el, i) => { el.classList.toggle('is-active', i === seg); el.classList.toggle('is-past', i < seg); });
+      jumps.forEach((b, i) => (i === seg ? b.setAttribute('aria-current', 'true') : b.removeAttribute('aria-current')));
+      lastIdx = seg;
+    }
   };
-  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
-  addEventListener('resize', update);
-  update();
+  const request = () => { if (visible && !ticking) { ticking = true; requestAnimationFrame(render); } };
+  new IntersectionObserver((e) => { visible = e[0].isIntersecting; if (visible) request(); }, { rootMargin: '100px 0px' }).observe(day);
+  addEventListener('scroll', request, { passive: true });
+  addEventListener('resize', () => { visible = true; request(); });
+  jumps.forEach((b, i) => b.addEventListener('click', () => {
+    const total = day.offsetHeight - innerHeight;
+    scrollTo({ top: day.getBoundingClientRect().top + scrollY + ((i + 0.08) / n) * total, behavior: 'smooth' });
+  }));
+  render();
 }
 
 /* Vending machine: pick a slot by click or by typing its code on the keypad */
