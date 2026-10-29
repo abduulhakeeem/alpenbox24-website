@@ -3,14 +3,13 @@ import Base from '../../layouts/Base.astro';
 import PageHead from '../../components/PageHead.astro';
 import MapBlock from '../../components/MapBlock.astro';
 import Icon from '../../components/Icon.astro';
-import Tbc from '../../components/Tbc.astro';
 import OpenNow from '../../components/OpenNow.astro';
-import { site, googleDirectionsUrl, appleDirectionsUrl, telHref, mailHref, whatsappHref } from '../../data/site';
+import { site, has, googleDirectionsUrl, appleDirectionsUrl, telHref, mailHref, whatsappHref } from '../../data/site';
 import { u, STAGING } from '../../lib/url';
 ---
 <Base
   title="Kontakt & Anfahrt – AlpenBox24 Miesbach"
-  description="Bayrischzeller Straße 2-8, 83714 Miesbach. Route, Parken, Anreise mit der Bahn, Störung melden und Kontakt zum AlpenBox24 Team. Täglich rund um die Uhr geöffnet."
+  description="Bayrischzeller Straße 2-8, 83714 Miesbach. Route, Anreise mit der Bahn, Störung melden und Kontakt zum AlpenBox24 Team. Täglich rund um die Uhr geöffnet."
   breadcrumbs={[{ name: 'Kontakt', href: '/kontakt/' }]}
 >
   <PageHead title="Kontakt und Anfahrt" crumbs={[{ name: 'Kontakt', href: '/kontakt/' }]} lead="Hier findest du den Weg zu AlpenBox24 in Miesbach, Hilfe bei Störungen und einen direkten Draht zu uns." />
@@ -22,8 +21,9 @@ import { u, STAGING } from '../../lib/url';
         <address><strong>{site.legalBrand}</strong>{site.address.street}<br />{site.address.zip} {site.address.city}</address>
         <dl>
           <dt>Geöffnet</dt><dd>{site.hours.labelDe}</dd>
-          <dt>Telefon</dt><dd>{telHref ? <a href={telHref}>{site.phone.display}</a> : <Tbc value={site.phone.display} fallback="folgt" />}</dd>
-          <dt>E-Mail</dt><dd>{mailHref ? <a href={mailHref}>{site.email}</a> : <Tbc value={site.email} fallback="folgt" />}</dd>
+          {telHref && <><dt>Telefon</dt><dd><a href={telHref}>{site.phone.display}</a></dd></>}
+          <dt>E-Mail</dt><dd><a href={mailHref}>{site.email}</a></dd>
+          <dt>Bezahlen</dt><dd>{site.payment.shortDe}</dd>
         </dl>
         <div class="cta-row">
           <span class="signpost-wrap"><a class="signpost" href={googleDirectionsUrl} rel="noopener" target="_blank">Route mit Google Maps</a></span>
@@ -36,11 +36,11 @@ import { u, STAGING } from '../../lib/url';
     <div class="wrap mt-8">
       <h2 id="route-title">Anfahrt</h2>
       <ul class="icon-list mt-6 anfahrt" role="list">
-        <li><Icon name="car" /><div><strong>Mit dem Auto</strong><p>A8 München–Salzburg, Ausfahrt Weyarn oder Irschenberg, weiter nach Miesbach. Wir liegen an der Bayrischzeller Straße (B&nbsp;472). Parken: <Tbc value={site.directions.parkingDe} fallback="Info folgt" /></p></div></li>
+        <li><Icon name="car" /><div><strong>Mit dem Auto</strong><p>A8 München–Salzburg, Ausfahrt Weyarn oder Irschenberg, weiter nach Miesbach. Wir liegen an der Bayrischzeller Straße (B&nbsp;472).{has(site.directions.parkingDe) && <> Parken: {site.directions.parkingDe}</>}</p></div></li>
         <li><Icon name="train" /><div><strong>Mit der Bahn</strong><p>RB 55 München–Bayrischzell bis Bahnhof Miesbach, dann rund {site.directions.walkMetersFromStation}&nbsp;Meter, etwa {site.directions.walkMinutesFromStation}&nbsp;Minuten zu Fuß.</p></div></li>
         <li><Icon name="bus" /><div><strong>Mit dem Bus</strong><p>Haltestelle „{site.directions.nearestBusStop}“, von dort sind es nur wenige Schritte.</p></div></li>
-        <li><Icon name="bike" /><div><strong>Mit dem Rad</strong><p><Tbc value={site.directions.bikeParkingDe} fallback="Info zu Radstellplätzen folgt" /></p></div></li>
-        <li><Icon name="hand" /><div><strong>Barrierefreiheit</strong><p><Tbc value={site.directions.accessibilityDe} fallback="Angabe zum Zugang folgt" /></p></div></li>
+        {has(site.directions.bikeParkingDe) && <li><Icon name="bike" /><div><strong>Mit dem Rad</strong><p>{site.directions.bikeParkingDe}</p></div></li>}
+        {has(site.directions.accessibilityDe) && <li><Icon name="hand" /><div><strong>Barrierefreiheit</strong><p>{site.directions.accessibilityDe}</p></div></li>}
       </ul>
     </div>
   </section>
@@ -50,10 +50,10 @@ import { u, STAGING } from '../../lib/url';
       <div class="stack">
         <p class="kicker">Hilfe</p>
         <h2 id="stoer-title">Störung melden</h2>
-        <p class="lead muted">Automat hat nicht ausgegeben oder etwas ist kaputt? Am schnellsten geht’s per Telefon{whatsappHref ? ' oder WhatsApp' : ''}.</p>
+        <p class="lead muted">Automat hat nicht ausgegeben oder etwas ist kaputt? {telHref ? <>Am schnellsten geht’s per Telefon{whatsappHref ? ' oder WhatsApp' : ''}.</> : 'Schreib uns per E-Mail oder über das Formular, wir melden uns so schnell wie möglich.'}</p>
       </div>
       <div class="stack">
-        <p class="phone-big">{telHref ? <a href={telHref}>{site.phone.display}</a> : <Tbc value={site.phone.display} fallback="Störungsnummer folgt" />}</p>
+        <p class="phone-big">{telHref ? <a href={telHref}>{site.phone.display}</a> : <a href={mailHref}>{site.email}</a>}</p>
         <p>Bitte nenne <strong>Automatennummer</strong>, <strong>Uhrzeit</strong> und <strong>Zahlungsart</strong>. Bei Kartenzahlung reichen die letzten vier Ziffern.</p>
         <div class="cta-row">
           {telHref && <a class="btn" href={telHref}><Icon name="phone" />Anrufen</a>}

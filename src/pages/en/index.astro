@@ -5,8 +5,7 @@ import Horizon from '../../components/Horizon.astro';
 import OpenNow from '../../components/OpenNow.astro';
 import MapBlock from '../../components/MapBlock.astro';
 import Icon from '../../components/Icon.astro';
-import Tbc from '../../components/Tbc.astro';
-import { site, googleDirectionsUrl, telHref } from '../../data/site';
+import { site, has, googleDirectionsUrl, telHref, mailHref } from '../../data/site';
 import { u } from '../../lib/url';
 ---
 <Base lang="en" hero title="AlpenBox24 – 24/7 Shop in Miesbach, Bavaria" description="Snacks, drinks and local Bavarian products, open 24 hours a day, every day of the year, on the main road through Miesbach towards Schliersee and Bayrischzell.">
@@ -29,8 +28,8 @@ import { u } from '../../lib/url';
   <section class="section">
     <div class="wrap-text stack" style="--stack:2.6rem">
       <div class="stack"><h2>What you’ll find</h2><p class="muted">Drinks, snacks and sweets, local food from farms in the Miesbach district as we add producers, and everyday essentials. Prices are shown on the machines. In Bavaria most shops close at 8 pm and on Sundays. We don’t.</p></div>
-      <div class="stack"><h2>How it works</h2><p class="muted">Choose your item, pay (<Tbc value={site.payment.howtoEn} fallback="payment methods to follow" />), take it out. Products for adults only (18+) are released only after an age check at the machine: <Tbc value={site.ageCheck.howtoEn} fallback="details to follow" />.</p></div>
-      <div class="stack" id="problem"><h2>Something went wrong?</h2><p class="muted">Note the machine number and the time, then call {telHref ? <a href={telHref}>{site.phone.display}</a> : <Tbc value={site.phone.display} fallback="number to follow" />} or use the <a href={u('/kontakt/#formular')}>contact form</a> (in German, English is fine). We’ll sort out a refund.</p></div>
+      <div class="stack"><h2>How it works</h2><p class="muted">Choose your item, pay ({site.payment.howtoEn}), take it out. Products for adults only (18+) are released only after an age check at the machine{has(site.ageCheck.howtoEn) ? <>: {site.ageCheck.howtoEn}</> : '; the display guides you through it'}.</p></div>
+      <div class="stack" id="problem"><h2>Something went wrong?</h2><p class="muted">Note the machine number and the time, then {telHref ? <>call <a href={telHref}>{site.phone.display}</a></> : <>email <a href={mailHref}>{site.email}</a></>} or use the <a href={u('/kontakt/#formular')}>contact form</a> (in German, English is fine). We’ll sort out a refund.</p></div>
       <div class="stack"><h2>Getting here</h2><p class="muted">Bayrischzeller Straße 2-8, 83714 Miesbach. By car: A8 Munich–Salzburg, exit Weyarn or Irschenberg, then follow the B 472 into Miesbach. By train: RB 55 Munich–Bayrischzell to Miesbach station, then about {site.directions.walkMinutesFromStation} minutes on foot ({site.directions.walkMetersFromStation} m).</p></div>
       <MapBlock lang="en" />
       <div class="stack"><h2>Please be considerate at night</h2><p class="muted">People live around us. Keep the noise down, use the bins and don’t leave your engine running. Thank you.</p></div>

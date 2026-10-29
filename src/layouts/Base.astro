@@ -3,7 +3,7 @@ import '../styles/global.css';
 import '../styles/pages.css';
 import archivoUrl from '../assets/fonts/archivo.woff2?url';
 import ogDefault from '../assets/og/og-default.jpg';
-import { site, isTbc, googleDirectionsUrl, telHref, fullAddress } from '../data/site';
+import { site, has, googleDirectionsUrl, telHref, mailHref, fullAddress } from '../data/site';
 import { mainNav, footerNav } from '../data/nav';
 import { u, abs, route, STAGING } from '../lib/url';
 import Mark from '../components/Mark.astro';
@@ -26,8 +26,15 @@ const canonical = abs(here, Astro.site);
 const og = ogImage ?? new URL(ogDefault.src, Astro.site).href;
 const year = new Date().getFullYear();
 const isEn = lang === 'en';
+const fav = site.branding.favicon;
+const favType = fav.endsWith('.svg') ? 'image/svg+xml' : fav.endsWith('.ico') ? 'image/x-icon' : 'image/png';
+const socials = [
+  { href: site.social.instagram, label: 'Instagram', icon: 'instagram' as const },
+  { href: site.social.facebook, label: 'Facebook', icon: 'facebook' as const },
+  { href: site.social.tiktok, label: 'TikTok', icon: 'tiktok' as const },
+].filter((x) => x.href);
 
-const clean = (v: unknown) => (isTbc(v) && STAGING ? undefined : v);
+const clean = (v: unknown) => (has(v) ? v : undefined);
 const store = {
   '@context': 'https://schema.org',
   '@type': 'ConvenienceStore',
@@ -42,7 +49,7 @@ const store = {
   email: clean(site.email),
   priceRange: '€',
   currenciesAccepted: 'EUR',
-  paymentAccepted: isTbc(site.payment.methods) ? (STAGING ? undefined : '[TBC]') : site.payment.methods.join(', '),
+  paymentAccepted: site.payment.methods.join(', '),
   address: {
     '@type': 'PostalAddress',
     streetAddress: site.address.street,
@@ -57,7 +64,7 @@ const store = {
     ? [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '00:00', closes: '23:59' }]
     : site.hours.weekly.map((h) => ({ '@type': 'OpeningHoursSpecification', dayOfWeek: h.days, opens: h.opens, closes: h.closes })),
   areaServed: ['Miesbach', 'Landkreis Miesbach'],
-  sameAs: [site.social.instagram, site.social.facebook].filter(Boolean),
+  sameAs: [site.social.instagram, site.social.facebook, site.social.tiktok, site.googleMapsPlaceUrl].filter(Boolean),
 };
 const crumbs = breadcrumbs && {
   '@context': 'https://schema.org',
@@ -102,7 +109,7 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
     <meta property="og:image:alt" content="AlpenBox24 Logo vor dem nächtlichen Oberland" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <link rel="icon" href={u('/favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={u(fav ? '/' + fav : '/favicon.svg')} type={fav ? favType : 'image/svg+xml'} />
     <link rel="icon" href={u('/icons/icon-32.png')} sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href={u('/icons/icon-180.png')} />
     <link rel="manifest" href={u('/site.webmanifest')} />
@@ -121,8 +128,11 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
     <header class="site-header">
       <div class="wrap">
         <a class="brand" href={u(isEn ? '/en/' : '/')} aria-label={isEn ? 'AlpenBox24 – home' : 'AlpenBox24 – zur Startseite'}>
-          <Mark />
-          <span class="brand__word" aria-hidden="true">ALPEN BOX <b>24</b></span>
+          {site.branding.logo ? (
+            <img class="brand__logo" src={u('/' + site.branding.logo)} alt="" height="40" />
+          ) : (
+            <><Mark /><span class="brand__word" aria-hidden="true">ALPEN BOX <b>24</b></span></>
+          )}
         </a>
         {!isEn && (
           <nav class="nav" aria-label="Hauptnavigation">
@@ -171,10 +181,15 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
           </address>
           <p class="footer-hours">{isEn ? site.hours.labelEn : site.hours.labelDe}</p>
           <p class="muted mt-4">
-            {telHref ? <a href={telHref}>{site.phone.display}</a> : STAGING ? <span class="tbc">Telefon folgt</span> : '[TBC]'}
-            {' · '}
-            {isTbc(site.email) ? (STAGING ? <span class="tbc">E-Mail folgt</span> : '[TBC]') : <a href={`mailto:${site.email}`}>{site.email}</a>}
+            {telHref && <><a href={telHref}>{site.phone.display}</a>{' · '}</>}
+            {mailHref && <a href={mailHref}>{site.email}</a>}
           </p>
+          <p class="muted">{isEn ? 'Payment: cash or bank transfer' : `Bezahlen: ${site.payment.shortDe}`}</p>
+          {socials.length > 0 && (
+            <ul class="socials" role="list">
+              {socials.map((x) => <li><a href={x.href} rel="noopener me" target="_blank" aria-label={x.label}><Icon name={x.icon} /></a></li>)}
+            </ul>
+          )}
         </div>
         <nav aria-label={isEn ? 'Shop' : 'Laden'}>
           <h2>{isEn ? 'Shop' : 'Laden'}</h2>
@@ -200,7 +215,7 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
 
     <nav class="mobile-bar" aria-label={isEn ? 'Quick actions' : 'Schnellzugriff'}>
       <a href={googleDirectionsUrl} rel="noopener" target="_blank"><Icon name="route" />{isEn ? 'Directions' : 'Route'}</a>
-      <a href={telHref ?? u('/kontakt/#stoerung')}><Icon name="phone" />{isEn ? 'Call' : 'Anrufen'}</a>
+      {telHref ? <a href={telHref}><Icon name="phone" />{isEn ? 'Call' : 'Anrufen'}</a> : <a href={u('/kontakt/#formular')}><Icon name="mail" />{isEn ? 'Contact' : 'Kontakt'}</a>}
       <a href={u('/kontakt/#stoerung')}><Icon name="alert" />{isEn ? 'Problem' : 'Störung'}</a>
     </nav>
 

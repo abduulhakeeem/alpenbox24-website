@@ -9,7 +9,6 @@ import DayCycle from '../components/DayCycle.astro';
 import Machine from '../components/Machine.astro';
 import MapBlock from '../components/MapBlock.astro';
 import Icon from '../components/Icon.astro';
-import Tbc from '../components/Tbc.astro';
 import { site, googleDirectionsUrl, appleDirectionsUrl, telHref } from '../data/site';
 import { u } from '../lib/url';
 
@@ -103,7 +102,7 @@ const strip = [
       <h2 id="steps-title" data-reveal style="--d:80">So einfach geht’s.</h2>
       <ol class="steps mt-7" role="list">
         <li class="step" data-reveal><span class="step__line" aria-hidden="true"></span><h3>Aussuchen.</h3><p>Produkt am Automaten wählen, per Display oder Fachnummer.</p></li>
-        <li class="step" data-reveal style="--d:120"><span class="step__line" aria-hidden="true"></span><h3>Bezahlen.</h3><p><Tbc value={site.payment.howtoDe} fallback="Zahlungsarten folgen" /></p></li>
+        <li class="step" data-reveal style="--d:120"><span class="step__line" aria-hidden="true"></span><h3>Bezahlen.</h3><p>{site.payment.howtoDe}</p></li>
         <li class="step" data-reveal style="--d:240"><h3>Mitnehmen.</h3><p>Fach öffnet sich, fertig. Für Produkte ab 18 prüft der Automat vorher dein Alter.</p></li>
       </ol>
       <p class="mt-7"><a class="link" href={u('/so-gehts/')}>Alles zu Bezahlen, Altersprüfung und Störungen</a></p>

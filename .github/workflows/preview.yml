@@ -25,6 +25,8 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+      - name: Lint PHP (contact form + admin)
+        run: php -l public/api/kontakt.php && php -l public/admin/index.php
       - id: pages
         uses: actions/configure-pages@v5
       - run: npm run build:preview

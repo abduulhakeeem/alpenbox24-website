@@ -4,32 +4,30 @@ The site is plain static files plus one PHP file. Hostinger serves them from `pu
 on the server. GitHub Actions builds the site and pushes the result to the branch `deploy`; Hostinger pulls
 that branch.
 
-## 0. Before anything goes live (legal gate)
+## 0. Status of the content (29.10.2026)
 
-Fill these in `src/data/site.ts` (and remove the `TBC`), then push:
+Confirmed by the client and in `src/data/settings.json` / `site.ts`: email info@alpenbox24.de, payment by cash
+and bank transfer, support via phone call or the contact form. Everything else the client did not provide is
+hidden on the site. The production build (`npm run build`) passes.
 
-- [ ] `legal.name`, `legal.form`, `legal.street`, `legal.zip`, `legal.city` (+ register data / VAT ID if any)
-- [ ] `phone.display` + `phone.e164`, `email`
-- [ ] `payment.*`, `ageCheck.*`, `sellsAlcohol`, `refund.*`
-- [ ] `cctv.enabled` (+ `retentionDe` if true)
-- [ ] `directions.parkingDe`, `bikeParkingDe`, `accessibilityDe`
-- [ ] `hosting.address` (from the Hostinger DPA in hPanel → Account → Data Processing Agreement)
-- [ ] Über-uns founder story (`src/pages/ueber-uns.astro`, section "Wer wir sind")
-- [ ] Have Impressum + Datenschutz checked (lawyer or maintained generator)
+**Still recommended:** § 5 DDG expects the operator's legal name (owner or company) in the Impressum. It currently
+shows "AlpenBox24 Minimarkt" with the shop address. Enter the real name and legal form in the admin panel
+(`/admin/` → Firma) as soon as possible, and add a phone number if customers should be able to call.
 
-`npm run build` refuses to build while any `[TBC]` remains. That is intentional.
+## 1. GitHub → Hostinger (one-time, ~5 minutes)
 
-## 1. GitHub → Hostinger (one-time, ~10 minutes)
+Every push to `main` (including saves from the admin panel) runs **"Build & publish static site to deploy
+branch"** and updates the branch `deploy` with the finished site.
 
-1. GitHub repo → **Settings → Actions → General → Workflow permissions** → "Read and write" (needed to push `deploy`).
-2. GitHub → Actions → **"Build & publish static site to deploy branch"** → Run workflow. It creates the `deploy` branch. After launch, enable the `push` trigger in `.github/workflows/deploy.yml` so every push to `main` redeploys.
-3. hPanel → **Websites → alpenbox24.de → Advanced → Git**:
-   - Repository: `https://github.com/abduulhakeeem/alpenbox24-website.git`
-     (private repo: add the SSH key hPanel shows as a **Deploy key** in GitHub → Settings → Deploy keys, and use the `git@github.com:…` URL)
+1. hPanel → **Websites → alpenbox24.de → Advanced → Git**:
+   - Repository: `https://github.com/abduulhakeeem/alpenbox24-website.git` (public repo, no key needed)
    - Branch: `deploy` · Directory: leave empty (= `public_html`)
-   - Create, then **Deploy**. Enable **Auto Deployment** and add the webhook URL hPanel shows to GitHub → Settings → Webhooks.
-4. Back up and empty `public_html` before the first deploy if it contains a default Hostinger page.
-5. hPanel → **Security → SSL** → install the free certificate. `.htaccess` forces HTTPS and redirects `www` → apex.
+   - Create, then **Deploy**.
+2. Turn on **Auto Deployment**, copy the webhook URL hPanel shows, and add it in GitHub → repo → Settings →
+   Webhooks → Add webhook (Payload URL = that URL, content type `application/json`, "Just the push event").
+3. If `public_html` already contains a Hostinger default page, back it up and delete it before the first deploy.
+4. hPanel → **Security → SSL** → install the free certificate. `.htaccess` forces HTTPS and redirects `www` → apex.
+5. Admin panel: see `docs/13-admin-panel.md` (config file with password + GitHub token).
 
 ## 2. Contact form mail
 

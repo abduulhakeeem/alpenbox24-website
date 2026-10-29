@@ -11,7 +11,9 @@ Runs on any Hostinger web hosting plan (no Node.js app).
 | Path | What |
 |---|---|
 | `src/pages/` | 15 routes: Start, Sortiment, Regional, So geht's, Galerie, Über uns, Kontakt (+ Danke), FAQ, EN, Impressum, Datenschutz, Barrierefreiheit, Bildnachweise, 404 |
-| `src/data/site.ts` | **Single source of truth** for name, address, hours, phone, payment, legal data. Fill the `TBC` values here. |
+| `src/data/settings.json` | Company, contact, social, directions, logo/favicon — edited by the owner in the admin panel |
+| `src/data/site.ts` | **Single source of truth** the templates read (combines `settings.json` with fixed facts: hours, payment, geo) |
+| `public/admin/index.php` | Admin panel at `/admin/`: saving commits `settings.json` to GitHub → automatic rebuild + deploy ([docs/13](docs/13-admin-panel.md)) |
 | `src/data/photo-credits.json` | Author + licence + source for every photo (Wikimedia Commons) |
 | `src/components/` | Hero horizon, scroll-scrubbed "Ein Tag an der B 472", interactive vending machine, OSM map, marquee, … |
 | `src/styles/` | Design system (`global.css`) and page sections (`pages.css`) |
@@ -38,7 +40,7 @@ npm run build          # production: astro check + build + guard (fails while an
 - **Preview (GitHub Pages):** https://abduulhakeeem.github.io/alpenbox24-website/ — rebuilt on every push to `main` by `.github/workflows/preview.yml`. Staging build: noindex, "folgt" markers.
 - **Production (Hostinger):** `.github/workflows/deploy.yml` builds and pushes `dist/` to branch `deploy`;
   Hostinger's Git integration deploys it into `public_html`. Step-by-step: [`docs/12-go-live-hostinger.md`](docs/12-go-live-hostinger.md).
-  The production workflow only runs once the client facts are filled in (it fails on `[TBC]` by design).
+  Runs on every push to `main`, including saves from the admin panel.
 
 ## Not legal advice
 Impressum and Datenschutzerklärung are researched templates. Have them checked before the production launch.

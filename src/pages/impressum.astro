@@ -1,25 +1,24 @@
 ---
 /** Impressum per § 5 DDG. Template: docs/06-legal-pages.md §B. Have it checked before launch. */
 import Legal from '../layouts/Legal.astro';
-import Tbc from '../components/Tbc.astro';
-import { site, telHref, mailHref } from '../data/site';
+import { site, has, telHref, mailHref } from '../data/site';
 import { u } from '../lib/url';
 const l = site.legal;
 ---
 <Legal title="Impressum – AlpenBox24" description="Anbieterkennzeichnung der AlpenBox24 gemäß § 5 DDG: Betreiber, Anschrift und Kontakt des 24/7 Minimarkts an der Bayrischzeller Straße in Miesbach." heading="Impressum">
   <h2>Angaben gemäß § 5 DDG</h2>
   <p>
-    <Tbc value={l.name} fallback="Name des Betreibers folgt" /><br />
-    <Tbc value={l.form} fallback="Rechtsform folgt" /><br />
-    <Tbc value={l.street} fallback="Straße folgt" /><br />
-    <Tbc value={l.zip} fallback="PLZ" /> <Tbc value={l.city} fallback="Ort" />
+    {l.name}{has(l.form) && <>, {l.form}</>}<br />
+    {l.street}<br />
+    {l.zip} {l.city}
   </p>
   {l.managingDirectors.length > 0 && <p>Vertreten durch die Geschäftsführung: {l.managingDirectors.join(', ')}</p>}
   {l.registerNumber && <p>Registergericht: Amtsgericht {l.registerCourt}<br />Registernummer: {l.registerNumber}</p>}
 
   <h2>Kontakt</h2>
-  <p>Telefon: {telHref ? <a href={telHref}>{site.phone.display}</a> : <Tbc value={site.phone.display} fallback="folgt" />}<br />
-  E-Mail: {mailHref ? <a href={mailHref}>{site.email}</a> : <Tbc value={site.email} fallback="folgt" />}</p>
+  <p>{telHref && <>Telefon: <a href={telHref}>{site.phone.display}</a><br /></>}
+  E-Mail: <a href={mailHref}>{site.email}</a><br />
+  Kontaktformular: <a href={u('/kontakt/#formular')}>alpenbox24.de/kontakt</a></p>
 
   {l.vatId && <><h2>Umsatzsteuer-ID</h2><p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz: {l.vatId}</p></>}
 

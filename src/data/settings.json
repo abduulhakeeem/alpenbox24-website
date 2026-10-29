@@ -1,0 +1,34 @@
+{
+  "company": {
+    "legalName": "AlpenBox24 Minimarkt",
+    "legalForm": "",
+    "street": "Bayrischzeller Straße 2-8",
+    "zip": "83714",
+    "city": "Miesbach",
+    "managingDirectors": "",
+    "registerCourt": "",
+    "registerNumber": "",
+    "vatId": ""
+  },
+  "contact": {
+    "email": "info@alpenbox24.de",
+    "phone": "",
+    "whatsapp": ""
+  },
+  "social": {
+    "instagram": "",
+    "facebook": "",
+    "tiktok": "",
+    "googleBusiness": ""
+  },
+  "directions": {
+    "parking": "",
+    "bikeParking": "",
+    "accessibility": ""
+  },
+  "branding": {
+    "logo": "",
+    "favicon": ""
+  },
+  "updatedAt": "2026-10-29T00:00:00Z"
+}

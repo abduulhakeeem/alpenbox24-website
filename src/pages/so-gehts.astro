@@ -2,8 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import Icon from '../components/Icon.astro';
-import Tbc from '../components/Tbc.astro';
-import { site, isTbc, telHref, whatsappHref } from '../data/site';
+import { site, has, telHref, mailHref } from '../data/site';
 import { u } from '../lib/url';
 ---
 <Base
@@ -22,7 +21,7 @@ import { u } from '../lib/url';
       <h2 id="drei" class="visually-hidden">In drei Schritten</h2>
       <ol class="steps" role="list">
         <li class="step" data-reveal><span class="step__line" aria-hidden="true"></span><h3>Aussuchen</h3><p>Wähle dein Produkt am Display oder über die Fachnummer.</p></li>
-        <li class="step" data-reveal style="--d:120"><span class="step__line" aria-hidden="true"></span><h3>Bezahlen</h3><p><Tbc value={site.payment.howtoDe} fallback="Zahlungsarten folgen" /></p></li>
+        <li class="step" data-reveal style="--d:120"><span class="step__line" aria-hidden="true"></span><h3>Bezahlen</h3><p>{site.payment.howtoDe}</p></li>
         <li class="step" data-reveal style="--d:240"><h3>Mitnehmen</h3><p>Das Fach öffnet sich oder das Produkt fällt in die Ausgabe. Fertig.</p></li>
       </ol>
     </div>
@@ -32,11 +31,12 @@ import { u } from '../lib/url';
     <div class="wrap grid-2" style="align-items:start">
       <div class="stack">
         <p class="kicker">Bezahlen</p>
-        <h2 id="bezahlen">Karte, Handy oder bar?</h2>
+        <h2 id="bezahlen">Bar oder per Überweisung.</h2>
       </div>
       <ul class="icon-list" role="list">
-        <li><Icon name="contactless" /><div><strong>Zahlungsarten</strong><p>Wir akzeptieren <Tbc value={site.payment.methods} fallback="Liste folgt">{!isTbc(site.payment.methods) && site.payment.methods.join(', ')}</Tbc>.</p></div></li>
-        <li><Icon name="card" /><div><strong>Bargeld</strong><p>{site.payment.cash === true ? 'Die Automaten nehmen Bargeld und geben Wechselgeld zurück.' : site.payment.cash === false ? 'Bargeld nehmen die Automaten nicht an.' : <Tbc value={site.payment.cash} fallback="Angabe folgt" />}</p></div></li>
+        <li><Icon name="contactless" /><div><strong>Zahlungsarten</strong><p>Wir akzeptieren {site.payment.methods.join(' und ')}.</p></div></li>
+        <li><Icon name="card" /><div><strong>Bargeld</strong><p>Am Automaten zahlst du einfach bar.</p></div></li>
+        <li><Icon name="mail" /><div><strong>Überweisung</strong><p>Du möchtest per Überweisung zahlen? Schreib uns kurz, wir schicken dir die Bankverbindung.</p></div></li>
       </ul>
     </div>
   </section>
@@ -50,8 +50,8 @@ import { u } from '../lib/url';
       <div class="stack">
         <p class="lead">Tabakwaren und E-Zigaretten{site.sellsAlcohol === true ? ' sowie alkoholische Getränke' : ''} gibt der Automat nur aus, wenn dein Alter vorher technisch geprüft wurde. Das schreibt das Jugendschutzgesetz vor, und daran gibt es bei uns keine Ausnahme.</p>
         <ul class="icon-list" role="list">
-          <li><Icon name="id" /><div><strong>So geht’s bei uns</strong><p><Tbc value={site.ageCheck.howtoDe} fallback="Ablauf der Altersprüfung folgt" /></p></div></li>
-          <li><Icon name="shield" /><div><strong>Deine Daten</strong><p>{site.ageCheck.storesNoIdData === true ? 'Wir speichern dabei keine Ausweisdaten.' : <Tbc value={site.ageCheck.storesNoIdData} fallback="Herstellerangabe folgt" />}</p></div></li>
+          <li><Icon name="id" /><div><strong>So geht’s bei uns</strong><p>{has(site.ageCheck.howtoDe) ? site.ageCheck.howtoDe : 'Du weist dein Alter direkt am Automaten nach, bevor er ein Produkt ab 18 freigibt. Das Display zeigt dir Schritt für Schritt, was zu tun ist.'}</p></div></li>
+          {site.ageCheck.storesNoIdData === true && <li><Icon name="shield" /><div><strong>Deine Daten</strong><p>Wir speichern dabei keine Ausweisdaten.</p></div></li>}
         </ul>
       </div>
     </div>
@@ -67,10 +67,10 @@ import { u } from '../lib/url';
       <div class="stack">
         <ol class="steps" role="list" style="grid-template-columns:1fr;gap:var(--s-6)">
           <li class="step"><h3>Notieren</h3><p>Automatennummer (Aufkleber am Gerät) und Uhrzeit merken oder ein Foto machen.</p></li>
-          <li class="step"><h3>Melden</h3><p>Ruf an, schreib {whatsappHref ? 'per WhatsApp' : 'uns'} oder nutze das Formular. Telefon: <Tbc value={site.phone.display} fallback="Nummer folgt" /></p></li>
+          <li class="step"><h3>Melden</h3><p>{telHref && <>Ruf an unter <a href={telHref}>{site.phone.display}</a>, </>}{telHref ? 'schreib' : 'Schreib'} an <a href={mailHref}>{site.email}</a> oder nutze das Formular.</p></li>
           <li class="step"><h3>Zahlungsart nennen</h3><p>Bei Kartenzahlung reichen die letzten vier Ziffern der Karte. Nie die volle Nummer schicken.</p></li>
         </ol>
-        <p>Wir melden uns <Tbc value={site.refund.responseTimeDe} fallback="Reaktionszeit folgt" /> und erstatten <Tbc value={site.refund.methodDe} fallback="Erstattungsweg folgt" />.</p>
+        <p>Wir melden uns {site.refund.responseTimeDe} und erstatten dir den Betrag {site.refund.methodDe}.</p>
         <div class="cta-row">
           <span class="signpost-wrap"><a class="signpost signpost--sun" href={u('/kontakt/?anliegen=stoerung#formular')}>Störung melden</a></span>
           {telHref && <a class="btn" href={telHref}><Icon name="phone" />Anrufen</a>}
@@ -84,7 +84,7 @@ import { u } from '../lib/url';
       <h2 id="sicher" class="visually-hidden">Sicherheit, Sauberkeit und Rücksicht</h2>
       <div class="pledge">
         <div><Icon name="sparkle" /><h3>Hell und sauber</h3><p>Der Laden ist rund um die Uhr beleuchtet. Wir reinigen und füllen regelmäßig nach, tagsüber. Nachts arbeitet hier niemand, so will es das bayerische Ladenschlussgesetz.</p></div>
-        <div><Icon name="shield" /><h3>Sicherheit</h3><p>{site.cctv.enabled === true ? 'Der Laden ist videoüberwacht.' : site.cctv.enabled === false ? 'Der Laden ist gut einsehbar und beleuchtet.' : <Tbc value={site.cctv.enabled} fallback="Angabe zur Videoüberwachung folgt" />} Hinweise dazu stehen in der <a href={u('/datenschutz/#videoueberwachung')}>Datenschutzerklärung</a>.</p></div>
+        <div><Icon name="shield" /><h3>Sicherheit</h3><p>{site.cctv.enabled === true ? <>Der Laden ist videoüberwacht. Hinweise dazu stehen in der <a href={u('/datenschutz/#videoueberwachung')}>Datenschutzerklärung</a>.</> : 'Der Laden liegt direkt an der Hauptstraße und ist die ganze Nacht hell beleuchtet.'}</p></div>
         <div><Icon name="moon" /><h3>Nachts mit Rücksicht</h3><p>Um uns herum wohnen Menschen. Bitte nachts leise sein, Müll in die Behälter und den Motor nicht laufen lassen. Danke.</p></div>
       </div>
       <p class="mt-7">Noch Fragen? <a class="link" href={u('/faq/')}>Zu den häufigen Fragen</a> oder <a class="link" href={u('/kontakt/')}>Kontakt aufnehmen</a>.</p>

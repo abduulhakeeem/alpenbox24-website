@@ -1,8 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
-import Tbc from '../components/Tbc.astro';
-import { site, isTbc, telHref } from '../data/site';
+import { site, has, telHref, mailHref } from '../data/site';
 import { u } from '../lib/url';
 ---
 <Base
@@ -21,15 +20,15 @@ import { u } from '../lib/url';
       </div>
       <div class="faq-group">
         <h2 id="bezahlen">Bezahlen</h2>
-        <details class="qa" name="faq" id="zahlungsarten"><summary>Wie kann ich bezahlen?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p><Tbc value={site.payment.methods} fallback="Zahlungsarten folgen">{!isTbc(site.payment.methods) && site.payment.methods.join(', ')}</Tbc></p></div></details>
-        <details class="qa" name="faq" id="bargeld"><summary>Nehmen die Automaten Bargeld?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>{site.payment.cash === true ? 'Ja, und sie geben Wechselgeld zurück.' : site.payment.cash === false ? 'Nein, bezahlt wird mit Karte oder Handy.' : <Tbc value={site.payment.cash} fallback="Angabe folgt" />}</p></div></details>
+        <details class="qa" name="faq" id="zahlungsarten"><summary>Wie kann ich bezahlen?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>{site.payment.howtoDe}</p></div></details>
+        <details class="qa" name="faq" id="bargeld"><summary>Nehmen die Automaten Bargeld?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>{site.payment.cash === true ? 'Ja, du kannst am Automaten bar bezahlen.' : 'Nein, bitte nutze eine der anderen Zahlungsarten.'}</p></div></details>
         <details class="qa" name="faq" id="preise"><summary>Wo sehe ich die Preise?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Direkt am Automaten, an jedem Fach.</p></div></details>
       </div>
       <div class="faq-group">
         <h2 id="alterspruefung">Altersprüfung</h2>
-        <details class="qa" name="faq" id="wie-alterspruefung"><summary>Wie funktioniert die Altersprüfung?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p><Tbc value={site.ageCheck.howtoDe} fallback="Ablauf folgt" /></p></div></details>
+        <details class="qa" name="faq" id="wie-alterspruefung"><summary>Wie funktioniert die Altersprüfung?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>{has(site.ageCheck.howtoDe) ? site.ageCheck.howtoDe : 'Bevor der Automat ein Produkt ab 18 freigibt, weist du dein Alter direkt am Gerät nach. Was genau zu tun ist, zeigt dir das Display.'}</p></div></details>
         <details class="qa" name="faq" id="warum-alter"><summary>Warum muss ich mein Alter nachweisen?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Für Tabakwaren und E-Zigaretten{site.sellsAlcohol === true ? ' sowie Alkohol' : ''} verlangt das Jugendschutzgesetz, dass Kinder und Jugendliche sie am Automaten nicht bekommen können. Deshalb prüft der Automat vorher technisch dein Alter.</p></div></details>
-        <details class="qa" name="faq" id="ausweisdaten"><summary>Werden meine Ausweisdaten gespeichert?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>{site.ageCheck.storesNoIdData === true ? 'Nein, wir speichern keine Ausweisdaten.' : <Tbc value={site.ageCheck.storesNoIdData} fallback="Antwort folgt nach Bestätigung des Geräteherstellers" />}</p></div></details>
+        {site.ageCheck.storesNoIdData === true && <details class="qa" name="faq" id="ausweisdaten"><summary>Werden meine Ausweisdaten gespeichert?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Nein, wir speichern keine Ausweisdaten.</p></div></details>}
       </div>
       <div class="faq-group">
         <h2 id="sortiment">Sortiment</h2>
@@ -39,12 +38,12 @@ import { u } from '../lib/url';
       </div>
       <div class="faq-group">
         <h2 id="stoerung">Störung & Erstattung</h2>
-        <details class="qa" name="faq" id="nicht-ausgegeben"><summary>Der Automat hat nicht ausgegeben. Was jetzt?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Notiere Automatennummer und Uhrzeit und melde dich {telHref ? <>unter <a href={telHref}>{site.phone.display}</a></> : 'telefonisch'} oder über das <a href={u('/kontakt/?anliegen=stoerung#formular')}>Formular</a>. Wir erstatten <Tbc value={site.refund.methodDe} fallback="Erstattungsweg folgt" />.</p></div></details>
+        <details class="qa" name="faq" id="nicht-ausgegeben"><summary>Der Automat hat nicht ausgegeben. Was jetzt?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Notiere Automatennummer und Uhrzeit und melde dich {telHref ? <>unter <a href={telHref}>{site.phone.display}</a></> : <>per E-Mail an <a href={mailHref}>{site.email}</a></>} oder über das <a href={u('/kontakt/?anliegen=stoerung#formular')}>Formular</a>. Wir erstatten {site.refund.methodDe}.</p></div></details>
         <details class="qa" name="faq" id="doppelt"><summary>Mir wurde doppelt abgebucht.<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Melde dich mit Uhrzeit, Betrag und den letzten vier Ziffern deiner Karte. Wir klären das mit dem Zahlungsdienstleister.</p></div></details>
       </div>
       <div class="faq-group">
         <h2 id="anfahrt">Anfahrt</h2>
-        <details class="qa" name="faq" id="parken"><summary>Wo kann ich parken?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p><Tbc value={site.directions.parkingDe} fallback="Info folgt" /></p></div></details>
+        {has(site.directions.parkingDe) && <details class="qa" name="faq" id="parken"><summary>Wo kann ich parken?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>{site.directions.parkingDe}</p></div></details>}
         <details class="qa" name="faq" id="bahnhof"><summary>Wie weit ist es vom Bahnhof?<span class="qa__icon" aria-hidden="true"></span></summary><div class="qa__a"><p>Rund {site.directions.walkMetersFromStation} Meter, etwa {site.directions.walkMinutesFromStation} Minuten zu Fuß vom Bahnhof Miesbach (RB 55 München–Bayrischzell).</p></div></details>
       </div>
       <p class="mt-8">Deine Frage war nicht dabei? <a class="link" href={u('/kontakt/#formular')}>Schreib uns</a>.</p>

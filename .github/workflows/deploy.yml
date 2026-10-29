@@ -4,9 +4,9 @@ name: Build & publish static site to "deploy" branch
 # Hostinger hPanel → Websites → Manage → Advanced → Git: repo, branch "deploy",
 # directory public_html, Auto-deployment ON. Hostinger deploys files as-is (no build step there).
 
-# Manual until the client facts are filled in (production build fails on [TBC] by design).
-# After go-live, add:  push: { branches: [main] }
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -28,6 +28,8 @@ jobs:
           cache: npm
 
       - run: npm ci
+      - name: Lint PHP (contact form + admin)
+        run: php -l public/api/kontakt.php && php -l public/admin/index.php
 
       # astro check + astro build + scripts/guard.mjs (fails on [TBC], tobacco terms in SEO fields, 3rd-party requests)
       - run: npm run build

@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /admin/
 Disallow: /kontakt/danke/
 
 Sitemap: https://alpenbox24.de/sitemap-index.xml

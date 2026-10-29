@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro check && astro build && node scripts/guard.mjs dist",
+    "build": "node scripts/build-icons.mjs && astro check && astro build && node scripts/guard.mjs dist",
     "build:preview": "node scripts/build-preview.mjs",
     "preview": "astro preview",
     "qa:html": "html-validate \"dist/**/*.html\"",

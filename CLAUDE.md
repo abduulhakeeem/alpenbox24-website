@@ -30,7 +30,7 @@ before you touch that area (brand, copy, legal, SEO, stack, images, QA).
 | R2 | **Everything works with JavaScript disabled.** JS is progressive enhancement only: one vanilla module `src/scripts/app.ts` (≈ 4 KB gz) + `public/js/boot.js`. No inline executable scripts (CSP). | Robustness, speed, R1. |
 | R3 | **No third-party requests at page load.** Self-host fonts. No Google Maps/YouTube/reCAPTCHA embeds, no CDN scripts, no analytics at launch. Maps = static image + outbound links. | DSGVO/TDDDG: no consent banner needed. LG München I, 20.01.2022, 3 O 17493/20 (Google Fonts). |
 | R4 | **Vapes/tobacco: facts only, never promotion.** No vape photos, no flavour talk, no "neu", no lifestyle imagery, no vape keywords in titles/meta/headings/alt, no vape landing pages. One factual line in the Sortiment list is the maximum. | § 19 TabakerzG; OLG Bamberg 21.01.2026 (3 UKl 30/25 e); OLG Karlsruhe 08.04.2026 (6 U 1/26). See `docs/06-legal-pages.md`. |
-| R5 | **One source of truth for business data.** Name, address, phone, email, hours, payment methods, geo, social links live only in `src/data/site.ts`. Templates, schema, footer, Impressum read from it. | NAP consistency (local SEO) and hours may change (municipal ordinance, see research). |
+| R5 | **One source of truth for business data.** Name, address, phone, email, hours, payment methods, geo, social links live only in `src/data/site.ts` (editable parts in `src/data/settings.json`). Templates, schema, footer, Impressum read from it. | NAP consistency (local SEO) and hours may change (municipal ordinance, see research). |
 | R6 | **German first, du-Form, plain language.** `/en/` is a single compact page for tourists. | Audience: 92.6 % of regional overnight guests are German. |
 | R7 | **WCAG 2.2 AA as quality floor.** Contrast tokens are pre-checked in `docs/04-design-system.md`. | Night use on phones; voluntary since BFSG very likely does not apply. |
 | R8 | **No invented facts.** Anything marked `[TBC]` in docs or `site.ts` must stay visibly flagged (build fails on `[TBC]` in production — see `docs/08-tech-spec.md`) until the client confirms it. Never invent prices, producers, machine counts, payment methods, opening dates or reviews. | Truthfulness; UWG; trust. |
@@ -38,7 +38,7 @@ before you touch that area (brand, copy, legal, SEO, stack, images, QA).
 
 ## 2b. Current state (29.10.2026)
 
-All 15 routes are built (`docs/11-build-log-and-verification.md`). Photos are licensed Wikimedia Commons images of the region until the shop shoot exists. Missing client facts render as "folgt" markers in dev/staging and as `[TBC]` (build failure) in production. Go-live steps: `docs/12-go-live-hostinger.md`.
+All 15 routes are built (`docs/11-build-log-and-verification.md`). Photos are licensed Wikimedia Commons images of the region until the shop shoot exists. Editable company data lives in `src/data/settings.json` and is changed by the owner through the PHP admin panel `/admin/` (`public/admin/index.php`, docs/13) — saving commits to GitHub and triggers the deploy. Facts the client has not provided are empty and hidden (`has()` in `site.ts`); never invent them. Go-live steps: `docs/12-go-live-hostinger.md`.
 
 ## 3. Stack (decided — do not re-debate)
 
