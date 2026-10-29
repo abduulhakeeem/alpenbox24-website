@@ -8,12 +8,14 @@ import DayCycle from '../components/DayCycle.astro';
 import MapBlock from '../components/MapBlock.astro';
 import Icon from '../components/Icon.astro';
 import { machines } from '../data/machines';
+import { gallery } from '../data/gallery';
 import { site } from '../data/site';
 import { u } from '../lib/url';
 
 const tiles = machines.filter((m) => m.id !== 'standort').slice(0, 6);
 const main = site.locations[0];
-const strip = ['automat-tokio-nacht', 'regiomat-holz', 'automat-grabgo', 'automat-reihe-akita', 'kartoffelautomat', 'automat-metro'] as const;
+const stripNames = ['automat-tokio-nacht', 'regiomat-holz', 'automat-grabgo', 'automat-reihe-akita', 'kartoffelautomat', 'automat-metro'];
+const strip = stripNames.map((n) => gallery.find((g) => g.name === n)!).filter(Boolean);
 ---
 <Base
   title="AlpenBox24 – 24/7 Automaten in Miesbach und Umgebung"
@@ -31,14 +33,14 @@ const strip = ['automat-tokio-nacht', 'regiomat-holz', 'automat-grabgo', 'automa
         <span class="hero__big"><SplitText text="Nie geschlossen." base={200} /></span>
         <span class="hero__sub">Unsere Automaten. Rund um die Uhr.</span>
       </h1>
-      <p class="lead">Snacks, Getränke und Regionales aus den Automaten von AlpenBox24. In Miesbach und an weiteren Standorten, Tag und Nacht.</p>
+      <p class="lead">Snacks, kalte Getränke und Regionales, direkt aus unseren Automaten. In Miesbach und an weiteren Standorten.</p>
       <div class="cta-row">
         <span class="signpost-wrap"><a class="signpost" href={u('/standorte/')}>Standorte ansehen</a></span>
         <a class="btn" href={u('/automaten/')}>Unsere Automaten</a>
       </div>
     </div>
     <Horizon />
-    <a class="hero__scroll" href="#typen">Runter scrollen</a>
+    <a class="hero__scroll" href="#typen">Weiter</a>
     <div class="hero__credit"><a class="photo__credit" href={u('/bildnachweise/#automat-drei-nacht')}>Beispielfoto: mrhayata · CC BY-SA 2.0</a></div>
   </section>
 
@@ -46,7 +48,7 @@ const strip = ['automat-tokio-nacht', 'regiomat-holz', 'automat-grabgo', 'automa
 
   <section class="section" id="typen" aria-labelledby="typen-title">
     <div class="wrap">
-      <h2 id="typen-title" class="statement" data-reveal>Unsere Automaten. <em>Immer offen.</em></h2>
+      <h2 id="typen-title" class="statement" data-reveal>Was in unseren Automaten <em>steckt.</em></h2>
       <div class="bento mt-7">
         {tiles.map((m, i) => (
           <a class:list={['bento__tile', `bento__tile--${i}`]} href={u(`/automaten/#${m.id}`)} data-reveal="clip" style={`--d:${i * 90}`}>
@@ -55,7 +57,7 @@ const strip = ['automat-tokio-nacht', 'regiomat-holz', 'automat-grabgo', 'automa
           </a>
         ))}
       </div>
-      <p class="muted mt-5" style="font-size:var(--fs-small)">Beispielfotos aus Wikimedia Commons, Urheber unter <a href={u('/bildnachweise/')}>Bildnachweise</a>.</p>
+      <p class="muted mt-5" style="font-size:var(--fs-small)">Beispielfotos aus Wikimedia Commons. Urheber und Lizenzen findest du unter <a href={u('/bildnachweise/')}>Bildnachweise</a>.</p>
     </div>
   </section>
 
@@ -73,16 +75,17 @@ const strip = ['automat-tokio-nacht', 'regiomat-holz', 'automat-grabgo', 'automa
       <h2 id="einblicke-title" data-reveal>Licht an, Fach auf.</h2>
       <a class="btn" href={u('/galerie/')}>Zur Galerie</a>
     </div>
-    <div class="strip mt-6" role="list">
+    <ul class="strip mt-6" aria-label="Bilder aus der Galerie">
       {strip.map((p) => (
-        <a role="listitem" href={u('/galerie/')}>
-          <Photo name={p} alt="" credit={false} widths={[400, 700, 900]} sizes="(min-width: 960px) 26rem, 78vw" />
-        </a>
+        <li><a href={u('/galerie/')}>
+          <Photo name={p.name as any} alt={p.alt} credit={false} widths={[400, 700, 900]} sizes="(min-width: 960px) 26rem, 78vw" />
+          <span class="strip__cap">{p.caption}</span>
+        </a></li>
       ))}
-    </div>
+    </ul>
   </section>
 
-  <Marquee sun items={['24 Stunden', '7 Tage', '365 Tage', 'Kein Personal', 'Kein Ladenschluss']} speed={44} />
+  <Marquee sun items={['24 Stunden', '7 Tage', '365 Tage', 'Selbstbedienung', 'Kein Ladenschluss']} speed={44} />
 
   <section class="section" aria-labelledby="miesbach-title">
     <div class="wrap grid-2">
@@ -92,7 +95,7 @@ const strip = ['automat-tokio-nacht', 'regiomat-holz', 'automat-grabgo', 'automa
         {main && <p class="muted" data-reveal style="--d:160"><strong>{main.name}</strong><br />{main.address}{main.hours && <><br />{main.hours}</>}</p>}
         <div class="cta-row" data-reveal style="--d:240">
           <span class="signpost-wrap"><a class="signpost" href={u('/standorte/')}>Alle Standorte</a></span>
-          {main && <a class="btn" href={main.mapsUrl} rel="noopener" target="_blank"><Icon name="route" />Route</a>}
+          {main && <a class="btn" href={main.mapsUrl} rel="noopener" target="_blank"><Icon name="route" />Route planen</a>}
         </div>
       </div>
       <div data-reveal style="--d:120"><MapBlock /></div>

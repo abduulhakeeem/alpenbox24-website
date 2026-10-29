@@ -6,7 +6,7 @@ import credits from '../data/photo-credits.json';
 const entries = Object.entries(credits) as [keyof typeof credits, (typeof credits)[keyof typeof credits]][];
 ---
 <Legal title="Bildnachweise – AlpenBox24" description="Urheber, Lizenzen und Quellen aller Fotos auf der Website von AlpenBox24 in Miesbach. Freie Fotos aus Wikimedia Commons und Kartendaten von OpenStreetMap." heading="Bildnachweise">
-  <p>Die Fotos auf dieser Website stammen aus Wikimedia Commons und stehen unter freien Lizenzen. Wir haben sie für die Website zugeschnitten und komprimiert; bei Lizenzen mit „SA“ (Share Alike) stehen auch unsere Zuschnitte unter derselben Lizenz. Fotos vom AlpenBox24-Laden selbst folgen.</p>
+  <p>Die Fotos auf dieser Website stammen aus Wikimedia Commons und stehen unter freien Lizenzen. Wir haben sie für die Website zugeschnitten und komprimiert; bei Lizenzen mit „SA“ (Share Alike) stehen auch unsere Zuschnitte unter derselben Lizenz. Fotos unserer eigenen Automaten und Standorte folgen.</p>
   <ul class="credits mt-6">
     {entries.map(([key, c]) => (
       <li id={key}>

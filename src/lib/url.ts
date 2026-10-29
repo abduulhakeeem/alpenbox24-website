@@ -12,7 +12,7 @@ export const abs = (path: string, site: URL | undefined): string =>
 /** Build-time only (frontmatter). Set by `npm run build:preview`. */
 export const STAGING = process.env.STAGING === '1' || import.meta.env.DEV;
 
-/** Strip the base from a pathname so templates can compare against '/sortiment/' etc. */
+/** Strip the base from a pathname so templates can compare against '/automaten/' etc. */
 export const route = (pathname: string): string => {
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   const p = base && pathname.startsWith(base) ? pathname.slice(base.length) : pathname;

@@ -32,11 +32,26 @@ const io = new IntersectionObserver(
   }),
   { rootMargin: '0px 0px -12% 0px', threshold: 0.08 },
 );
-$$('[data-reveal], .ridge--draw, .map, [data-count]').forEach((el) => {
+const revealables = $$('[data-reveal], .ridge--draw, .map, [data-count]');
+revealables.forEach((el) => {
   const target = el.dataset.reveal === 'clip' && el.parentElement ? el.parentElement : el;
   if (target !== el) watched.set(target, [...(watched.get(target) ?? []), el]);
   io.observe(target);
 });
+// Fallback: never leave content hidden if the observer is throttled (background tabs, old engines).
+let pending = revealables;
+const sweep = () => {
+  pending = pending.filter((el) => {
+    const box = (el.dataset.reveal === 'clip' && el.parentElement ? el.parentElement : el).getBoundingClientRect();
+    if (box.top < innerHeight * 0.95 && box.bottom > 0) { el.classList.add('is-in'); return false; }
+    return !el.classList.contains('is-in');
+  });
+  if (!pending.length) removeEventListener('scroll', onSweep);
+};
+let sweepQueued = false;
+const onSweep = () => { if (!sweepQueued) { sweepQueued = true; setTimeout(() => { sweepQueued = false; sweep(); }, 250); } };
+addEventListener('scroll', onSweep, { passive: true });
+setTimeout(sweep, 1200);
 
 /* Count-up numbers */
 const countIo = new IntersectionObserver((entries) => entries.forEach((e) => {
@@ -182,12 +197,14 @@ if (form) {
   const ts = form.querySelector<HTMLInputElement>('input[name="_ts"]');
   if (ts) ts.value = String(Date.now());
   const params = new URLSearchParams(location.search);
-  const sel = form.querySelector<HTMLSelectElement>('select[name="anliegen"]');
   const a = params.get('anliegen');
-  if (sel && a && [...sel.options].some((o) => o.value === a)) sel.value = a;
-  const syncMachine = () => form.querySelector<HTMLElement>('[data-show-if="stoerung"]')?.toggleAttribute('hidden', sel?.value !== 'stoerung');
-  sel?.addEventListener('change', syncMachine); syncMachine();
-  if (params.get('fehler')) document.querySelector('[data-form-error]')?.removeAttribute('hidden');
+  const radio = a ? form.querySelector<HTMLInputElement>(`input[name="anliegen"][value="${CSS.escape(a)}"]`) : null;
+  if (radio) radio.checked = true;
+  if (params.get('fehler')) {
+    const err = document.querySelector<HTMLElement>('[data-form-error]');
+    err?.removeAttribute('hidden');
+    err?.scrollIntoView({ block: 'center' });
+  }
 }
 
 /* Magnetic signposts (fine pointers only) */

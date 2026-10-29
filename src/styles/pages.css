@@ -238,3 +238,12 @@
   .type h2 { margin: 0.6rem 0 0.8rem; }
   .type p { color: var(--c-stein); font-size: var(--fs-lead); max-width: 34ch; }
 }
+
+@layer pages {
+  .machine__glass { list-style: none; margin: 0; }
+  .machine__glass > li { display: flex; }
+  .machine__glass .slot { flex: 1; }
+  .strip { list-style: none; margin-block-end: 0; }
+  .strip li { scroll-snap-align: start; }
+  .strip__cap { display: block; margin-top: 0.6rem; color: var(--c-stein); font-size: var(--fs-small); }
+}

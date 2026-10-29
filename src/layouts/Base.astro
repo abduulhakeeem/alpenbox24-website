@@ -151,7 +151,7 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
                 <OpenNow />
                 <nav aria-label="Menü">
                   <ul role="list">
-                    {[{ href: '/', label: 'Start', hint: '' }, ...mainNav, { href: '/faq/', label: 'FAQ', hint: 'Häufige Fragen' }].map((n, i) => (
+                    {[{ href: '/', label: 'Start', hint: '' }, ...mainNav].map((n, i) => (
                       <li style={`--i:${i}`}><a class="menu__big" href={u(n.href)} aria-current={here === n.href ? 'page' : undefined}>{n.label}<small>{n.hint}</small></a></li>
                     ))}
                   </ul>
@@ -225,7 +225,7 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
       <div class="lightbox__bar"><span data-lb-count></span><button class="icon-btn" type="button" data-lb-close aria-label="Schließen"><Icon name="close" /></button></div>
       <div class="lightbox__stage">
         <button class="icon-btn lightbox__nav lightbox__nav--prev" type="button" data-lb-prev aria-label="Vorheriges Bild"><Icon name="arrowLeft" /></button>
-        <img alt="" data-lb-img />
+        <img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-lb-img />
         <button class="icon-btn lightbox__nav lightbox__nav--next" type="button" data-lb-next aria-label="Nächstes Bild"><Icon name="arrowRight" /></button>
       </div>
       <p class="lightbox__cap" data-lb-cap></p>
