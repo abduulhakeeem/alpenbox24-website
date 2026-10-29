@@ -66,4 +66,4 @@ pre-cropped responsive images, lazy SVG map (47 KB gz), long-cache headers for f
 | Contact form (`public/api/kontakt.php`) | same-origin (Origin/Referer), honeypot, 3-s time trap, 5 msgs/15 min per hashed IP, 20 KB cap, CR/LF stripped from header fields, card/IBAN numbers removed, SMTP timeout, no data stored or logged |
 | Admin (`public/admin/index.php`) | bcrypt (or constant-time) password check, 8-attempt lock-out, strict session (HttpOnly, SameSite=Strict, Secure, strict mode, 30-min idle / 8-h max, browser-bound), CSRF token, own strict CSP, upload signature check + strict SVG filter, secrets only in `<root>/config/` |
 | Front end | no third-party requests, no `innerHTML` with external data, 3.7 KB JS |
-| CI gate | `scripts/test-php.sh` runs 27 functional checks against both PHP endpoints on every push; nothing deploys if one fails |
+| CI gate | `scripts/test-php.sh` runs 26 functional checks against both PHP endpoints on every push; nothing deploys if one fails |
