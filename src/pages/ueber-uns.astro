@@ -2,57 +2,32 @@
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
 import Photo from '../components/Photo.astro';
-import Icon from '../components/Icon.astro';
 import Mark from '../components/Mark.astro';
-import { googleDirectionsUrl } from '../data/site';
+import { u } from '../lib/url';
 ---
 <Base
   title="Über uns – AlpenBox24 aus Miesbach"
-  description="Wer hinter AlpenBox24 steckt und warum es in Miesbach einen Minimarkt gibt, der nie zumacht. Regional verwurzelt, rund um die Uhr für dich da."
+  description="AlpenBox24 aus Miesbach verkauft Verkaufsautomaten und stellt sie auf: für Hofläden, Firmen, Hotels, Vereine und 24/7-Shops. Einen betreiben wir selbst."
   breadcrumbs={[{ name: 'Über uns', href: '/ueber-uns/' }]}
 >
-  <PageHead
-    title="Über AlpenBox24"
-    lead="Ein heller Laden an einer dunklen Straße. Snacks, Getränke und Regionales für alle, die in Miesbach nach acht Uhr abends noch etwas brauchen."
-    crumbs={[{ name: 'Über uns', href: '/ueber-uns/' }]}
-  />
+  <PageHead title="Über AlpenBox24" lead="Aus Miesbach. Für überall, wo ein Automat Sinn ergibt." crumbs={[{ name: 'Über uns', href: '/ueber-uns/' }]} />
 
   <section class="section" style="padding-top:0">
     <div class="wrap story">
       <Photo name="wendelstein-sonne" alt="Die Sonne geht neben dem Wendelstein unter, der Gipfel steht als dunkle Silhouette vor orangem Himmel" reveal="clip" />
       <div class="stack">
-        <p class="kicker" data-reveal>Das Logo</p>
-        <h2 data-reveal style="--d:80">Sonne, Grat, offen.</h2>
-        <p data-reveal style="--d:160">Unser Logo zeigt, was du hier jeden Abend sehen kannst: eine Sonne, die hinter den Bergen verschwindet. Die weiße Linie ist der Grat, der das Oberland zusammenhält. Und die 24 in Lärchengrün heißt: Licht bleibt an.</p>
+        <h2 data-reveal>Sonne, Grat, 24.</h2>
+        <p class="lead muted" data-reveal style="--d:120">Wir verkaufen Automaten und stellen sie auf. Und wir betreiben selbst einen 24/7-Minimarkt in Miesbach. Wir wissen also, was im Alltag zählt.</p>
         <div class="logo-demo" data-reveal style="--d:240"><Mark label="AlpenBox24 Logo" /></div>
       </div>
     </div>
   </section>
 
-  <section class="section section--fels">
-    <div class="wrap-text stack" style="--stack:1.3em">
-      <h2>Warum Miesbach</h2>
-      <p>Miesbach liegt da, wo das Oberland anfängt. Wer an den Schliersee, nach Bayrischzell oder zum Skifahren will, kommt hier durch. Und wer hier wohnt, steht nach acht Uhr abends und am Sonntag oft vor verschlossenen Türen. Für beide sind wir da.</p>
-      <p>Seit August 2025 erlaubt Bayern kleinen Läden ohne Personal, rund um die Uhr zu öffnen, auch am Sonntag. Genau so ein Laden sind wir: Alles läuft über Automaten, nachgefüllt und geputzt wird tagsüber.</p>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap">
-      <h2>Worauf du dich verlassen kannst</h2>
-      <div class="pledge mt-7">
-        <div data-reveal><Icon name="sparkle" /><h3>Hell und sauber</h3><p>Wir halten den Laden sauber und beleuchtet und füllen regelmäßig nach.</p></div>
-        <div data-reveal style="--d:120"><Icon name="shield" /><h3>Ab 18 heißt ab 18</h3><p>Produkte ab 18 gibt es nur nach Altersprüfung, ohne Ausnahme.</p></div>
-        <div data-reveal style="--d:240"><Icon name="leaf" /><h3>Aus der Gegend</h3><p>Wir arbeiten mit Erzeugern aus dem Landkreis, weil das für uns zum Oberland gehört.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="band" aria-label="Schau vorbei">
+  <section class="band" aria-label="Nachts">
     <Photo name="tegernsee-panorama-nacht" alt="" sizes="100vw" widths={[800, 1280, 1920, 2560]} credit={false} />
     <div class="wrap band__text">
-      <p class="statement">Schau vorbei. <em>Wir haben offen.</em></p>
-      <div class="cta-row mt-6"><span class="signpost-wrap"><a class="signpost" href={googleDirectionsUrl} rel="noopener" target="_blank">Route planen</a></span></div>
+      <p class="statement">Licht an. <em>Rund um die Uhr.</em></p>
+      <div class="cta-row mt-6"><span class="signpost-wrap"><a class="signpost" href={u('/kontakt/?anliegen=kauf#formular')}>Automat anfragen</a></span></div>
     </div>
   </section>
 </Base>

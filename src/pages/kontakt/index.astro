@@ -1,122 +1,72 @@
 ---
 import Base from '../../layouts/Base.astro';
 import PageHead from '../../components/PageHead.astro';
-import MapBlock from '../../components/MapBlock.astro';
 import Icon from '../../components/Icon.astro';
-import OpenNow from '../../components/OpenNow.astro';
-import { site, has, googleDirectionsUrl, appleDirectionsUrl, telHref, mailHref, whatsappHref } from '../../data/site';
+import { site, telHref, mailHref, whatsappHref } from '../../data/site';
 import { u, STAGING } from '../../lib/url';
 ---
 <Base
-  title="Kontakt & Anfahrt – AlpenBox24 Miesbach"
-  description="Bayrischzeller Straße 2-8, 83714 Miesbach. Route, Anreise mit der Bahn, Störung melden und Kontakt zum AlpenBox24 Team. Täglich rund um die Uhr geöffnet."
+  title="Automat anfragen – Kontakt | AlpenBox24"
+  description="Du willst einen Verkaufsautomaten kaufen oder aufstellen lassen? Schreib AlpenBox24 aus Miesbach: Snack-, Getränke-, Regionalautomat oder 24/7-Shop."
   breadcrumbs={[{ name: 'Kontakt', href: '/kontakt/' }]}
 >
-  <PageHead title="Kontakt und Anfahrt" crumbs={[{ name: 'Kontakt', href: '/kontakt/' }]} lead="Hier findest du den Weg zu AlpenBox24 in Miesbach, Hilfe bei Störungen und einen direkten Draht zu uns." />
+  <PageHead title="Automat anfragen" lead="Sag uns, was du verkaufen willst und wo. Wir melden uns." crumbs={[{ name: 'Kontakt', href: '/kontakt/' }]} />
 
-  <section class="section" style="padding-top:0" id="route" aria-labelledby="route-title">
+  <section class="section" style="padding-top:0" id="formular" aria-label="Anfrage">
     <div class="wrap grid-2" style="align-items:start">
+      <div>
+        <p class="notice" data-form-error hidden role="alert">Das hat nicht geklappt. Bitte versuch es noch einmal oder schreib an {site.email}.</p>
+        {STAGING && <p class="notice">Vorschau: Das Formular verschickt erst auf dem Hostinger-Server E-Mails.</p>}
+        <form class="form mt-5" method="post" action={u('/api/kontakt.php')} data-form>
+          <div class="field">
+            <label for="anliegen">Worum geht’s? *</label>
+            <select class="select" id="anliegen" name="anliegen" required>
+              <option value="kauf" selected>Automat kaufen</option>
+              <option value="aufstellen">Automat aufstellen lassen</option>
+              <option value="shop">24/7-Automatenshop planen</option>
+              <option value="sonstiges">Sonstiges</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="name">Name *</label>
+            <input class="input" id="name" name="name" autocomplete="name" required maxlength="120" />
+            <span class="error">Bitte gib deinen Namen an.</span>
+          </div>
+          <div class="field">
+            <label for="email">E-Mail *</label>
+            <input class="input" id="email" name="email" type="email" autocomplete="email" required maxlength="200" />
+            <span class="error">Bitte gib eine gültige E-Mail-Adresse an.</span>
+          </div>
+          <div class="field">
+            <label for="telefon">Telefon <span class="muted">(optional)</span></label>
+            <input class="input" id="telefon" name="telefon" type="tel" autocomplete="tel" maxlength="40" />
+          </div>
+          <div class="field">
+            <label for="ort">Standort <span class="muted">(optional)</span></label>
+            <input class="input" id="ort" name="ort" maxlength="120" placeholder="z. B. Hofladen in Hausham" />
+          </div>
+          <div class="field">
+            <label for="nachricht">Nachricht *</label>
+            <textarea class="textarea" id="nachricht" name="nachricht" required maxlength="4000" placeholder="Was willst du verkaufen? Drinnen oder draußen?"></textarea>
+            <span class="error">Bitte schreib uns kurz, worum es geht.</span>
+          </div>
+          <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off" /></div>
+          <input type="hidden" name="_ts" value="" />
+          <div class="check">
+            <input type="checkbox" id="dsgvo" name="dsgvo" required />
+            <label for="dsgvo">Ich habe die <a href={u('/datenschutz/#kontakt')}>Datenschutzerklärung</a> gelesen. *</label>
+          </div>
+          <div><span class="signpost-wrap"><button class="signpost" type="submit" style="border:0">Anfrage senden</button></span></div>
+        </form>
+      </div>
       <div class="card-nap">
-        <OpenNow />
         <address><strong>{site.legalBrand}</strong>{site.address.street}<br />{site.address.zip} {site.address.city}</address>
-        <dl>
-          <dt>Geöffnet</dt><dd>{site.hours.labelDe}</dd>
-          {telHref && <><dt>Telefon</dt><dd><a href={telHref}>{site.phone.display}</a></dd></>}
-          <dt>E-Mail</dt><dd><a href={mailHref}>{site.email}</a></dd>
-          <dt>Bezahlen</dt><dd>{site.payment.shortDe}</dd>
-        </dl>
-        <div class="cta-row">
-          <span class="signpost-wrap"><a class="signpost" href={googleDirectionsUrl} rel="noopener" target="_blank">Route mit Google Maps</a></span>
-          <a class="btn" href={appleDirectionsUrl} rel="noopener" target="_blank">Route mit Apple Karten</a>
-        </div>
+        <ul class="icon-list" role="list">
+          <li><Icon name="mail" /><div><strong>E-Mail</strong><p><a href={mailHref}>{site.email}</a></p></div></li>
+          {telHref && <li><Icon name="phone" /><div><strong>Telefon</strong><p><a href={telHref}>{site.phone.display}</a></p></div></li>}
+          {whatsappHref && <li><Icon name="chat" /><div><strong>WhatsApp</strong><p><a href={whatsappHref} rel="noopener" target="_blank">Nachricht schreiben</a></p></div></li>}
+        </ul>
       </div>
-      <MapBlock />
-    </div>
-
-    <div class="wrap mt-8">
-      <h2 id="route-title">Anfahrt</h2>
-      <ul class="icon-list mt-6 anfahrt" role="list">
-        <li><Icon name="car" /><div><strong>Mit dem Auto</strong><p>A8 München–Salzburg, Ausfahrt Weyarn oder Irschenberg, weiter nach Miesbach. Wir liegen an der Bayrischzeller Straße (B&nbsp;472).{has(site.directions.parkingDe) && <> Parken: {site.directions.parkingDe}</>}</p></div></li>
-        <li><Icon name="train" /><div><strong>Mit der Bahn</strong><p>RB 55 München–Bayrischzell bis Bahnhof Miesbach, dann rund {site.directions.walkMetersFromStation}&nbsp;Meter, etwa {site.directions.walkMinutesFromStation}&nbsp;Minuten zu Fuß.</p></div></li>
-        <li><Icon name="bus" /><div><strong>Mit dem Bus</strong><p>Haltestelle „{site.directions.nearestBusStop}“, von dort sind es nur wenige Schritte.</p></div></li>
-        {has(site.directions.bikeParkingDe) && <li><Icon name="bike" /><div><strong>Mit dem Rad</strong><p>{site.directions.bikeParkingDe}</p></div></li>}
-        {has(site.directions.accessibilityDe) && <li><Icon name="hand" /><div><strong>Barrierefreiheit</strong><p>{site.directions.accessibilityDe}</p></div></li>}
-      </ul>
-    </div>
-  </section>
-
-  <section class="section section--fels" id="stoerung" aria-labelledby="stoer-title">
-    <div class="wrap grid-2" style="align-items:start">
-      <div class="stack">
-        <p class="kicker">Hilfe</p>
-        <h2 id="stoer-title">Störung melden</h2>
-        <p class="lead muted">Automat hat nicht ausgegeben oder etwas ist kaputt? {telHref ? <>Am schnellsten geht’s per Telefon{whatsappHref ? ' oder WhatsApp' : ''}.</> : 'Schreib uns per E-Mail oder über das Formular, wir melden uns so schnell wie möglich.'}</p>
-      </div>
-      <div class="stack">
-        <p class="phone-big">{telHref ? <a href={telHref}>{site.phone.display}</a> : <a href={mailHref}>{site.email}</a>}</p>
-        <p>Bitte nenne <strong>Automatennummer</strong>, <strong>Uhrzeit</strong> und <strong>Betrag</strong>.</p>
-        <div class="cta-row">
-          {telHref && <a class="btn" href={telHref}><Icon name="phone" />Anrufen</a>}
-          {whatsappHref && <a class="btn" href={whatsappHref} rel="noopener" target="_blank"><Icon name="chat" />WhatsApp</a>}
-          <a class="btn" href="?anliegen=stoerung#formular"><Icon name="mail" />Per Formular</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="formular" aria-labelledby="form-title">
-    <div class="wrap-text">
-      <h2 id="form-title">Schreib uns</h2>
-      <p class="muted mt-4">Für Sortimentswünsche, Anfragen von Erzeugern oder alles andere. Felder mit * sind Pflicht.</p>
-      <p class="notice mt-5" data-form-error hidden role="alert">Das hat nicht geklappt. Bitte versuch es noch einmal{telHref ? ` oder ruf uns an: ${site.phone.display}` : ''}.</p>
-      {STAGING && <p class="notice mt-5">Vorschau: Das Formular verschickt erst nach dem Go-live auf dem Hostinger-Server E-Mails.</p>}
-      <form class="form mt-6" method="post" action={u('/api/kontakt.php')} data-form>
-        <div class="field">
-          <label for="anliegen">Anliegen *</label>
-          <select class="select" id="anliegen" name="anliegen" required>
-            <option value="stoerung">Störung / Erstattung</option>
-            <option value="wunsch">Sortimentswunsch</option>
-            <option value="erzeuger">Erzeuger werden</option>
-            <option value="sonstiges" selected>Sonstiges</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="name">Name *</label>
-          <input class="input" id="name" name="name" autocomplete="name" required maxlength="120" />
-          <span class="error">Bitte gib deinen Namen an.</span>
-        </div>
-        <div class="field">
-          <label for="email">E-Mail *</label>
-          <input class="input" id="email" name="email" type="email" autocomplete="email" required maxlength="200" />
-          <span class="error">Bitte gib eine gültige E-Mail-Adresse an, z. B. name@beispiel.de.</span>
-        </div>
-        <div class="field">
-          <label for="telefon">Telefon <span class="muted">(optional)</span></label>
-          <input class="input" id="telefon" name="telefon" type="tel" autocomplete="tel" maxlength="40" />
-        </div>
-        <div class="field" data-show-if="stoerung">
-          <label for="automat">Automatennummer <span class="muted">(bei Störung)</span></label>
-          <input class="input" id="automat" name="automat" maxlength="20" />
-        </div>
-        <div class="field">
-          <label for="nachricht">Nachricht *</label>
-          <textarea class="textarea" id="nachricht" name="nachricht" required maxlength="4000"></textarea>
-          <span class="error">Bitte schreib uns kurz, worum es geht.</span>
-          <span class="hint">Für eine Erstattung per Überweisung schicken wir dir eine kurze Rückfrage. Bitte keine Bankdaten ins Formular.</span>
-        </div>
-        <div class="hp" aria-hidden="true"><label for="website">Website</label><input id="website" name="website" tabindex="-1" autocomplete="off" /></div>
-        <input type="hidden" name="_ts" value="" />
-        <div class="check">
-          <input type="checkbox" id="dsgvo" name="dsgvo" required />
-          <label for="dsgvo">Ich habe die <a href={u('/datenschutz/#kontakt')}>Datenschutzerklärung</a> gelesen. *</label>
-        </div>
-        <div><span class="signpost-wrap"><button class="signpost" type="submit" style="border:0">Nachricht senden</button></span></div>
-      </form>
     </div>
   </section>
 </Base>
-<style>
-  .phone-big { font-family: var(--ff-display); font-weight: 900; font-stretch: 118%; font-size: var(--fs-2); }
-  .phone-big a { color: var(--c-laerche); text-decoration: none; }
-  @media (min-width: 900px) { .anfahrt { grid-template-columns: repeat(2, 1fr); column-gap: 3rem; } }
-</style>

@@ -21,7 +21,12 @@ ErrorDocument 404 /404.html
   RewriteRule ^about/?$ /ueber-uns/ [L,R=301]
   RewriteRule ^ueber/?$ /ueber-uns/ [L,R=301]
   RewriteRule ^contact/?$ /kontakt/ [L,R=301]
-  RewriteRule ^anfahrt/?$ /kontakt/#route [L,R=301,NE]
+  RewriteRule ^anfahrt/?$ /miesbach/ [L,R=301]
+  # Pages removed when the site was refocused on vending-machine sales (Oct 2026)
+  RewriteRule ^sortiment/?$ /automaten/ [L,R=301]
+  RewriteRule ^regional/?$ /automaten/#regional [L,R=301,NE]
+  RewriteRule ^so-gehts/?$ /automaten/ [L,R=301]
+  RewriteRule ^faq/?$ /kontakt/ [L,R=301]
   RewriteRule ^gallery/?$ /galerie/ [L,R=301]
   RewriteRule ^datenschutzerklaerung/?$ /datenschutz/ [L,R=301]
   RewriteRule ^privacy/?$ /datenschutz/ [L,R=301]

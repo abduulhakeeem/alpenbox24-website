@@ -1,15 +1,15 @@
 ---
 /**
- * "Ein Tag an der B 472" — scroll-scrubbed 24-hour story (signature moment).
+ * "Dein Automat, 24 Stunden" — scroll-scrubbed 24-hour story (signature moment).
  * No JS: a normal list of moments. With JS (app.ts adds .is-live): sticky stage, sky + sun/moon follow the scroll.
  */
 const moments = [
-  { time: '05:40', phase: 'dawn', title: 'Früher wach als der Bäcker.', text: 'Um sechs willst du am Wendelstein loslaufen. Wasser und was für den Rucksack holst du vorher. Der Laden ist ja eh offen.' },
-  { time: '12:30', phase: 'day', title: 'Kurzer Stopp auf dem Weg an den Schliersee.', text: 'Von der A8 rein nach Miesbach, kurz rechts ran an der B 472. Kalte Getränke für die Rückbank, und weiter geht’s.' },
-  { time: '20:01', phase: 'dusk', title: 'Eine Minute nach Ladenschluss.', text: 'In Bayern machen die Läden um acht zu. Wir nicht. Der Grill läuft, aber die Getränke sind alle? Komm vorbei.' },
-  { time: '23:30', phase: 'night', title: 'Ferienwohnung bezogen, Kühlschrank leer.', text: 'Spät angekommen im Oberland? Was du für den ersten Abend und den nächsten Morgen brauchst, gibt’s auch jetzt.' },
-  { time: '03:14', phase: 'night', title: 'Nachtschicht vorbei.', text: 'Wer nachts arbeitet, kauft nachts ein. Licht an, Fach auf, ab nach Hause. Ohne Schlange, ohne Smalltalk.' },
-  { time: 'Sonntag', phase: 'day', title: 'Sonntag, Feiertag? Uns doch egal.', text: 'Wenn in Miesbach alles zu hat, haben wir trotzdem offen. Täglich 0–24 Uhr, an jedem Tag im Jahr.' },
+  { time: '05:40', phase: 'dawn', title: 'Erster Verkauf.', text: 'Noch vor dem Bäcker.' },
+  { time: '12:30', phase: 'day', title: 'Mittagspause.', text: 'Keine Schlange, kein Personal.' },
+  { time: '20:01', phase: 'dusk', title: 'Ladenschluss.', text: 'Dein Automat macht weiter.' },
+  { time: '23:30', phase: 'night', title: 'Spät dran?', text: 'Egal.' },
+  { time: '03:14', phase: 'night', title: 'Nachtschicht.', text: 'Auch die kauft ein.' },
+  { time: 'Sonntag', phase: 'day', title: 'Sonntag ist Umsatztag.', text: '24 Stunden, 7 Tage, 365 Tage.' },
 ];
 ---
 <section class="day" data-day data-phase="dawn" aria-labelledby="day-title">
@@ -17,7 +17,7 @@ const moments = [
     <div class="day__sky"></div>
     <div class="day__stars"></div>
     <div class="day__orb"></div>
-    <div class="day__clock"><span>Ein Tag an der B 472</span><strong data-day-time>05:40</strong></div>
+    <div class="day__clock"><span>Dein Automat, 24 Stunden</span><strong data-day-time>05:40</strong></div>
     <svg class="day__ridge" viewBox="-4 -4 281.4 102.8" preserveAspectRatio="none">
       <path d="M0 90.8L60.8 51.9L88.1 67.2L142.8 0L185.3 54.3L212.7 30.7L273.4 86.1L273.4 102.8L0 102.8Z" />
       <path d="M0 90.8L60.8 51.9L88.1 67.2L142.8 0L185.3 54.3L212.7 30.7L273.4 86.1" />
@@ -26,7 +26,7 @@ const moments = [
   </div>
   <div class="wrap day__intro">
     <p class="kicker">24 Stunden, 7 Tage</p>
-    <h2 id="day-title">Ein Tag an der B 472</h2>
+    <h2 id="day-title">Dein Automat verkauft, während du schläfst</h2>
   </div>
   <ol class="wrap day__list" role="list">
     {moments.map((m) => (

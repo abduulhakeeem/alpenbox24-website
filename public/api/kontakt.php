@@ -59,18 +59,18 @@ if ($ts !== '' && ctype_digit($ts)) {
 }
 
 $anliegenMap = [
-    'stoerung' => 'Störung / Erstattung',
-    'wunsch'   => 'Sortimentswunsch',
-    'erzeuger' => 'Erzeuger werden',
-    'sonstiges'=> 'Sonstiges',
+    'kauf'       => 'Automat kaufen',
+    'aufstellen' => 'Automat aufstellen lassen',
+    'shop'       => '24/7-Automatenshop planen',
+    'sonstiges'  => 'Sonstiges',
 ];
-$prefixMap = ['stoerung' => '[Störung]', 'wunsch' => '[Wunsch]', 'erzeuger' => '[Erzeuger]', 'sonstiges' => '[Kontakt]'];
+$prefixMap = ['kauf' => '[Kauf]', 'aufstellen' => '[Aufstellen]', 'shop' => '[24/7-Shop]', 'sonstiges' => '[Kontakt]'];
 
 $anliegen = field('anliegen', 20);
 $name     = field('name', 120);
 $email    = field('email', 200);
 $telefon  = field('telefon', 40);
-$automat  = field('automat', 20);
+$ort      = field('ort', 120);
 $message  = field('nachricht', 5000);
 
 if (!isset($anliegenMap[$anliegen]) || $name === '' || $message === ''
@@ -85,7 +85,7 @@ $body = "Anliegen: {$anliegenMap[$anliegen]}\n"
       . "Name: {$name}\n"
       . "E-Mail: {$email}\n"
       . ($telefon !== '' ? "Telefon: {$telefon}\n" : '')
-      . ($automat !== '' ? "Automat-Nr.: {$automat}\n" : '')
+      . ($ort !== '' ? "Standort: {$ort}\n" : '')
       . "Gesendet: " . (new DateTimeImmutable('now', new DateTimeZone('Europe/Berlin')))->format('d.m.Y H:i') . " Uhr\n"
       . "\n{$message}\n";
 

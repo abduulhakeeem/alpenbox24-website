@@ -2,23 +2,21 @@
 import Base from '../../layouts/Base.astro';
 import Photo from '../../components/Photo.astro';
 import Horizon from '../../components/Horizon.astro';
-import OpenNow from '../../components/OpenNow.astro';
-import MapBlock from '../../components/MapBlock.astro';
-import Icon from '../../components/Icon.astro';
-import { site, has, googleDirectionsUrl, telHref, mailHref } from '../../data/site';
+import { machines } from '../../data/machines';
+import { site, mailHref } from '../../data/site';
 import { u } from '../../lib/url';
+const tiles = machines.filter((m) => m.id !== 'wunsch').slice(0, 6);
+const en: Record<string, string> = { snack: 'Snack machine', getraenke: 'Drinks machine', regional: 'Farm shop machine', faecher: 'Locker machine', brot: 'Bread machine', shop: '24/7 vending shop' };
 ---
-<Base lang="en" hero title="AlpenBox24 – 24/7 Shop in Miesbach, Bavaria" description="Snacks, drinks and local Bavarian products, open 24 hours a day, every day of the year, on the main road through Miesbach towards Schliersee and Bayrischzell.">
+<Base lang="en" hero title="AlpenBox24 – Vending machines: sales & setup" description="AlpenBox24 from Miesbach, Bavaria sells vending machines and sets them up for you: snacks, drinks, farm produce or a whole 24/7 vending shop. Get in touch.">
   <section class="hero" aria-labelledby="en-title">
-    <div class="hero__media"><Photo name="tegernsee-nacht" alt="" eager credit={false} widths={[640, 1280, 1920]} sizes="100vw" position="60% 50%" /></div>
+    <div class="hero__media"><Photo name="automat-drei-nacht" alt="" eager credit={false} widths={[640, 1280, 1920]} sizes="100vw" position="62% 50%" /></div>
     <div class="hero__shade" aria-hidden="true"></div>
     <div class="wrap hero__content">
-      <OpenNow lang="en" />
-      <h1 id="en-title"><span class="hero__big">Always open.</span><span class="hero__sub">Your 24/7 shop in Miesbach, Bavaria.</span></h1>
-      <p class="lead">Snacks, cold drinks and local products from the Bavarian Oberland. On the main road through Miesbach, open 24 hours a day, every day of the year, Sundays included.</p>
+      <h1 id="en-title"><span class="hero__big">Never closed.</span><span class="hero__sub">Vending machines, sold and set up.</span></h1>
+      <p class="lead">We deliver your machine, install it and get it running. From Miesbach, Bavaria.</p>
       <div class="cta-row">
-        <span class="signpost-wrap"><a class="signpost" href={googleDirectionsUrl} rel="noopener" target="_blank">Get directions</a></span>
-        {telHref && <a class="btn" href={telHref}><Icon name="phone" />Call us</a>}
+        <span class="signpost-wrap"><a class="signpost" href={mailHref}>Email us</a></span>
         <a class="btn" href={u('/')} hreflang="de" lang="de">Deutsch</a>
       </div>
     </div>
@@ -26,14 +24,16 @@ import { u } from '../../lib/url';
   </section>
 
   <section class="section">
-    <div class="wrap-text stack" style="--stack:2.6rem">
-      <div class="stack"><h2>What you’ll find</h2><p class="muted">Drinks, snacks and sweets, local food from farms in the Miesbach district as we add producers, and everyday essentials. Prices are shown on the machines. In Bavaria most shops close at 8 pm and on Sundays. We don’t.</p></div>
-      <div class="stack"><h2>How it works</h2><p class="muted">Choose your item, pay ({site.payment.howtoEn}), take it out. Products for adults only (18+) are released only after an age check at the machine{has(site.ageCheck.howtoEn) ? <>: {site.ageCheck.howtoEn}</> : '; the display guides you through it'}.</p></div>
-      <div class="stack" id="problem"><h2>Something went wrong?</h2><p class="muted">Note the machine number and the time, then {telHref ? <>call <a href={telHref}>{site.phone.display}</a></> : <>email <a href={mailHref}>{site.email}</a></>} or use the <a href={u('/kontakt/#formular')}>contact form</a> (in German, English is fine). We’ll sort out a refund.</p></div>
-      <div class="stack"><h2>Getting here</h2><p class="muted">Bayrischzeller Straße 2-8, 83714 Miesbach. By car: A8 Munich–Salzburg, exit Weyarn or Irschenberg, then follow the B 472 into Miesbach. By train: RB 55 Munich–Bayrischzell to Miesbach station, then about {site.directions.walkMinutesFromStation} minutes on foot ({site.directions.walkMetersFromStation} m).</p></div>
-      <MapBlock lang="en" />
-      <div class="stack"><h2>Please be considerate at night</h2><p class="muted">People live around us. Keep the noise down, use the bins and don’t leave your engine running. Thank you.</p></div>
-      <p><a href={u('/impressum/')} hreflang="de">Impressum (legal notice)</a> · <a href={u('/datenschutz/')} hreflang="de">Datenschutz (privacy)</a></p>
+    <div class="wrap">
+      <div class="bento">
+        {tiles.map((m, i) => (
+          <a class:list={['bento__tile', `bento__tile--${i}`]} href={u(`/automaten/#${m.id}`)} hreflang="de">
+            <Photo name={m.photo as any} alt={m.alt} credit={false} widths={[480, 800, 1200]} sizes="(min-width: 960px) 40vw, 100vw" />
+            <span class="bento__label"><strong>{en[m.id]}</strong></span>
+          </a>
+        ))}
+      </div>
+      <p class="muted mt-6">Our own 24/7 vending box: {site.address.street}, {site.address.zip} {site.address.city}, open 24 hours. Email: <a href={mailHref}>{site.email}</a>. <a href={u('/impressum/')} hreflang="de">Legal notice</a> · <a href={u('/datenschutz/')} hreflang="de">Privacy</a></p>
     </div>
   </section>
 </Base>

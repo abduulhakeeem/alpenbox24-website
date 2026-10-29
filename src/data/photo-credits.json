@@ -35,78 +35,6 @@
     "width": 2896,
     "height": 1944
   },
-  "tegernsee-abend": {
-    "title": "Tegernsee Evening.JPG",
-    "page": "https://commons.wikimedia.org/wiki/File:Tegernsee_Evening.JPG",
-    "author": "Sebastian Grünwald",
-    "license": "CC BY 3.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
-    "width": 3840,
-    "height": 1551
-  },
-  "brecherspitz-winter": {
-    "title": "Brecherspitz dez 2009.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Brecherspitz_dez_2009.jpg",
-    "author": "Schwammerl-Bob",
-    "license": "Public domain",
-    "licenseUrl": "",
-    "width": 3264,
-    "height": 2448
-  },
-  "rotwand-abend": {
-    "title": "Abenstimmung bei der Rotwand - panoramio.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Abenstimmung_bei_der_Rotwand_-_panoramio.jpg",
-    "author": "unixasket",
-    "license": "CC BY 3.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
-    "width": 2560,
-    "height": 1920
-  },
-  "winter-miesbach": {
-    "title": "Winter Impression from Bavaria near Miesbach.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Winter_Impression_from_Bavaria_near_Miesbach.jpg",
-    "author": "Jan Czeczotka",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "width": 3840,
-    "height": 2505
-  },
-  "schliersee-luftbild": {
-    "title": "Aerial image of the Schliersee (view from the south).jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Aerial_image_of_the_Schliersee_(view_from_the_south).jpg",
-    "author": "Carsten Steger",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "width": 3840,
-    "height": 2658
-  },
-  "spitzingsee": {
-    "title": "Bavaria Spitzingsee from Rosskopf.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Bavaria_Spitzingsee_from_Rosskopf.jpg",
-    "author": "Zerohund",
-    "license": "CC BY 2.5",
-    "licenseUrl": "https://creativecommons.org/licenses/by/2.5",
-    "width": 2976,
-    "height": 2232
-  },
-  "wendelstein-winter": {
-    "title": "Up Wendelstein - panoramio.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Up_Wendelstein_-_panoramio.jpg",
-    "author": "Durand D'souza",
-    "license": "CC BY-SA 3.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
-    "width": 3840,
-    "height": 2542
-  },
-  "bayrischzell-panorama": {
-    "title": "Bayrischzell wendelstein.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Bayrischzell_wendelstein.jpg",
-    "author": "Stefan.straub",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "width": 3840,
-    "height": 1049
-  },
   "miesbach-stadtplatz": {
     "title": "20220528 Miesbach 02.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:20220528_Miesbach_02.jpg",
@@ -115,51 +43,6 @@
     "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
     "width": 3840,
     "height": 2563
-  },
-  "miesbach-stadtansicht": {
-    "title": "GER — BY — Oberbayern — Lkr. Miesbach — Miesbach Kreisstadt — Bahnhofplatz 7 (Stadtansicht, mittig Empfangsgebäude Bayerische Regiobahn) Mattes 2022-06-19.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:GER_%E2%80%94_BY_%E2%80%94_Oberbayern_%E2%80%94_Lkr._Miesbach_%E2%80%94_Miesbach_Kreisstadt_%E2%80%94_Bahnhofplatz_7_(Stadtansicht,_mittig_Empfangsgeb%C3%A4ude_Bayerische_Regiobahn)_Mattes_2022-06-19.jpg",
-    "author": "Mattes",
-    "license": "CC BY 3.0 de",
-    "licenseUrl": "https://creativecommons.org/licenses/by/3.0/de/deed.en",
-    "width": 3840,
-    "height": 2880
-  },
-  "schliersee-ufer": {
-    "title": "Schliersee Ort und See 781.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Schliersee_Ort_und_See_781.jpg",
-    "author": "GFreihalter",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "width": 3840,
-    "height": 2560
-  },
-  "brotzeit": {
-    "title": "Bergkäse angerichtet.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Bergk%C3%A4se_angerichtet.jpg",
-    "author": "Xocolatl",
-    "license": "CC BY-SA 3.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
-    "width": 3154,
-    "height": 2514
-  },
-  "kaeselager": {
-    "title": "Käse-Reifelager.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:K%C3%A4se-Reifelager.jpg",
-    "author": "Hermann Hammer (User:Haneburger)",
-    "license": "CC0",
-    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-    "width": 3814,
-    "height": 2525
-  },
-  "obatzda": {
-    "title": "Obatzter-1.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Obatzter-1.jpg",
-    "author": "Rainer Z ...",
-    "license": "CC BY-SA 3.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
-    "width": 2583,
-    "height": 1828
   },
   "hofautomat-eier": {
     "title": "Werrabronn Eierautomat.jpg",
@@ -179,22 +62,175 @@
     "width": 3840,
     "height": 2880
   },
-  "leitzach": {
-    "title": "Leitzach bei esterndorf.JPG",
-    "page": "https://commons.wikimedia.org/wiki/File:Leitzach_bei_esterndorf.JPG",
-    "author": "Regani",
+  "automat-tokio-nacht": {
+    "title": "Vending machines at night in Tokyo.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Vending_machines_at_night_in_Tokyo.jpg",
+    "author": "LHOON from Mechelen",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "width": 2848,
+    "height": 2136
+  },
+  "automat-drei-nacht": {
+    "title": "Three Vending Machines Japan Night.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Three_Vending_Machines_Japan_Night.jpg",
+    "author": "mrhayata",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "width": 3504,
+    "height": 2336
+  },
+  "automat-reihe-strasse": {
+    "title": "Vending Machines III (4042424351).jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Vending_Machines_III_(4042424351).jpg",
+    "author": "Kojach",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "width": 2816,
+    "height": 1880
+  },
+  "automat-bunt-nah": {
+    "title": "Vending Machines 2016 (32119594781).jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Vending_Machines_2016_(32119594781).jpg",
+    "author": "Laika ac",
+    "license": "CC BY-SA 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+    "width": 3840,
+    "height": 2880
+  },
+  "automat-reihe-akita": {
+    "title": "Beverage vending machines in Akita City.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Beverage_vending_machines_in_Akita_City.jpg",
+    "author": "掬茶",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 3264,
+    "height": 2448
+  },
+  "automat-outdoor-nacht": {
+    "title": "Outdoor vending machine in Slovakia.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Outdoor_vending_machine_in_Slovakia.jpg",
+    "author": "Jakub CA",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "width": 3840,
     "height": 2880
   },
-  "spitzingsee-alm": {
-    "title": "Spitzingsee Firstalmblick.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Spitzingsee_Firstalmblick.jpg",
-    "author": "Martin Geisler",
+  "automat-pizza-nacht": {
+    "title": "Pizza vending machine Eglise.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Pizza_vending_machine_Eglise.jpg",
+    "author": "Emilius123",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 3840,
+    "height": 2880
+  },
+  "automat-metro": {
+    "title": "Automatic snack machine.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Automatic_snack_machine.jpg",
+    "author": "Donna Alvita",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 1920,
+    "height": 2560
+  },
+  "automat-grabgo": {
+    "title": "Automatenshop Luzern Grab&Go.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Automatenshop_Luzern_Grab%26Go.jpg",
+    "author": "Sinnigg",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 3840,
+    "height": 5120
+  },
+  "regiomat-holz": {
+    "title": "20250417 Regiomat, Stuttgart - A6402389.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:20250417_Regiomat,_Stuttgart_-_A6402389.jpg",
+    "author": "Zinnmann",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 3606,
+    "height": 5409
+  },
+  "regiomat-nacht": {
+    "title": "Regiomat in Neunkirchen (2).jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Regiomat_in_Neunkirchen_(2).jpg",
+    "author": "Gripweed",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 1920,
+    "height": 2560
+  },
+  "regiomat-landau": {
+    "title": "Regiomat Landau.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Regiomat_Landau.jpg",
+    "author": "Holder",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 3024,
+    "height": 4032
+  },
+  "brotautomat": {
+    "title": "Brotautomat frontal.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Brotautomat_frontal.jpg",
+    "author": "AutomatenFlechte",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "width": 3024,
+    "height": 4032
+  },
+  "automatenshop-laden": {
+    "title": "Automatenshop.png",
+    "page": "https://commons.wikimedia.org/wiki/File:Automatenshop.png",
+    "author": "TheGoodEndedHappily",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "width": 2560,
-    "height": 1920
+    "height": 3840
+  },
+  "snackautomat-spiralen": {
+    "title": "Snack machine 3538.JPG",
+    "page": "https://commons.wikimedia.org/wiki/File:Snack_machine_3538.JPG",
+    "author": "Nenyedi at English Wikipedia",
+    "license": "Public domain",
+    "licenseUrl": "",
+    "width": 2592,
+    "height": 1944
+  },
+  "kartoffelautomat": {
+    "title": "Kartoffelautomat Übach.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Kartoffelautomat_%C3%9Cbach.jpg",
+    "author": "LoKiLeCh",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "width": 3840,
+    "height": 2880
+  },
+  "automat-reihe-gruen": {
+    "title": "Vending Machines in Japan (43679427685).jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Vending_Machines_in_Japan_(43679427685).jpg",
+    "author": "Daniel Ramirez from Honolulu, USA",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "width": 3226,
+    "height": 1815
+  },
+  "automat-befuellen": {
+    "title": "Filling the vending machine IMG 5056 C.JPG",
+    "page": "https://commons.wikimedia.org/wiki/File:Filling_the_vending_machine_IMG_5056_C.JPG",
+    "author": "Anneli Salo",
+    "license": "CC BY-SA 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+    "width": 3840,
+    "height": 2880
+  },
+  "faecherautomat": {
+    "title": "Bregenz-Food vending machine \"Snack-Break\"-01ASD.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Bregenz-Food_vending_machine_%22Snack-Break%22-01ASD.jpg",
+    "author": "Asurnipal",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 2448,
+    "height": 3264
   }
 }

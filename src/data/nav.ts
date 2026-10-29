@@ -1,24 +1,20 @@
 export const mainNav = [
-  { href: '/sortiment/', label: 'Sortiment', hint: 'Was es gibt' },
-  { href: '/regional/', label: 'Regional', hint: 'Aus dem Oberland' },
-  { href: '/so-gehts/', label: "So geht's", hint: 'Bezahlen, Altersprüfung, Hilfe' },
+  { href: '/automaten/', label: 'Automaten', hint: 'Welche es gibt' },
   { href: '/galerie/', label: 'Galerie', hint: 'Bilder' },
-  { href: '/ueber-uns/', label: 'Über uns', hint: 'Die Idee' },
-  { href: '/kontakt/', label: 'Kontakt', hint: 'Anfahrt & Störung' },
+  { href: '/miesbach/', label: 'Miesbach', hint: 'Unsere 24/7-Box' },
+  { href: '/ueber-uns/', label: 'Über uns', hint: 'Wer wir sind' },
+  { href: '/kontakt/', label: 'Kontakt', hint: 'Automat anfragen' },
 ];
 
 export const footerNav = {
   laden: [
-    { href: '/sortiment/', label: 'Sortiment' },
-    { href: '/regional/', label: 'Regionales' },
+    { href: '/automaten/', label: 'Automaten' },
     { href: '/galerie/', label: 'Galerie' },
+    { href: '/miesbach/', label: 'AlpenBox24 Miesbach' },
     { href: '/ueber-uns/', label: 'Über uns' },
   ],
   infos: [
-    { href: '/so-gehts/', label: "So geht's" },
-    { href: '/faq/', label: 'Häufige Fragen' },
-    { href: '/kontakt/', label: 'Kontakt & Anfahrt' },
-    { href: '/kontakt/#stoerung', label: 'Störung melden' },
+    { href: '/kontakt/', label: 'Automat anfragen' },
     { href: '/en/', label: 'English' },
   ],
   recht: [

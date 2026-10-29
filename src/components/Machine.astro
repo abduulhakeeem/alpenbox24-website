@@ -1,7 +1,7 @@
 ---
-/** Interactive vending machine. No JS: every slot is a plain link to its Sortiment section. */
+/** Interactive vending machine: pick a machine type. No JS: every slot is a plain link to its section. */
 import Icon from './Icon.astro';
-import { slots } from '../data/sortiment';
+import { machines } from '../data/machines';
 import { u } from '../lib/url';
 ---
 <div class="machine" data-machine>
@@ -10,21 +10,21 @@ import { u } from '../lib/url';
       <span class="machine__brand" aria-hidden="true">ALPEN BOX <b>24</b></span>
       <span class="machine__led" aria-hidden="true"><i></i><i></i></span>
     </div>
-    <div class="machine__glass" role="list" aria-label="Fächer im Automaten">
-      {slots.map((s) => (
-        <a class="slot" role="listitem" href={u(s.href)} data-slot={s.code} data-name={s.name} style={`--tone:${s.tone}`}>
-          <Icon name={s.icon} class="slot__item" />
+    <div class="machine__glass" role="list" aria-label="Automatentypen">
+      {machines.map((m) => (
+        <a class="slot" role="listitem" href={u(`/automaten/#${m.id}`)} data-slot={m.code} data-name={m.name} style={`--tone:${m.tone}`}>
+          <Icon name={m.icon} class="slot__item" />
           <span class="slot__coil" aria-hidden="true"></span>
-          <span class="slot__label"><span class="slot__code">{s.code}</span>{s.name}</span>
+          <span class="slot__label"><span class="slot__code">{m.code}</span>{m.name}</span>
         </a>
       ))}
     </div>
-    {slots.map((s) => (
-      <div hidden data-for={s.code}>
-        <p class="kicker">Fach {s.code}</p>
-        <h3>{s.title}</h3>
-        <p>{s.text}</p>
-        <a class="link" href={u(s.href)}>{s.cta}</a>
+    {machines.map((m) => (
+      <div hidden data-for={m.code}>
+        <p class="kicker">Fach {m.code}</p>
+        <h3>{m.name}</h3>
+        <p>{m.line}</p>
+        <a class="link" href={u(`/kontakt/?anliegen=kauf#formular`)}>Diesen Automaten anfragen</a>
       </div>
     ))}
     <div class="machine__panel">
@@ -37,10 +37,9 @@ import { u } from '../lib/url';
   </div>
   <div>
     <div class="machine__info" data-info aria-live="polite">
-      <p class="kicker">So funktioniert der Automat hier</p>
-      <h3>Tipp ein Fach an.</h3>
-      <p>Oder gib den Code am Tastenfeld ein, so wie im Laden. Jedes Fach zeigt dir eine Kategorie aus unserem Sortiment.</p>
+      <p class="kicker">Welcher Automat passt?</p>
+      <h3>Drück ein Fach.</h3>
+      <p>Oder tipp den Code ein, z. B. A3 und OK.</p>
     </div>
-    <p class="machine__hint">Die Fächer hier sind Beispiele. Das echte Sortiment wechselt mit Saison und Nachfrage, Preise stehen am Automaten.</p>
   </div>
 </div>

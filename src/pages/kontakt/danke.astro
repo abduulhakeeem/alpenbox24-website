@@ -1,14 +1,13 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { site, telHref, mailHref } from '../../data/site';
 import { u } from '../../lib/url';
 ---
-<Base title="Danke – AlpenBox24" description="Deine Nachricht an AlpenBox24 ist angekommen." noindex>
+<Base title="Danke – AlpenBox24" description="Deine Anfrage an AlpenBox24 ist angekommen." noindex>
   <section class="lost">
     <div class="wrap-text stack">
-      <h1>Danke, deine Nachricht ist angekommen.</h1>
-      <p class="lead" style="margin-inline:auto">Wir melden uns so schnell wie möglich. Bei Störungen erreichst du uns {telHref ? <>am schnellsten unter <a href={telHref}>{site.phone.display}</a></> : <>auch direkt per E-Mail an <a href={mailHref}>{site.email}</a></>}.</p>
-      <p><span class="signpost-wrap"><a class="signpost" href={u('/')}>Zur Startseite</a></span></p>
+      <h1>Danke. Deine Anfrage ist da.</h1>
+      <p class="lead" style="margin-inline:auto">Wir melden uns so schnell wie möglich.</p>
+      <p><span class="signpost-wrap"><a class="signpost" href={u('/automaten/')}>Automaten ansehen</a></span></p>
     </div>
   </section>
 </Base>

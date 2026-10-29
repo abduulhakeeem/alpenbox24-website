@@ -22,11 +22,21 @@ onScroll();
 $$('.menu__panel a').forEach((a) => a.addEventListener('click', () => a.closest('details')?.removeAttribute('open')));
 
 /* Reveals, ridge draws, map animation */
+// A clip-path reveal hides the element's own box, so its parent is observed instead.
+const watched = new Map<Element, Element[]>();
 const io = new IntersectionObserver(
-  (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }),
+  (entries) => entries.forEach((e) => {
+    if (!e.isIntersecting) return;
+    (watched.get(e.target) ?? [e.target]).forEach((el) => el.classList.add('is-in'));
+    io.unobserve(e.target);
+  }),
   { rootMargin: '0px 0px -12% 0px', threshold: 0.08 },
 );
-$$('[data-reveal], .ridge--draw, .map, [data-count]').forEach((el) => io.observe(el));
+$$('[data-reveal], .ridge--draw, .map, [data-count]').forEach((el) => {
+  const target = el.dataset.reveal === 'clip' && el.parentElement ? el.parentElement : el;
+  if (target !== el) watched.set(target, [...(watched.get(target) ?? []), el]);
+  io.observe(target);
+});
 
 /* Count-up numbers */
 const countIo = new IntersectionObserver((entries) => entries.forEach((e) => {
