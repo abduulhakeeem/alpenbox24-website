@@ -2,7 +2,7 @@
  * AlpenBox24 — single source of truth (CLAUDE.md rule R5).
  * Every template, the footer, JSON-LD, Impressum and FAQ read from here.
  *
- * Client-confirmed facts (29.10.2026): email info@alpenbox24.de, payment by cash and bank transfer,
+ * Client-confirmed facts (29.10.2026): email alpenbox24@web.de, payment by cash and bank transfer,
  * support via phone call or the contact form. Everything the client did not provide is an empty
  * string / false and the templates hide it. Never fill an empty value with a plausible guess.
  * TBC is still supported: a value set to TBC renders "folgt" in staging and fails the production build.

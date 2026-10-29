@@ -15,7 +15,7 @@ mkdir -p config
 rm -f config/.kontakt-rate.json config/.admin-throttle.json
 cat > config/alpenbox-mail.php <<'PHP'
 <?php return ['smtp_host' => '127.0.0.1', 'smtp_port' => 2599, 'smtp_secure' => 'tls', 'smtp_user' => 'test', 'smtp_pass' => 'test',
-  'from_email' => 'formular@alpenbox24.de', 'from_name' => 'Test', 'to_email' => 'info@alpenbox24.de', 'site_url' => 'http://127.0.0.1:8099'];
+  'from_email' => 'alpenbox24@web.de', 'from_name' => 'Test', 'to_email' => 'alpenbox24@web.de', 'site_url' => 'http://127.0.0.1:8099'];
 PHP
 HASH=$(php -r 'echo password_hash("test-passwort-123", PASSWORD_DEFAULT);')
 printf "<?php return ['password_hash' => '%s', 'github_token' => 'invalid-test-token', 'repo' => 'abduulhakeeem/alpenbox24-website', 'branch' => 'main'];\n" "$HASH" > config/alpenbox-admin.php

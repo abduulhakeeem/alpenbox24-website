@@ -6,7 +6,7 @@ that branch.
 
 ## 0. Status of the content (29.10.2026)
 
-Confirmed by the client and in `src/data/settings.json` / `site.ts`: email info@alpenbox24.de, payment by cash
+Confirmed by the client and in `src/data/settings.json` / `site.ts`: email alpenbox24@web.de, payment by cash
 and bank transfer, support via phone call or the contact form. Everything else the client did not provide is
 hidden on the site. The production build (`npm run build`) passes.
 
@@ -32,15 +32,17 @@ branch"** and updates the branch `deploy` with the finished site.
 4. hPanel → **Security → SSL** → install the free certificate. `.htaccess` forces HTTPS and redirects `www` → apex.
 5. Admin panel: see `docs/13-admin-panel.md` (config file with password + GitHub token).
 
-## 2. Contact form mail
+## 2. Contact form mail (via WEB.DE)
 
-1. hPanel → **Emails** → create `info@alpenbox24.de` (receives) and `formular@alpenbox24.de` (sends).
+The form sends through the WEB.DE mailbox **alpenbox24@web.de**; no Hostinger mailbox is needed.
+
+1. In WEB.DE: Einstellungen → **POP3/IMAP Abruf** → allow POP3 and IMAP access (WEB.DE refuses SMTP logins otherwise).
 2. hPanel → **Files → File Manager** → create folder `config` **next to** `public_html` (not inside it).
-3. Upload `config/alpenbox-mail.sample.php` from this repo as `config/alpenbox-mail.php` and fill in SMTP host/port
-   (hPanel → Emails → Configuration, usually `smtp.hostinger.com`, 465 SSL), user, password, `site_url`.
+3. Upload `config/alpenbox-mail.sample.php` from this repo as `config/alpenbox-mail.php` and enter the WEB.DE password.
+   Server `smtp.web.de`, port 587, STARTTLS are already filled in. Sender and recipient are both alpenbox24@web.de
+   (WEB.DE only sends with its own address); the visitor's address is set as Reply-To, so "Antworten" goes to them.
 4. hPanel → **PHP Configuration** → PHP 8.2 or newer.
-5. DNS: SPF, DKIM and DMARC records (hPanel → Emails → Email deliverability).
-6. Test: send the form once per Anliegen; check that a reply goes to the sender's address.
+5. Test: send the form once; the message should arrive in alpenbox24@web.de within a minute.
 
 ## 3. After launch (same day)
 

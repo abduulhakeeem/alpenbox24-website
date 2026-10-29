@@ -1,4 +1,4 @@
-Contact: mailto:info@alpenbox24.de
+Contact: mailto:alpenbox24@web.de
 Expires: 2027-10-31T23:00:00.000Z
 Preferred-Languages: de, en
 Canonical: https://alpenbox24.de/.well-known/security.txt
