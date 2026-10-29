@@ -35,7 +35,7 @@ npm run build          # production: astro check + build + guard (fails while an
 
 ## Deploy
 
-- **Preview (GitHub Pages):** every push to `main` builds a staging version → `.github/workflows/preview.yml`.
+- **Preview (GitHub Pages, optional):** enable Pages (Settings → Pages → Source: GitHub Actions), then run `.github/workflows/preview.yml` from the Actions tab. Staging build, noindex.
 - **Production (Hostinger):** `.github/workflows/deploy.yml` builds and pushes `dist/` to branch `deploy`;
   Hostinger's Git integration deploys it into `public_html`. Step-by-step: [`docs/12-go-live-hostinger.md`](docs/12-go-live-hostinger.md).
   The production workflow only runs once the client facts are filled in (it fails on `[TBC]` by design).
