@@ -1,9 +1,9 @@
 name: Preview (GitHub Pages, staging build)
 
 # Staging build: noindex everywhere, missing client facts shown as "folgt" markers.
-# Manual: enable Pages first (Settings → Pages → Source: GitHub Actions; needs a public repo on the Free plan),
-# then run it from the Actions tab or add  push: { branches: [main] }.
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
