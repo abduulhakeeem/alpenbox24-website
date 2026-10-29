@@ -55,3 +55,15 @@ Speed measures in place: CSS inlined (no render-blocking request), one-line boot
 CSP, both fonts preloaded and self-hosted, LCP images eager + `fetchpriority="high"`, everything else lazy,
 pre-cropped responsive images, lazy SVG map (47 KB gz), long-cache headers for fingerprinted assets and gzip in
 `.htaccess`. Re-run: `npm run build`, `npx astro preview`, then Lighthouse against it.
+
+## Security (verified 29.10.2026)
+
+| Area | Measures |
+|---|---|
+| Dependencies | Astro 7.4.1, sharp 0.35.5: `npm audit --omit=dev` → 0 vulnerabilities |
+| Server (`public/.htaccess`) | HTTPS + HSTS, CSP (no inline scripts except the hashed boot line), X-Frame-Options DENY, nosniff, Referrer-Policy, Permissions-Policy, COOP/CORP, X-Powered-By removed, dotfiles/configs/backups/vendor blocked, `/.well-known/security.txt` |
+| Uploads (`public/uploads/.htaccess`) | only png/svg/webp/ico served, no PHP/CGI execution, sandboxing CSP so an SVG can never run script |
+| Contact form (`public/api/kontakt.php`) | same-origin (Origin/Referer), honeypot, 3-s time trap, 5 msgs/15 min per hashed IP, 20 KB cap, CR/LF stripped from header fields, card/IBAN numbers removed, SMTP timeout, no data stored or logged |
+| Admin (`public/admin/index.php`) | bcrypt (or constant-time) password check, 8-attempt lock-out, strict session (HttpOnly, SameSite=Strict, Secure, strict mode, 30-min idle / 8-h max, browser-bound), CSRF token, own strict CSP, upload signature check + strict SVG filter, secrets only in `<root>/config/` |
+| Front end | no third-party requests, no `innerHTML` with external data, 3.7 KB JS |
+| CI gate | `scripts/test-php.sh` runs 27 functional checks against both PHP endpoints on every push; nothing deploys if one fails |

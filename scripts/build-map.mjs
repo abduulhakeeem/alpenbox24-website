@@ -65,7 +65,7 @@ console.log('map', VW + 'x' + VH, (svg.length / 1024).toFixed(0) + ' KB', overla
   const cropped = svg
     .replace(/viewBox="[^"]+"/, `viewBox="${Math.round(x0)} ${y0} ${Math.round(w)} ${h}" width="${Math.round(w)}" height="${h}"`)
     .replace('<rect width="100%" height="100%" fill="#0d0c0b"/>', `<rect x="${Math.round(x0)}" y="${y0}" width="${Math.round(w)}" height="${h}" fill="#0d0c0b"/>`)
-    .replace(/d="([^"]+)"/g, (m, d) => `d="${d.split(/(?=M)/).filter(inBox).join('')}"`);
+    .replace(/d="([^"]+)"/g, (_m, d) => `d="${d.split(/(?=M)/).filter(inBox).join('')}"`);
   fs.writeFileSync('src/assets/map/karte-miesbach.svg', cropped);
   overlay.crop = `${Math.round(x0)} ${y0} ${Math.round(w)} ${h}`;
   fs.writeFileSync('src/data/map-overlay.json', JSON.stringify(overlay, null, 1));

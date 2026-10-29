@@ -6,3 +6,8 @@ config/alpenbox-mail.php
 .DS_Store
 *.log
 .env
+
+# Server configs and runtime files (never commit)
+config/*.php
+!config/alpenbox-mail.sample.php
+config/.*.json

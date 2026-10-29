@@ -47,7 +47,7 @@ ErrorDocument 404 /404.html
 </IfModule>
 
 # Never serve PHP mail config or vendor source directly
-<FilesMatch "^(config.*\.php|composer\.(json|lock))$">
+<FilesMatch "^(config.*\.php|composer\.(json|lock)|.*\.(md|log|sql|sh|ini|env|bak|orig))$">
   Require all denied
 </FilesMatch>
 
@@ -56,11 +56,16 @@ ErrorDocument 404 /404.html
   Header always set X-Content-Type-Options "nosniff"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set X-Frame-Options "DENY"
-  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Cross-Origin-Resource-Policy "same-origin"
+  Header always set X-Permitted-Cross-Domain-Policies "none"
+  Header always unset X-Powered-By
+  Header unset X-Powered-By
   Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'sha256-OuZY6WzJOIh2C89ThsUSxQtxIJomDP4jHuL8NXL3o5c='; font-src 'self'; connect-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
 
-  # Astro fingerprints JS, CSS and processed images in /_astro/ -> safe to cache for a year.
-  # Fonts in /fonts/ are not fingerprinted: rename the file if you ever replace it.
+  # Astro fingerprints JS, CSS, fonts and processed images in /_astro/ -> safe to cache for a year.
+  # Admin uploads in /uploads/ get a timestamp in their file name, so they are unique too.
   <FilesMatch "\.(avif|webp|woff2|js|css)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>

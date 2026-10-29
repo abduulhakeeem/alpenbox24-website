@@ -174,7 +174,7 @@ $$('[data-machine]').forEach((m) => {
     if (tray) { tray.classList.remove('is-full'); void tray.offsetWidth; tray.classList.add('is-full'); tray.dataset.item = slot.dataset.name || ''; }
     if (info) {
       const tpl = m.querySelector<HTMLElement>(`[data-for="${slot.dataset.slot}"]`);
-      info.innerHTML = tpl ? tpl.innerHTML : '';
+      info.replaceChildren(...(tpl ? [...tpl.cloneNode(true).childNodes] : [])); // our own build-time markup
       info.classList.remove('is-in'); void info.offsetWidth; info.classList.add('is-in');
     }
   };
@@ -221,7 +221,9 @@ if (lb && links.length) {
     const list = visible(); i = (n + list.length) % list.length;
     const a = list[i];
     img.src = a.href; img.alt = a.dataset.alt || '';
-    cap.innerHTML = `<strong>${a.dataset.caption || ''}</strong>${a.dataset.credit || ''}`;
+    const title = document.createElement('strong');
+    title.textContent = a.dataset.caption || '';
+    cap.replaceChildren(title, a.dataset.credit || ''); // text nodes only: credits come from external photo metadata
     count.textContent = `Bild ${i + 1} von ${list.length}`;
     const next = list[(i + 1) % list.length]; if (next) { const pre = new Image(); pre.src = next.href; }
   };

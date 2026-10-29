@@ -34,13 +34,22 @@ jobs:
       # astro check + astro build + scripts/guard.mjs (fails on [TBC], tobacco terms in SEO fields, 3rd-party requests)
       - run: npm run build
 
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: none
+
+      # Contact form + admin panel tested against the built site; nothing is published if this fails.
+      - name: PHP functional tests
+        run: bash scripts/test-php.sh
+
       - name: Publish dist/ to deploy branch
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: deploy
-          force_orphan: true
+          force_orphan: false   # keep history: Hostinger deploys with "git pull", which fails on rewritten history
           enable_jekyll: true   # only stops the action adding a .nojekyll file (not needed on Hostinger)
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'

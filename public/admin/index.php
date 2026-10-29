@@ -22,11 +22,15 @@ const SETTINGS_PATH = 'src/data/settings.json';
 const UPLOAD_DIR = 'public/uploads';
 const MAX_UPLOAD = 1024 * 1024; // 1 MB
 const MAX_LOCATIONS = 8;
+const IDLE_TIMEOUT = 1800;     // 30 min without activity → log out
+const MAX_SESSION  = 28800;    // 8 h absolute session lifetime
 
 header('X-Robots-Tag: noindex, nofollow');
 header('Cache-Control: no-store');
 header('Referrer-Policy: same-origin');
 header('X-Frame-Options: DENY');
+header('X-Content-Type-Options: nosniff');
+header("Content-Security-Policy: default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'");
 
 $configPath = dirname(__DIR__, 2) . '/config/alpenbox-admin.php';
 if (!is_file($configPath)) {
@@ -36,9 +40,24 @@ if (!is_file($configPath)) {
 }
 $cfg = require $configPath;
 
+ini_set('session.use_strict_mode', '1');
+ini_set('session.use_only_cookies', '1');
 session_name('ab24admin');
 session_set_cookie_params(['lifetime' => 0, 'path' => '/admin/', 'secure' => !empty($_SERVER['HTTPS']) || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https', 'httponly' => true, 'samesite' => 'Strict']);
 session_start();
+
+// Expire idle or too-old sessions and bind the session to the browser that logged in.
+$fingerprint = hash('sha256', $_SERVER['HTTP_USER_AGENT'] ?? '');
+if (!empty($_SESSION['auth'])) {
+    $now = time();
+    if ($now - ($_SESSION['seen'] ?? 0) > IDLE_TIMEOUT || $now - ($_SESSION['since'] ?? 0) > MAX_SESSION
+        || !hash_equals($_SESSION['fp'] ?? '', $fingerprint)) {
+        $_SESSION = [];
+        session_regenerate_id(true);
+    } else {
+        $_SESSION['seen'] = $now;
+    }
+}
 
 $action = $_POST['action'] ?? $_GET['action'] ?? '';
 
@@ -58,6 +77,8 @@ if (empty($_SESSION['auth'])) {
         } elseif (password_ok((string) ($_POST['password'] ?? ''), $cfg)) {
             session_regenerate_id(true);
             $_SESSION['auth'] = true;
+            $_SESSION['since'] = $_SESSION['seen'] = time();
+            $_SESSION['fp'] = $fingerprint;
             $_SESSION['csrf'] = bin2hex(random_bytes(32));
             throttle_reset();
             header('Location: ./', true, 303);
@@ -106,7 +127,8 @@ try {
     [$s] = gh_get_settings($cfg);
     page('Verwaltung', dashboard($s, $flash, $_SESSION['csrf']));
 } catch (Throwable $e) {
-    page('Verwaltung', '<p class="msg err">Die Einstellungen konnten nicht von GitHub geladen werden: ' . h($e->getMessage()) . '</p><p><a href="?action=logout">Abmelden</a></p>');
+    page('Verwaltung', ($flash ? '<p class="msg ' . ($flash[0] === 'ok' ? 'ok' : 'err') . '">' . h($flash[1]) . '</p>' : '')
+        . '<p class="msg err">Die Einstellungen konnten nicht von GitHub geladen werden: ' . h($e->getMessage()) . '</p><p><a href="?action=logout">Abmelden</a></p>');
 }
 exit;
 
@@ -118,7 +140,7 @@ function password_ok(string $pw, array $cfg): bool
 {
     if ($pw === '') return false;
     if (!empty($cfg['password_hash'])) return password_verify($pw, $cfg['password_hash']);
-    if (!empty($cfg['password'])) return hash_equals((string) $cfg['password'], $pw);
+    if (!empty($cfg['password'])) return hash_equals(hash('sha256', (string) $cfg['password']), hash('sha256', $pw));
     return false;
 }
 
@@ -224,7 +246,10 @@ function detect_image(string $d): ?string
 
 function svg_safe(string $d): bool
 {
-    return !preg_match('/<script|<foreignObject|\son[a-z]+\s*=|javascript:|data:text\/html|<iframe|<embed|<object|xlink:href\s*=\s*["\']https?:|href\s*=\s*["\']https?:/i', $d);
+    // Strict for a logo/favicon: no scripting, links, embeds, entities or external references.
+    // Internal styles and url(#gradient) are allowed (normal for exported logos, harmless in <img>).
+    if (preg_match('/<!ENTITY|<!DOCTYPE[^>]*\[/i', $d)) return false;
+    return !preg_match('/<\s*(script|foreignObject|iframe|embed|object|a|use|image|set|animate\w*|handler|listener)\b|\son[a-z]+\s*=|javascript\s*:|data\s*:|&#|\bhref\s*=|@import|url\s*\(\s*[\'"]?(?!#)/i', $d);
 }
 
 /* ───────── GitHub ───────── */

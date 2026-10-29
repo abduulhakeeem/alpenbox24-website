@@ -44,7 +44,7 @@ All 15 routes are built (`docs/11-build-log-and-verification.md`). Photos are li
 
 ## 3. Stack (decided — do not re-debate)
 
-- **Astro 6.x** (6.4.8), static build. Node **22.12.0+** at build time only (`.nvmrc`).
+- **Astro 7.4.1** (pinned: newest release with all security fixes that runs on Node 22.22+; 7.4.2+ needs Node ≥ 22.23.4), static build. Node **22** at build time only (`.nvmrc`).
 - Plain CSS with custom properties and `@layer` (no Tailwind). Tokens in `src/styles/tokens.css` (starter provided).
 - `astro:assets` `<Picture>` for every raster image → AVIF + WebP, responsive widths.
 - `@astrojs/sitemap`. Content collections (Content Layer API, `src/content.config.ts`, `glob()`/`file()` loaders) for gallery items and FAQ.
