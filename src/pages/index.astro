@@ -19,7 +19,7 @@ const strip = stripNames.map((n) => gallery.find((g) => g.name === n)!).filter(B
 ---
 <Base
   title="AlpenBox24 – 24/7 Automaten in Miesbach und Umgebung"
-  description="AlpenBox24: Snacks, Getränke und Regionales aus unseren Automaten, rund um die Uhr. Unser 24/7-Minimarkt in Miesbach und weitere Standorte im Überblick."
+  description="Kalte Getränke, Snacks und Regionales aus dem Automaten, Tag und Nacht. AlpenBox24 aus Miesbach: Hier siehst du, wo unsere Automaten stehen."
   hero
 >
   <section class="hero" aria-labelledby="hero-title">
@@ -30,10 +30,10 @@ const strip = stripNames.map((n) => gallery.find((g) => g.name === n)!).filter(B
     <div class="hero__grain" aria-hidden="true"></div>
     <div class="wrap hero__content">
       <h1 id="hero-title">
-        <span class="hero__big"><SplitText text="Nie geschlossen." base={40} /></span>
-        <span class="hero__sub">Unsere Automaten in Miesbach. Rund um die Uhr.</span>
+        <span class="hero__big"><SplitText text="Bei uns ist nie zu." base={40} /></span>
+        <span class="hero__sub">Automaten in Miesbach, Tag und Nacht.</span>
       </h1>
-      <p class="lead">Snacks, kalte Getränke und Regionales, direkt aus dem Automaten. An der Bayrischzeller Straße in Miesbach und an weiteren Standorten.</p>
+      <p class="lead">Kalte Getränke, Snacks und Regionales zum Mitnehmen. Du findest uns an der Bayrischzeller Straße und an weiteren Orten rund um Miesbach.</p>
       <div class="cta-row">
         <span class="signpost-wrap"><a class="signpost" href={u('/standorte/')}>Standorte ansehen</a></span>
         <a class="btn" href={u('/automaten/')}>Unsere Automaten</a>
@@ -48,7 +48,7 @@ const strip = stripNames.map((n) => gallery.find((g) => g.name === n)!).filter(B
 
   <section class="section" id="typen" aria-labelledby="typen-title">
     <div class="wrap">
-      <h2 id="typen-title" class="statement" data-reveal>Was in unseren Automaten <em>steckt.</em></h2>
+      <h2 id="typen-title" class="statement" data-reveal>Was du bei uns <em>rausziehen</em> kannst.</h2>
       <div class="bento mt-7">
         {tiles.map((m, i) => (
           <a class:list={['bento__tile', `bento__tile--${i}`]} href={u(`/automaten/#${m.id}`)} data-reveal="clip" style={`--d:${i * 90}`}>
@@ -57,7 +57,7 @@ const strip = stripNames.map((n) => gallery.find((g) => g.name === n)!).filter(B
           </a>
         ))}
       </div>
-      <p class="muted mt-5" style="font-size:var(--fs-small)">Beispielfotos aus Wikimedia Commons. Urheber und Lizenzen findest du unter <a href={u('/bildnachweise/')}>Bildnachweise</a>.</p>
+      <p class="muted mt-5" style="font-size:var(--fs-small)">Das sind noch Beispielfotos von Wikimedia Commons, eigene Bilder kommen bald. Wer sie gemacht hat, steht bei den <a href={u('/bildnachweise/')}>Bildnachweisen</a>.</p>
     </div>
   </section>
 
@@ -66,14 +66,14 @@ const strip = stripNames.map((n) => gallery.find((g) => g.name === n)!).filter(B
   <section class="band" aria-label="Für wen">
     <Photo name="regiomat-holz" alt="" sizes="100vw" widths={[800, 1280, 1920]} credit={false} position="50% 40%" />
     <div class="wrap band__text">
-      <p class="statement" data-reveal>Wenn alles zu hat, <em>haben wir offen.</em></p>
+      <p class="statement" data-reveal>Sonntagabend, alles zu? <em>Wir nicht.</em></p>
     </div>
   </section>
 
   <section class="section" aria-labelledby="einblicke-title">
     <div class="wrap" style="display:flex;justify-content:space-between;align-items:end;gap:1rem;flex-wrap:wrap">
-      <h2 id="einblicke-title" data-reveal>Licht an, Fach auf.</h2>
-      <a class="btn" href={u('/galerie/')}>Zur Galerie</a>
+      <h2 id="einblicke-title" data-reveal>So sieht’s aus</h2>
+      <a class="btn" href={u('/galerie/')}>Alle Bilder</a>
     </div>
     <ul class="strip mt-6" aria-label="Bilder aus der Galerie">
       {strip.map((p) => (
@@ -91,9 +91,9 @@ const strip = stripNames.map((n) => gallery.find((g) => g.name === n)!).filter(B
     <div class="wrap grid-2">
       <div class="stack">
         <p class="kicker" data-reveal>Standorte</p>
-        <h2 id="miesbach-title" data-reveal style="--d:80">Hier findest du uns.</h2>
+        <h2 id="miesbach-title" data-reveal style="--d:80">So findest du hin</h2>
         {main && <p class="muted" data-reveal style="--d:160"><strong>{main.name}</strong><br />{main.address}{main.hours && <><br />{main.hours}</>}</p>}
-        <p class="muted" data-reveal style="--d:200">Direkt an der B&nbsp;472, auf dem Weg nach Schliersee und Bayrischzell. Vom Bahnhof Miesbach sind es rund {site.directions.walkMinutesFromStation} Minuten zu Fuß.</p>
+        <p class="muted" data-reveal style="--d:200">An der B&nbsp;472 Richtung Schliersee und Bayrischzell, also genau auf dem Weg in die Berge. Vom Bahnhof Miesbach läufst du etwa {site.directions.walkMinutesFromStation} Minuten.</p>
         <div class="cta-row" data-reveal style="--d:240">
           <span class="signpost-wrap"><a class="signpost" href={u('/standorte/')}>Alle Standorte</a></span>
           {main && <a class="btn" href={main.mapsUrl} rel="noopener" target="_blank"><Icon name="route" />Route planen</a>}
@@ -105,7 +105,7 @@ const strip = stripNames.map((n) => gallery.find((g) => g.name === n)!).filter(B
 
   <section class="section section--fels" aria-labelledby="cta-title">
     <div class="wrap center stack">
-      <h2 id="cta-title" class="statement" style="margin-inline:auto">Platz für einen Automaten? <em>Sprich uns an.</em></h2>
+      <h2 id="cta-title" class="statement" style="margin-inline:auto">Du hast Platz für einen Automaten? <em>Meld dich.</em></h2>
       <p class="cta-row" style="justify-content:center"><span class="signpost-wrap"><a class="signpost" href={u('/kontakt/?anliegen=standort#formular')}>Standort anbieten</a></span><a class="btn" href={u('/kontakt/')}>Kontakt</a></p>
     </div>
   </section>

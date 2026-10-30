@@ -1,32 +1,25 @@
 ---
 /**
- * "Ein Tag mit AlpenBox24" — scroll-scrubbed 24-hour scene (signature moment).
- * The clock ticks minute by minute, the sky blends continuously, sun and moon travel real arcs,
- * the lit AlpenBox24 machine glows brighter at night and cars pass on the B 472.
- * No JS or prefers-reduced-motion: a plain ordered list of the six moments (real, indexable text).
- * Scene engine: src/scripts/app.ts ("Day cycle"). Styles: src/styles/pages.css ("Day cycle").
+ * "Ein Tag am Automaten": short scroll-scrubbed 24-hour scene (signature moment).
+ * The clock runs through the day, the sky blends, sun and moon travel arcs and the machine glows at night.
+ * No JS or prefers-reduced-motion: a plain list of the four moments (real, indexable text).
+ * Scene engine: src/scripts/app.ts ("Day cycle"). Styles: src/styles/daycycle.css.
  */
 const moments = [
-  { time: '05:40', min: 340, title: 'Früher als der Bäcker.', text: 'Wasser und Riegel, bevor’s auf den Berg geht.' },
-  { time: '12:30', min: 750, title: 'Mittagspause.', text: 'Ohne Anstehen.' },
-  { time: '20:01', min: 1201, title: 'Ladenschluss?', text: 'Nicht bei uns.' },
-  { time: '23:30', min: 1410, title: 'Spät dran?', text: 'Kein Problem.' },
-  { time: '03:14', min: 1634, title: 'Nachtschicht vorbei.', text: 'Noch schnell was Kaltes, dann heim.' },
-  { time: 'Sonntag', min: 2100, title: 'Sonntag, Feiertag?', text: 'Wir haben offen.' },
+  { time: '06:30', min: 390, title: 'Vor der Bergtour', text: 'Noch schnell Wasser und Brotzeit holen.' },
+  { time: '12:30', min: 750, title: 'Mittagspause', text: 'Kurz rüber, was rausziehen, weiter geht’s.' },
+  { time: '20:30', min: 1230, title: 'Die Läden sind zu', text: 'Am Automaten brennt noch Licht.' },
+  { time: '02:00', min: 1560, title: 'Schicht vorbei', text: 'Was Kaltes zu trinken, dann heim.' },
 ];
 const ridge = 'M0 90.8L60.8 51.9L88.1 67.2L142.8 0L185.3 54.3L212.7 30.7L273.4 86.1';
 ---
 <section class="day" data-day aria-labelledby="day-title" data-mins={JSON.stringify(moments.map((m) => m.min))}>
   <div class="dc-stage" aria-hidden="true">
     <div class="dc-sky"></div>
-    <div class="dc-stars"><i></i><i></i><i></i></div>
-    <span class="dc-shoot"></span>
+    <div class="dc-stars"><i></i><i></i></div>
     <div class="dc-sun"></div>
     <div class="dc-moon"></div>
 
-    <svg class="dc-range dc-range--far" viewBox="0 0 400 100" preserveAspectRatio="none">
-      <path d="M0 62L34 40L58 52L96 22L130 48L162 30L204 58L238 26L276 50L306 36L344 56L376 34L400 46V100H0Z" />
-    </svg>
     <svg class="dc-range dc-range--mid" viewBox="0 0 400 100" preserveAspectRatio="none">
       <path d="M0 70L48 48L80 62L128 34L170 64L214 44L252 66L300 38L340 60L372 50L400 64V100H0Z" />
     </svg>
@@ -36,13 +29,7 @@ const ridge = 'M0 90.8L60.8 51.9L88.1 67.2L142.8 0L185.3 54.3L212.7 30.7L273.4 8
       <path class="dc-near-line" d={ridge} />
     </svg>
 
-    <div class="dc-road">
-      <span class="dc-car dc-car--a"></span>
-      <span class="dc-car dc-car--b"></span>
-    </div>
-
     <div class="dc-box">
-      <span class="dc-box__pool"></span>
       <span class="dc-box__glow"></span>
       <span class="dc-box__body">
         <span class="dc-box__sign">24</span>
@@ -51,35 +38,22 @@ const ridge = 'M0 90.8L60.8 51.9L88.1 67.2L142.8 0L185.3 54.3L212.7 30.7L273.4 8
       </span>
     </div>
 
-    <div class="dc-clock">
-      <span class="dc-clock__label">Ein Tag mit AlpenBox24</span>
-      <strong class="dc-clock__time" data-day-time>05:40</strong>
-    </div>
+    <strong class="dc-clock" data-day-time>06:30</strong>
   </div>
 
   <div class="wrap dc-intro">
-    <p class="kicker">24 Stunden, 7 Tage</p>
-    <h2 id="day-title">Unsere Automaten schlafen nie</h2>
+    <h2 id="day-title">Ein Tag am Automaten</h2>
   </div>
 
   <div class="dc-fore">
-  <ol class="wrap dc-list">
-    {moments.map((m, i) => (
-      <li class="dc-moment" data-moment={i}>
-        <span class="dc-moment__time">{m.time}</span>
-        <h3>{m.title}</h3>
-        <p>{m.text}</p>
-      </li>
-    ))}
-  </ol>
-
-  <nav class="dc-timeline" aria-label="Tageszeiten">
-    <span class="dc-timeline__bar"><span class="dc-timeline__fill"></span></span>
-    <ol>
+    <ol class="wrap dc-list">
       {moments.map((m, i) => (
-        <li><button type="button" data-jump={i}><span>{m.time}</span></button></li>
+        <li class="dc-moment" data-moment={i}>
+          <span class="dc-moment__time">{m.time}</span>
+          <h3>{m.title}</h3>
+          <p>{m.text}</p>
+        </li>
       ))}
     </ol>
-  </nav>
   </div>
 </section>

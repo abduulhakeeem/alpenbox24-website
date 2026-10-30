@@ -1,107 +1,69 @@
 @layer pages {
-  /* ───────── Day cycle: "Ein Tag mit AlpenBox24" ─────────
-     JS (app.ts) sets on .day: --p (0–1), --top/--bot (sky), --glow, --night (0–1),
-     --sun-x/--sun-y/--sun-o, --moon-x/--moon-y/--moon-o. Without JS or with reduced motion: static list. */
+  /* ───────── Day cycle: "Ein Tag am Automaten" ─────────
+     JS (app.ts) sets on .day: --top/--bot (sky), --night (0–1), --sun-x/--sun-y/--sun-o, --moon-x/--moon-y/--moon-o.
+     Without JS or with reduced motion: static list. */
   .day { position: relative; background: var(--c-nacht); }
   .dc-intro { padding-block: var(--section) 2rem; }
-  .dc-list { list-style: none; padding: 0 0 var(--section); display: grid; gap: var(--s-7); }
-  .dc-moment__time { display: block; font-family: var(--ff-display); font-weight: 900; font-stretch: 125%; font-size: clamp(2.6rem, 2rem + 3vw, 4rem); color: var(--c-laerche); line-height: 1; font-variant-numeric: tabular-nums; }
-  .dc-moment h3 { margin-top: 0.4rem; font-size: var(--fs-2); }
-  .dc-moment p { color: var(--c-stein); margin-top: 0.6rem; font-size: var(--fs-lead); max-width: 40ch; }
-  .dc-stage, .dc-timeline { display: none; }
+  .dc-list { list-style: none; padding: 0 0 var(--section); display: grid; gap: var(--s-6); }
+  .dc-moment__time { display: block; font-family: var(--ff-display); font-weight: 900; font-stretch: 125%; font-size: clamp(2.2rem, 1.8rem + 2vw, 3.2rem); color: var(--c-laerche); line-height: 1; font-variant-numeric: tabular-nums; }
+  .dc-moment h3 { margin-top: 0.4rem; font-size: var(--fs-3); }
+  .dc-moment p { color: var(--c-stein); margin-top: 0.4rem; max-width: 40ch; }
+  .dc-stage { display: none; }
 
-  .day.is-live { height: 720vh; }
+  /* Live: 2 screens of scroll for the whole day */
+  .day.is-live { height: 300vh; }
   .day.is-live .dc-intro { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); padding: 0; }
   .day.is-live .dc-stage { display: block; position: sticky; top: 0; height: 100svh; overflow: hidden; isolation: isolate; contain: paint; }
   .day.is-live .dc-fore { position: sticky; top: 0; height: 100svh; margin-top: -100svh; z-index: 3; pointer-events: none; }
   .day.is-live .dc-list { position: absolute; inset: 0; width: 100%; max-width: none; padding: 0; margin: 0; display: block; }
-  .day.is-live .dc-list::before { content: ''; position: absolute; left: 50%; top: 52%; width: min(120vw, 56rem); height: 22rem; translate: -50% -50%; background: radial-gradient(closest-side, rgb(8 10 20 / 0.42), transparent); pointer-events: none; }
 
   /* Sky */
-  .dc-sky { position: absolute; inset: 0; background: linear-gradient(180deg, var(--top, #070a14) 0%, var(--bot, #1d1f3a) 72%, color-mix(in srgb, var(--bot, #1d1f3a) 70%, #000) 100%); }
-  .dc-sky::after { content: ''; position: absolute; inset: 0; opacity: var(--sun-o, 0); background: radial-gradient(55% 38% at var(--sun-x, 50%) 80%, var(--glow, rgb(246 138 43 / 0.55)), transparent 70%); }
+  .dc-sky { position: absolute; inset: 0; background: linear-gradient(180deg, var(--top, #070a14) 0%, var(--bot, #1d1f3a) 75%); }
 
-  /* Stars + shooting star (night only) */
-  .dc-stars { position: absolute; inset: 0 0 30% 0; opacity: var(--night, 1); }
-  .dc-stars i { position: absolute; inset: 0; background-repeat: repeat; animation: dc-twinkle 4s ease-in-out infinite alternate; }
+  /* Stars (night only) */
+  .dc-stars { position: absolute; inset: 0 0 35% 0; opacity: var(--night, 1); }
+  .dc-stars i { position: absolute; inset: 0; background-repeat: repeat; }
   .dc-stars i:nth-child(1) { background-image: radial-gradient(1.3px 1.3px at 20px 30px, #fff, transparent), radial-gradient(1px 1px at 140px 90px, #fff, transparent), radial-gradient(1.2px 1.2px at 90px 160px, #fff, transparent); background-size: 200px 200px; }
-  .dc-stars i:nth-child(2) { background-image: radial-gradient(1px 1px at 60px 70px, #fff, transparent), radial-gradient(1.4px 1.4px at 230px 20px, #fff, transparent), radial-gradient(1px 1px at 170px 190px, #e9e6ff, transparent); background-size: 290px 260px; animation-duration: 6s; animation-delay: -2s; }
-  .dc-stars i:nth-child(3) { background-image: radial-gradient(1.8px 1.8px at 110px 50px, #fff, transparent), radial-gradient(1px 1px at 300px 140px, #fff, transparent); background-size: 380px 330px; animation-duration: 3s; animation-delay: -1s; }
-  @keyframes dc-twinkle { from { opacity: 0.4; } to { opacity: 1; } }
-  .dc-shoot { position: absolute; top: 14%; left: 62%; width: 140px; height: 2px; opacity: var(--night, 1); transform: rotate(-18deg); }
-  .dc-shoot::before { content: ''; position: absolute; inset: 0; border-radius: 2px; background: linear-gradient(90deg, transparent, #fff); opacity: 0; animation: dc-shoot 9s ease-in 3s infinite; }
-  @keyframes dc-shoot { 0% { transform: translateX(0); opacity: 0; } 2% { opacity: 1; } 8% { transform: translateX(-260px); opacity: 0; } 100% { opacity: 0; } }
+  .dc-stars i:nth-child(2) { background-image: radial-gradient(1px 1px at 60px 70px, #fff, transparent), radial-gradient(1.4px 1.4px at 230px 20px, #fff, transparent); background-size: 290px 260px; opacity: 0.7; }
 
   /* Sun & moon on arcs */
   .dc-sun, .dc-moon { position: absolute; left: var(--x); top: var(--y); aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; }
-  .dc-sun { --x: var(--sun-x, 50%); --y: var(--sun-y, 70%); width: clamp(64px, 9vmin, 128px); opacity: var(--sun-o, 0); background: radial-gradient(circle at 42% 38%, #fff5d6, #ffc062 38%, #f68a2b 70%, #d8641c); box-shadow: 0 0 60px 18px rgb(255 170 80 / 0.55), 0 0 180px 70px rgb(246 138 43 / 0.25); }
-  .dc-moon { --x: var(--moon-x, 50%); --y: var(--moon-y, 30%); width: clamp(48px, 6.5vmin, 92px); opacity: var(--moon-o, 1); background: radial-gradient(circle at 36% 34%, #ffffff, #e7e4da 45%, #c9c5b8 75%); box-shadow: 0 0 40px 10px rgb(230 228 220 / 0.28), 0 0 140px 50px rgb(180 190 230 / 0.12); }
-  .dc-moon::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 62% 58%, rgb(0 0 0 / 0.12) 0 9%, transparent 10%), radial-gradient(circle at 40% 66%, rgb(0 0 0 / 0.1) 0 6%, transparent 7%), radial-gradient(circle at 58% 30%, rgb(0 0 0 / 0.08) 0 5%, transparent 6%); }
+  .dc-sun { --x: var(--sun-x, 50%); --y: var(--sun-y, 70%); width: clamp(56px, 8vmin, 110px); opacity: var(--sun-o, 0); background: radial-gradient(circle at 42% 38%, #fff5d6, #ffc062 40%, #f68a2b 75%); box-shadow: 0 0 60px 16px rgb(255 170 80 / 0.45); }
+  .dc-moon { --x: var(--moon-x, 50%); --y: var(--moon-y, 30%); width: clamp(40px, 5.5vmin, 76px); opacity: var(--moon-o, 1); background: radial-gradient(circle at 36% 34%, #ffffff, #e7e4da 50%, #c9c5b8 80%); box-shadow: 0 0 40px 8px rgb(230 228 220 / 0.22); }
 
-  /* Mountain layers (parallax, tinted by the sky) */
-  .dc-range { position: absolute; left: -6%; width: 112%; }
+  /* Mountains */
+  .dc-range { position: absolute; left: 0; width: 100%; }
   .dc-range path { vector-effect: non-scaling-stroke; }
-  .dc-range--far { bottom: 17%; height: 30%; transform: translateX(calc(var(--p, 0) * -3%)); }
-  .dc-range--far path { fill: color-mix(in srgb, var(--bot, #1d1f3a) 52%, #0d0c0b); }
-  .dc-range--mid { bottom: 9%; height: 27%; transform: translateX(calc(var(--p, 0) * -6%)); }
-  .dc-range--mid path { fill: color-mix(in srgb, var(--bot, #1d1f3a) 24%, #0d0c0b); }
-  .dc-range--near { left: 0; width: 100%; bottom: 0; height: 30%; }
+  .dc-range--mid { bottom: 8%; height: 26%; }
+  .dc-range--mid path { fill: color-mix(in srgb, var(--bot, #1d1f3a) 30%, #0d0c0b); }
+  .dc-range--near { bottom: 0; height: 28%; }
   .dc-near-fill { fill: var(--c-nacht); }
   .dc-near-snow { fill: var(--c-schnee); opacity: calc(1 - var(--night, 1) * 0.45); }
-  .dc-near-line { fill: none; stroke: var(--c-schnee); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+  .dc-near-line { fill: none; stroke: var(--c-schnee); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 
-  /* The B 472 with passing cars */
-  .dc-road { position: absolute; left: 0; right: 0; bottom: 3%; height: 3.2%; background: #151413; border-block: 1px solid #22201d; overflow: hidden; }
-  .dc-road::after { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; translate: 0 -50%; background: repeating-linear-gradient(90deg, #4a4540 0 26px, transparent 26px 58px); }
-  .dc-car { position: absolute; top: 50%; width: 46px; height: 6px; translate: 0 -50%; opacity: calc(0.15 + var(--night, 1) * 0.85); }
-  .dc-car--a { left: -60px; background: radial-gradient(circle at 92% 50%, #fffbe6 0 3px, transparent 4px), linear-gradient(90deg, transparent, rgb(255 251 230 / 0.55) 60%, transparent); filter: drop-shadow(0 0 6px #fff7c2); animation: dc-drive-r 7s linear infinite; }
-  .dc-car--b { right: -60px; background: radial-gradient(circle at 8% 50%, #ff3b2f 0 3px, transparent 4px), linear-gradient(270deg, transparent, rgb(255 59 47 / 0.45) 60%, transparent); filter: drop-shadow(0 0 6px #ff3b2f); animation: dc-drive-l 9.5s linear 2.5s infinite; }
-  @keyframes dc-drive-r { to { transform: translateX(calc(100vw + 120px)); } }
-  @keyframes dc-drive-l { to { transform: translateX(calc(-100vw - 120px)); } }
-
-  /* The lit AlpenBox24 machine: "das Licht an der B 472" */
-  .dc-box { position: absolute; left: 66%; bottom: 6.2%; width: clamp(34px, 4.6vmin, 62px); aspect-ratio: 1 / 1.8; z-index: 1; }
+  /* The lit machine */
+  .dc-box { position: absolute; left: 68%; bottom: 5%; width: clamp(30px, 4.2vmin, 56px); aspect-ratio: 1 / 1.8; z-index: 1; }
   .dc-box__body { position: absolute; inset: 0; display: grid; grid-template-rows: 16% 1fr 14%; gap: 6%; padding: 9%; background: linear-gradient(180deg, #2a2724, #151311); border: 1px solid #3a3632; border-radius: 3px; }
-  .dc-box__sign { display: grid; place-items: center; font-family: var(--ff-display); font-weight: 900; font-size: clamp(8px, 1.1vmin, 13px); line-height: 1; color: var(--c-laerche); text-shadow: 0 0 6px var(--c-leuchte); }
-  .dc-box__glass { display: grid; grid-template-columns: 1fr 1fr; gap: 10%; padding: 10%; border-radius: 2px; background: #d7ff00; box-shadow: inset 0 0 8px rgb(255 255 255 / 0.25); filter: brightness(calc(0.45 + var(--night, 1) * 0.6)); }
+  .dc-box__sign { display: grid; place-items: center; font-family: var(--ff-display); font-weight: 900; font-size: clamp(8px, 1.1vmin, 13px); line-height: 1; color: var(--c-laerche); }
+  .dc-box__glass { display: grid; grid-template-columns: 1fr 1fr; gap: 10%; padding: 10%; border-radius: 2px; background: #d7ff00; filter: brightness(calc(0.45 + var(--night, 1) * 0.6)); }
   .dc-box__glass i { border-radius: 1px; background: #f68a2b; opacity: 0.85; }
   .dc-box__glass i:nth-child(2n) { background: #3d7ea6; }
   .dc-box__glass i:nth-child(3n) { background: #2b2825; }
   .dc-box__tray { background: #0b0a09; border-radius: 1px; }
-  .dc-box__glow { position: absolute; inset: -140% -260%; border-radius: 50%; background: radial-gradient(closest-side, rgb(215 255 0 / 0.38), rgb(199 226 34 / 0.12) 45%, transparent 72%); opacity: calc(0.12 + var(--night, 1) * 0.88); animation: dc-hum 3.2s ease-in-out infinite alternate; pointer-events: none; }
-  .dc-box__pool { position: absolute; left: 50%; bottom: -14%; width: 520%; height: 34%; translate: -50% 0; border-radius: 50%; background: radial-gradient(closest-side, rgb(215 255 0 / 0.45), transparent); opacity: calc(var(--night, 1) * 0.9); }
-  @keyframes dc-hum { 50% { scale: 0.94; } }
+  .dc-box__glow { position: absolute; inset: -120% -220%; border-radius: 50%; background: radial-gradient(closest-side, rgb(215 255 0 / 0.32), transparent 70%); opacity: calc(0.1 + var(--night, 1) * 0.9); pointer-events: none; }
 
   /* Clock */
-  .dc-clock { position: absolute; z-index: 2; left: 50%; top: calc(var(--header-h) + 2.5vh); translate: -50% 0; text-align: center; }
-  .dc-clock__label { display: block; color: rgb(247 247 247 / 0.8); font-weight: 700; font-size: 0.95rem; text-shadow: 0 1px 10px rgb(0 0 0 / 0.5); }
-  .dc-clock__time { display: block; font-family: var(--ff-display); font-weight: 900; font-stretch: 125%; font-size: clamp(3.8rem, 1.6rem + 11vw, 10.5rem); line-height: 0.92; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; color: #fff; text-shadow: 0 8px 50px rgb(0 0 0 / 0.35); white-space: nowrap; }
+  .dc-clock { position: absolute; z-index: 2; left: 50%; top: calc(var(--header-h) + 3vh); translate: -50% 0; font-family: var(--ff-display); font-weight: 900; font-stretch: 125%; font-size: clamp(3rem, 1.6rem + 7vw, 7rem); line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: #fff; text-shadow: 0 6px 40px rgb(0 0 0 / 0.35); white-space: nowrap; }
 
   /* Moments */
-  .day.is-live .dc-moment { position: absolute; left: 50%; top: 52%; translate: -50% -50%; width: min(100% - 2.5rem, 38rem); text-align: center; opacity: 0; visibility: hidden; transform: translateY(36px) scale(0.97); filter: blur(8px); transition: opacity 650ms var(--ease-out), transform 900ms var(--ease-out), filter 650ms var(--ease-out), visibility 0s linear 650ms; }
-  .day.is-live .dc-moment.is-active { opacity: 1; visibility: visible; transform: none; filter: none; transition-delay: 0s; }
-  .day.is-live .dc-moment.is-past { transform: translateY(-36px) scale(0.97); }
+  .day.is-live .dc-moment { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: min(100% - 2.5rem, 34rem); text-align: center; opacity: 0; visibility: hidden; transform: translateY(20px); transition: opacity 500ms var(--ease-out), transform 600ms var(--ease-out), visibility 0s linear 500ms; }
+  .day.is-live .dc-moment.is-active { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+  .day.is-live .dc-moment.is-past { transform: translateY(-20px); }
   .day.is-live .dc-moment__time { display: none; }
-  .day.is-live .dc-moment h3 { font-size: clamp(1.9rem, 1.3rem + 2.6vw, 3.2rem); text-shadow: 0 2px 30px rgb(0 0 0 / 0.55); }
-  .day.is-live .dc-moment p { margin-inline: auto; color: #f0eee9; text-shadow: 0 2px 20px rgb(0 0 0 / 0.65); }
+  .day.is-live .dc-moment h3 { font-size: clamp(1.7rem, 1.2rem + 2vw, 2.6rem); text-shadow: 0 2px 24px rgb(0 0 0 / 0.55); }
+  .day.is-live .dc-moment p { margin-inline: auto; color: #f0eee9; font-size: var(--fs-lead); text-shadow: 0 2px 16px rgb(0 0 0 / 0.65); }
 
-  /* Timeline */
-  .day.is-live .dc-timeline { display: block; position: absolute; left: 50%; bottom: calc(14% + 1rem); translate: -50% 0; width: min(100% - 1.5rem, 36rem); padding: 0.55rem 0.9rem 0.35rem; border-radius: 14px; background: rgb(13 12 11 / 0.55); border: 1px solid rgb(255 255 255 / 0.08); backdrop-filter: blur(10px) saturate(130%); -webkit-backdrop-filter: blur(10px) saturate(130%); pointer-events: auto; }
-  .dc-timeline__bar { position: absolute; left: calc(0.9rem + 24px); right: calc(0.9rem + 24px); top: calc(0.55rem + 14px); height: 2px; background: rgb(255 255 255 / 0.18); border-radius: 2px; overflow: hidden; }
-  .dc-timeline__fill { position: absolute; inset: 0; background: linear-gradient(90deg, var(--c-sonne), var(--c-laerche)); transform-origin: left; transform: scaleX(var(--p, 0)); }
-  .dc-timeline ol { position: relative; list-style: none; margin: 0; padding: 0; display: flex; justify-content: space-between; }
-  .dc-timeline button { display: grid; justify-items: center; align-content: start; gap: 0.4rem; min-width: var(--target); min-height: var(--target); padding: 6px 0 0; border: 0; background: none; color: rgb(247 247 247 / 0.7); font: 700 0.78rem/1 var(--ff-text); font-variant-numeric: tabular-nums; cursor: pointer; text-shadow: 0 1px 8px rgb(0 0 0 / 0.6); }
-  .dc-timeline button::before { content: ''; width: 16px; height: 16px; border-radius: 50%; background: #0d0c0b; border: 2px solid rgb(255 255 255 / 0.55); transition: background var(--t-base), border-color var(--t-base), transform 400ms var(--ease-spring); }
-  .dc-timeline button:hover { color: #fff; }
-  .dc-timeline button[aria-current='true'] { color: var(--c-laerche); }
-  .dc-timeline button[aria-current='true']::before { background: var(--c-laerche); border-color: var(--c-laerche); transform: scale(1.25); box-shadow: 0 0 14px var(--c-leuchte); }
   @media (max-width: 599px) {
-    .dc-timeline button span { font-size: 0.66rem; }
-    .day.is-live .dc-timeline { bottom: calc(14% + 4.5rem + env(safe-area-inset-bottom)); }
-    .dc-box { left: 72%; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .dc-stars i, .dc-shoot::before, .dc-car, .dc-box__glow { animation: none; }
+    .dc-box { left: 74%; }
   }
 }

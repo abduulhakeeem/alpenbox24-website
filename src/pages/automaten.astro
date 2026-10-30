@@ -9,10 +9,10 @@ import { u } from '../lib/url';
 ---
 <Base
   title="Automaten in Miesbach: Snacks & Getränke – AlpenBox24"
-  description="Snacks, kalte Getränke, Regionales und mehr aus dem Automaten: Das bietet AlpenBox24 in Miesbach und Umgebung, rund um die Uhr. Finde den nächsten Standort."
+  description="Vom Snackautomaten bis zum Hofautomaten: Diese Automaten betreibt AlpenBox24 in Miesbach und Umgebung, auch sonntags und nachts. Und hier stehen sie."
   breadcrumbs={[{ name: 'Automaten', href: '/automaten/' }]}
 >
-  <PageHead title="Unsere Automaten in Miesbach" lead="Snacks, Getränke, Regionales und mehr. Rund um die Uhr, auch an Sonn- und Feiertagen." crumbs={[{ name: 'Automaten', href: '/automaten/' }]}>
+  <PageHead title="Unsere Automaten in Miesbach" lead="Vom Snackautomaten bis zum Hofautomaten mit Eiern und Käse. Auch sonntags und an Feiertagen offen." crumbs={[{ name: 'Automaten', href: '/automaten/' }]}>
     <nav class="cta-row mt-6" aria-label="Automatentypen">
       {machines.filter((m) => m.id !== 'standort').map((m) => <a class="chip" href={`#${m.id}`}>{m.name}</a>)}
     </nav>
@@ -39,14 +39,14 @@ import { u } from '../lib/url';
   <section class="section" aria-labelledby="spiel-title">
     <div class="wrap">
       <h2 id="spiel-title" data-reveal>Probier’s aus.</h2>
-      <p class="muted mt-4" data-reveal>Drück ein Fach oder tipp den Code ein, wie am echten Automaten.</p>
+      <p class="muted mt-4" data-reveal>Tipp auf ein Fach oder gib den Code ein, wie am echten Automaten.</p>
       <div class="mt-7" data-reveal><Machine /></div>
     </div>
   </section>
 
   <section class="section section--fels">
     <div class="wrap grid-2">
-      <h2 class="statement">Wo steht der nächste? <em>Hier entlang.</em></h2>
+      <h2 class="statement">Und wo steht der <em>nächste?</em></h2>
       <div><span class="signpost-wrap"><a class="signpost" href={u('/standorte/')}>Standorte ansehen</a></span></div>
     </div>
   </section>

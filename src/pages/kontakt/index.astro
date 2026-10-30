@@ -7,19 +7,19 @@ import { u, STAGING } from '../../lib/url';
 
 /** Values must match $anliegenMap in public/api/kontakt.php. */
 const reasons = [
-  { value: 'frage', icon: 'hand', title: 'Frage zu einem Automaten', line: 'Etwas klemmt, fehlt oder ist unklar? Sag uns, an welchem Standort.' },
-  { value: 'wunsch', icon: 'cookie', title: 'Produktwunsch', line: 'Was sollen wir als Nächstes ins Fach legen?' },
-  { value: 'standort', icon: 'pin', title: 'Standort anbieten', line: 'Du hast Platz für einen Automaten? Erzähl uns davon.' },
-  { value: 'sonstiges', icon: 'chat', title: 'Etwas anderes', line: 'Lob, Kritik, Presse oder eine Idee: immer her damit.' },
+  { value: 'frage', icon: 'hand', title: 'Problem am Automaten', line: 'Geld weg oder Fach klemmt? Sag uns, wo der Automat steht.' },
+  { value: 'wunsch', icon: 'cookie', title: 'Produktwunsch', line: 'Was fehlt dir bei uns?' },
+  { value: 'standort', icon: 'pin', title: 'Standort anbieten', line: 'Vor deinem Laden, im Betrieb oder am Hof? Erzähl uns davon.' },
+  { value: 'sonstiges', icon: 'chat', title: 'Etwas anderes', line: 'Lob, Kritik oder eine Idee: immer her damit.' },
 ] as const;
 const main = site.locations[0];
 ---
 <Base
   title="Kontakt – AlpenBox24 Miesbach"
-  description="Frage zu einem Automaten, Produktwunsch oder Platz für einen neuen Standort? Schreib AlpenBox24 aus Miesbach. Wir melden uns so schnell wie möglich."
+  description="Problem am Automaten, ein Produktwunsch oder Platz für einen neuen Standort? Schreib AlpenBox24 in Miesbach, wir melden uns so schnell es geht."
   breadcrumbs={[{ name: 'Kontakt', href: '/kontakt/' }]}
 >
-  <PageHead title="Schreib uns." lead="Eine Frage, ein Wunsch oder Platz für einen neuen Automaten im Landkreis Miesbach? Wir lesen jede Nachricht und melden uns so schnell wie möglich." crumbs={[{ name: 'Kontakt', href: '/kontakt/' }]} />
+  <PageHead title="Schreib uns." lead="Ein Automat spinnt, dir fehlt was, oder du hast Platz für einen neuen? Schreib uns, wir melden uns so schnell es geht." crumbs={[{ name: 'Kontakt', href: '/kontakt/' }]} />
 
   <section class="section contact" style="padding-top:0" id="formular" aria-label="Kontaktformular">
     <div class="wrap contact__grid">
@@ -72,8 +72,8 @@ const main = site.locations[0];
           <div class="field">
             <label for="nachricht">Deine Nachricht</label>
             <textarea class="textarea" id="nachricht" name="nachricht" required maxlength="4000" rows="6"></textarea>
-            <span class="hint hint--frage">Nenn uns am besten den Standort und, falls vorhanden, die Nummer am Automaten.</span>
-            <span class="hint hint--wunsch">Je genauer, desto besser: Marke, Sorte, Standort.</span>
+            <span class="hint hint--frage">Am besten mit Standort und, wenn du sie siehst, der Nummer am Automaten.</span>
+            <span class="hint hint--wunsch">Gern mit Marke und Sorte und an welchem Automaten.</span>
             <span class="error">Bitte schreib uns kurz, worum es geht.</span>
           </div>
 
