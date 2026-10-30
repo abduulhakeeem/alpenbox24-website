@@ -99,7 +99,7 @@ if ($ts !== '' && ctype_digit($ts)) {
 }
 
 $anliegenMap = [
-    'frage'     => 'Frage zu einem Automaten',
+    'frage'     => 'Problem am Automaten',
     'wunsch'    => 'Produktwunsch',
     'standort'  => 'Standort anbieten',
     'sonstiges' => 'Sonstiges',
