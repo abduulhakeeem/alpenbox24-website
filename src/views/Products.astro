@@ -13,6 +13,7 @@ import NextStep from '../components/NextStep.astro';
 import Icon from '../components/Icon.astro';
 import { productCats } from '../data/products';
 import { site } from '../data/site';
+import { STAGING } from '../lib/url';
 
 interface Props { lang: 'de' | 'en' }
 const { lang } = Astro.props;
@@ -71,7 +72,7 @@ const icons: Record<string, 'bottle' | 'cookie' | 'cheese' | 'pretzel'> = { getr
                   </ul>
                 </div>
               )}
-              {c.id === 'regional' && !items.length && (
+              {c.id === 'regional' && !items.length && STAGING && (
                 <div class="mt-6">
                   <h3 class="cat__sub">{t.origin}</h3>
                   <OriginList lang={lang} />

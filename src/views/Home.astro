@@ -24,12 +24,9 @@ const P = en ? '/en/products/' : '/produkte/';
 const L = en ? '/en/location/' : '/standorte/';
 const A = en ? '/en/about/' : '/ueber-uns/';
 
-// Six tiles across the four categories, in bento order (big tile first).
-const tiles = [
-  ['getraenke', 0], ['snacks', 0], ['regional', 0], ['brotzeit', 0], ['snacks', 1], ['regional', 2],
-].map(([id, n]) => {
-  const c = productCats.find((x) => x.id === id)!;
-  const ph = c.photos[n as number];
+// One tile per category, in bento order (big tile first).
+const tiles = productCats.map((c) => {
+  const ph = c.photos[0];
   return { id: c.id, name: c[lang].name, line: c[lang].line, photo: ph.name, alt: en ? ph.altEn : ph.altDe };
 });
 
@@ -114,7 +111,7 @@ const t = en
       <div class="stack">
         <p class="kicker" data-reveal>{t.whereK}</p>
         <h2 id="where-title" data-reveal style="--d:80">{t.whereH}</h2>
-        {main && <p class="where-nap" data-reveal style="--d:140"><strong>{main.name}</strong><br />{main.address}{main.hours && <><br /><span class="c-laerche">{main.hours}</span></>}</p>}
+        {main && <p class="where-nap" data-reveal style="--d:140"><strong>{main.name}</strong><br />{main.address}<br /><span class="c-laerche">{en ? site.hours.labelEn : main.hours || site.hours.labelShortDe}</span></p>}
         <p class="muted" data-reveal style="--d:200">{t.whereP}</p>
         <div class="cta-row" data-reveal style="--d:240">
           {main && <span class="signpost-wrap"><a class="signpost" href={main.mapsUrl} rel="noopener" target="_blank"><Icon name="route" />{t.route}</a></span>}

@@ -50,11 +50,11 @@ const t = en
         <div class="card-nap">
           <OpenNow lang={lang} />
           <address><strong id="loc-0">{main.name}</strong>{main.street}<br />{main.zip} {main.city}</address>
-          {main.note && <p class="muted">{main.note}</p>}
+          {main.note && !en && <p class="muted">{main.note}</p>}
           <ul class="icon-list" role="list">
             <li><Icon name="car" /><div><strong>{t.car}</strong><p>{t.carD}</p></div></li>
             {d.parkingDe && <li><Icon name="pin" /><div><strong>{t.park}</strong><p>{d.parkingDe}</p></div></li>}
-            <li><Icon name="clock" /><div><strong>{t.open}</strong><p>{main.hours || (en ? site.hours.labelEn : site.hours.labelDe)}</p></div></li>
+            <li><Icon name="clock" /><div><strong>{t.open}</strong><p>{en ? site.hours.labelEn : main.hours || site.hours.labelDe}</p></div></li>
             <li><Icon name="train" /><div><strong>{t.foot}</strong><p>{t.footD}</p></div></li>
             <li><Icon name="bus" /><div><strong>{t.bus}</strong><p>{t.busD}</p></div></li>
           </ul>
@@ -80,7 +80,7 @@ const t = en
                 <h3>{l.name}</h3>
                 <p class="muted">{l.address}</p>
                 {l.hours && <p class="c-laerche">{l.hours}</p>}
-                {l.note && <p class="muted">{l.note}</p>}
+                {l.note && !en && <p class="muted">{l.note}</p>}
                 <p class="mt-4"><a class="link" href={l.mapsUrl} rel="noopener" target="_blank">{t.route}</a></p>
               </div>
             </li>

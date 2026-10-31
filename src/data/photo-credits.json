@@ -124,5 +124,23 @@
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
     "width": 1920,
     "height": 1280
+  },
+  "tag-sonnenaufgang": {
+    "title": "Wrinkles - Flickr - DaOpfer.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Wrinkles_-_Flickr_-_DaOpfer.jpg",
+    "author": "Andreas Kretschmer",
+    "license": "CC BY 2.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
+    "width": 1652,
+    "height": 1080
+  },
+  "tag-schliersee-mittag": {
+    "title": "Schliersee Ort und See 782.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Schliersee_Ort_und_See_782.jpg",
+    "author": "GFreihalter",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 1920,
+    "height": 1280
   }
 }

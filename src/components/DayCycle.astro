@@ -1,53 +1,33 @@
 ---
 /**
- * "Ein Tag am Automaten": short scroll-scrubbed 24-hour scene (signature moment).
- * The clock runs through the day, the sky blends, sun and moon travel arcs and the machine glows at night.
- * No JS or prefers-reduced-motion: a plain list of the four moments (real, indexable text).
- * Scene engine: src/scripts/app.ts ("Day cycle"). Styles: src/styles/daycycle.css.
+ * "Ein Tag am Automaten": short scroll-scrubbed day in four real photos of the Oberland.
+ * The clock runs through the day while the photos crossfade (sunrise → noon → sunset → night).
+ * No JS or prefers-reduced-motion: a plain list of the four moments (real, indexable text), no stage images loaded.
+ * Engine: src/scripts/app.ts ("Day cycle"). Styles: src/styles/daycycle.css.
  */
+import Photo from './Photo.astro';
+import credits from '../data/photo-credits.json';
+import { u } from '../lib/url';
 interface Props { lang?: 'de' | 'en' }
 const en = Astro.props.lang === 'en';
-const moments = en
-  ? [
-      { time: '06:30', min: 390, title: 'Before the hike', text: 'Grab water and a snack for the mountain.' },
-      { time: '12:30', min: 750, title: 'Lunch break', text: 'Pop over, pick something, carry on.' },
-      { time: '20:30', min: 1230, title: 'The shops are shut', text: 'Our machine is still lit.' },
-      { time: '02:00', min: 1560, title: 'Night shift over', text: 'Something cold to drink, then home.' },
-    ]
-  : [
-      { time: '06:30', min: 390, title: 'Vor der Bergtour', text: 'Noch schnell Wasser und Brotzeit holen.' },
-      { time: '12:30', min: 750, title: 'Mittagspause', text: 'Kurz rüber, was rausziehen, weiter geht’s.' },
-      { time: '20:30', min: 1230, title: 'Die Läden sind zu', text: 'Am Automaten brennt noch Licht.' },
-      { time: '02:00', min: 1560, title: 'Schicht vorbei', text: 'Was Kaltes zu trinken, dann heim.' },
-    ];
-const ridge = 'M0 90.8L60.8 51.9L88.1 67.2L142.8 0L185.3 54.3L212.7 30.7L273.4 86.1';
+const L = en ? 'en' : 'de';
+const moments = [
+  { time: '06:30', min: 390, photo: 'tag-sonnenaufgang', de: ['Vor der Bergtour', 'Noch schnell Wasser und Brotzeit holen.'], en: ['Before the hike', 'Grab water and a snack for the mountain.'] },
+  { time: '12:30', min: 750, photo: 'tag-schliersee-mittag', de: ['Mittagspause', 'Kurz rüber, was rausziehen, weiter geht’s.'], en: ['Lunch break', 'Pop over, pick something, carry on.'] },
+  { time: '20:30', min: 1230, photo: 'wendelstein-sonne', de: ['Die Läden sind zu', 'Am Automaten brennt noch Licht.'], en: ['The shops are shut', 'Our machine is still lit.'] },
+  { time: '02:00', min: 1560, photo: 'tegernsee-nacht', de: ['Schicht vorbei', 'Was Kaltes zu trinken, dann heim.'], en: ['Night shift over', 'Something cold to drink, then home.'] },
+] as const;
+const byline = moments.map((m) => { const c = credits[m.photo]; return `${c.author} (${c.license})`; }).join(', ');
 ---
 <section class="day" data-day aria-labelledby="day-title" data-mins={JSON.stringify(moments.map((m) => m.min))}>
   <div class="dc-stage" aria-hidden="true">
-    <div class="dc-sky"></div>
-    <div class="dc-stars"><i></i><i></i></div>
-    <div class="dc-sun"></div>
-    <div class="dc-moon"></div>
-
-    <svg class="dc-range dc-range--mid" viewBox="0 0 400 100" preserveAspectRatio="none">
-      <path d="M0 70L48 48L80 62L128 34L170 64L214 44L252 66L300 38L340 60L372 50L400 64V100H0Z" />
-    </svg>
-    <svg class="dc-range dc-range--near" viewBox="-4 -4 281.4 102.8" preserveAspectRatio="none">
-      <path class="dc-near-fill" d={`${ridge}L273.4 102.8L0 102.8Z`} />
-      <path class="dc-near-snow" d="M142.8 3.5L136.7 38.9L106.3 81.4L145.8 56.6L158 43.6ZM212.7 33L224.8 56.6L255.2 86.1L227.9 50.7Z" />
-      <path class="dc-near-line" d={ridge} />
-    </svg>
-
-    <div class="dc-box">
-      <span class="dc-box__glow"></span>
-      <span class="dc-box__body">
-        <span class="dc-box__sign">24</span>
-        <span class="dc-box__glass"><i></i><i></i><i></i><i></i><i></i><i></i></span>
-        <span class="dc-box__tray"></span>
-      </span>
-    </div>
-
-    <strong class="dc-clock" data-day-time>06:30</strong>
+    {moments.map((m, i) => (
+      <div class="dc-shot" data-shot={i}>
+        <Photo name={m.photo} alt="" credit={false} widths={[640, 1024, 1600, 2000]} sizes="100vw" quality={62} />
+      </div>
+    ))}
+    <div class="dc-shade"></div>
+    <strong class="dc-clock" data-day-time>{moments[0].time}</strong>
   </div>
 
   <div class="wrap dc-intro">
@@ -59,10 +39,11 @@ const ridge = 'M0 90.8L60.8 51.9L88.1 67.2L142.8 0L185.3 54.3L212.7 30.7L273.4 8
       {moments.map((m, i) => (
         <li class="dc-moment" data-moment={i}>
           <span class="dc-moment__time">{m.time}</span>
-          <h3>{m.title}</h3>
-          <p>{m.text}</p>
+          <h3>{m[L][0]}</h3>
+          <p>{m[L][1]}</p>
         </li>
       ))}
     </ol>
+    <a class="dc-credit" href={u('/bildnachweise/')} hreflang={en ? 'de' : undefined}>{en ? 'Photos' : 'Fotos'}: {byline}</a>
   </div>
 </section>

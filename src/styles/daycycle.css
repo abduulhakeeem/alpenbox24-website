@@ -1,69 +1,39 @@
 @layer pages {
   /* ───────── Day cycle: "Ein Tag am Automaten" ─────────
-     JS (app.ts) sets on .day: --top/--bot (sky), --night (0–1), --sun-x/--sun-y/--sun-o, --moon-x/--moon-y/--moon-o.
-     Without JS or with reduced motion: static list. */
+     Four real photos crossfade while the clock runs. JS (app.ts) sets each shot's opacity and the section's --p.
+     Without JS or with reduced motion: static list, the stage (and its images) is never shown or loaded. */
   .day { position: relative; background: var(--c-nacht); }
   .dc-intro { padding-block: var(--section) 2rem; }
   .dc-list { list-style: none; padding: 0 0 var(--section); display: grid; gap: var(--s-6); }
   .dc-moment__time { display: block; font-family: var(--ff-display); font-weight: 900; font-stretch: 125%; font-size: clamp(2.2rem, 1.8rem + 2vw, 3.2rem); color: var(--c-laerche); line-height: 1; font-variant-numeric: tabular-nums; }
   .dc-moment h3 { margin-top: 0.4rem; font-size: var(--fs-3); }
   .dc-moment p { color: var(--c-stein); margin-top: 0.4rem; max-width: 40ch; }
-  .dc-stage { display: none; }
+  .dc-stage, .dc-credit { display: none; }
 
-  /* Live: 2 screens of scroll for the whole day */
-  .day.is-live { height: 300vh; }
+  /* Live: one and a bit screens of scroll for the whole day */
+  .day.is-live { height: 220vh; }
   .day.is-live .dc-intro { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); padding: 0; }
-  .day.is-live .dc-stage { display: block; position: sticky; top: 0; height: 100svh; overflow: hidden; isolation: isolate; contain: paint; }
+  .day.is-live .dc-stage { display: block; position: sticky; top: 0; height: 100svh; overflow: hidden; isolation: isolate; contain: paint; background: #05070d; }
   .day.is-live .dc-fore { position: sticky; top: 0; height: 100svh; margin-top: -100svh; z-index: 3; pointer-events: none; }
   .day.is-live .dc-list { position: absolute; inset: 0; width: 100%; max-width: none; padding: 0; margin: 0; display: block; }
 
-  /* Sky */
-  .dc-sky { position: absolute; inset: 0; background: linear-gradient(180deg, var(--top, #070a14) 0%, var(--bot, #1d1f3a) 75%); }
-
-  /* Stars (night only) */
-  .dc-stars { position: absolute; inset: 0 0 35% 0; opacity: var(--night, 1); }
-  .dc-stars i { position: absolute; inset: 0; background-repeat: repeat; }
-  .dc-stars i:nth-child(1) { background-image: radial-gradient(1.3px 1.3px at 20px 30px, #fff, transparent), radial-gradient(1px 1px at 140px 90px, #fff, transparent), radial-gradient(1.2px 1.2px at 90px 160px, #fff, transparent); background-size: 200px 200px; }
-  .dc-stars i:nth-child(2) { background-image: radial-gradient(1px 1px at 60px 70px, #fff, transparent), radial-gradient(1.4px 1.4px at 230px 20px, #fff, transparent); background-size: 290px 260px; opacity: 0.7; }
-
-  /* Sun & moon on arcs */
-  .dc-sun, .dc-moon { position: absolute; left: var(--x); top: var(--y); aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; }
-  .dc-sun { --x: var(--sun-x, 50%); --y: var(--sun-y, 70%); width: clamp(56px, 8vmin, 110px); opacity: var(--sun-o, 0); background: radial-gradient(circle at 42% 38%, #fff5d6, #ffc062 40%, #f68a2b 75%); box-shadow: 0 0 60px 16px rgb(255 170 80 / 0.45); }
-  .dc-moon { --x: var(--moon-x, 50%); --y: var(--moon-y, 30%); width: clamp(40px, 5.5vmin, 76px); opacity: var(--moon-o, 1); background: radial-gradient(circle at 36% 34%, #ffffff, #e7e4da 50%, #c9c5b8 80%); box-shadow: 0 0 40px 8px rgb(230 228 220 / 0.22); }
-
-  /* Mountains */
-  .dc-range { position: absolute; left: 0; width: 100%; }
-  .dc-range path { vector-effect: non-scaling-stroke; }
-  .dc-range--mid { bottom: 8%; height: 26%; }
-  .dc-range--mid path { fill: color-mix(in srgb, var(--bot, #1d1f3a) 30%, #0d0c0b); }
-  .dc-range--near { bottom: 0; height: 28%; }
-  .dc-near-fill { fill: var(--c-nacht); }
-  .dc-near-snow { fill: var(--c-schnee); opacity: calc(1 - var(--night, 1) * 0.45); }
-  .dc-near-line { fill: none; stroke: var(--c-schnee); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-
-  /* The lit machine */
-  .dc-box { position: absolute; left: 68%; bottom: 5%; width: clamp(30px, 4.2vmin, 56px); aspect-ratio: 1 / 1.8; z-index: 1; }
-  .dc-box__body { position: absolute; inset: 0; display: grid; grid-template-rows: 16% 1fr 14%; gap: 6%; padding: 9%; background: linear-gradient(180deg, #2a2724, #151311); border: 1px solid #3a3632; border-radius: 3px; }
-  .dc-box__sign { display: grid; place-items: center; font-family: var(--ff-display); font-weight: 900; font-size: clamp(8px, 1.1vmin, 13px); line-height: 1; color: var(--c-laerche); }
-  .dc-box__glass { display: grid; grid-template-columns: 1fr 1fr; gap: 10%; padding: 10%; border-radius: 2px; background: #d7ff00; filter: brightness(calc(0.45 + var(--night, 1) * 0.6)); }
-  .dc-box__glass i { border-radius: 1px; background: #f68a2b; opacity: 0.85; }
-  .dc-box__glass i:nth-child(2n) { background: #3d7ea6; }
-  .dc-box__glass i:nth-child(3n) { background: #2b2825; }
-  .dc-box__tray { background: #0b0a09; border-radius: 1px; }
-  .dc-box__glow { position: absolute; inset: -120% -220%; border-radius: 50%; background: radial-gradient(closest-side, rgb(215 255 0 / 0.32), transparent 70%); opacity: calc(0.1 + var(--night, 1) * 0.9); pointer-events: none; }
+  /* Photos: crossfade + a slow push-in, like a time-lapse */
+  .dc-shot { position: absolute; inset: 0; opacity: 0; will-change: opacity; }
+  .dc-shot:first-child { opacity: 1; }
+  .dc-shot .photo { position: absolute; inset: 0; border-radius: 0; }
+  .dc-shot .photo img { width: 100%; height: 100%; object-fit: cover; transform: scale(calc(1.04 + var(--p, 0) * 0.08)); transform-origin: 50% 60%; }
+  .dc-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(5 7 13 / 0.55) 0%, rgb(5 7 13 / 0.1) 30%, rgb(5 7 13 / 0.15) 60%, rgb(5 7 13 / 0.7) 100%); }
 
   /* Clock */
-  .dc-clock { position: absolute; z-index: 2; left: 50%; top: calc(var(--header-h) + 3vh); translate: -50% 0; font-family: var(--ff-display); font-weight: 900; font-stretch: 125%; font-size: clamp(3rem, 1.6rem + 7vw, 7rem); line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: #fff; text-shadow: 0 6px 40px rgb(0 0 0 / 0.35); white-space: nowrap; }
+  .dc-clock { position: absolute; z-index: 2; left: 50%; top: calc(var(--header-h) + 3vh); translate: -50% 0; font-family: var(--ff-display); font-weight: 900; font-stretch: 125%; font-size: clamp(3rem, 1.6rem + 7vw, 7rem); line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: #fff; text-shadow: 0 4px 30px rgb(0 0 0 / 0.45); white-space: nowrap; }
 
   /* Moments */
-  .day.is-live .dc-moment { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: min(100% - 2.5rem, 34rem); text-align: center; opacity: 0; visibility: hidden; transform: translateY(20px); transition: opacity 500ms var(--ease-out), transform 600ms var(--ease-out), visibility 0s linear 500ms; }
+  .day.is-live .dc-moment { position: absolute; left: 50%; bottom: 14%; translate: -50% 0; width: min(100% - 2.5rem, 34rem); text-align: center; opacity: 0; visibility: hidden; transform: translateY(16px); transition: opacity 350ms var(--ease-out), transform 450ms var(--ease-out), visibility 0s linear 350ms; }
   .day.is-live .dc-moment.is-active { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
-  .day.is-live .dc-moment.is-past { transform: translateY(-20px); }
+  .day.is-live .dc-moment.is-past { transform: translateY(-16px); }
   .day.is-live .dc-moment__time { display: none; }
-  .day.is-live .dc-moment h3 { font-size: clamp(1.7rem, 1.2rem + 2vw, 2.6rem); text-shadow: 0 2px 24px rgb(0 0 0 / 0.55); }
-  .day.is-live .dc-moment p { margin-inline: auto; color: #f0eee9; font-size: var(--fs-lead); text-shadow: 0 2px 16px rgb(0 0 0 / 0.65); }
-
-  @media (max-width: 599px) {
-    .dc-box { left: 74%; }
-  }
+  .day.is-live .dc-moment h3 { font-size: clamp(1.7rem, 1.2rem + 2vw, 2.6rem); text-shadow: 0 2px 24px rgb(0 0 0 / 0.6); }
+  .day.is-live .dc-moment p { margin-inline: auto; color: #f0eee9; font-size: var(--fs-lead); text-shadow: 0 2px 16px rgb(0 0 0 / 0.7); }
+  .day.is-live .dc-credit { display: block; position: absolute; right: 0.75rem; bottom: 0.6rem; max-width: calc(100% - 1.5rem); font-size: 0.7rem; color: rgb(247 247 247 / 0.65); text-decoration: none; pointer-events: auto; text-align: right; }
+  .day.is-live .dc-credit:hover { color: #fff; }
 }

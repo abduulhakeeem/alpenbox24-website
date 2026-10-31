@@ -139,7 +139,7 @@ const t = en
             <li><Icon name="mail" /><div><strong>{t.mail}</strong><p><a href={mailHref}>{site.email}</a></p></div></li>
             {telHref && <li><Icon name="phone" /><div><strong>{t.tel}</strong><p><a href={telHref}>{site.phone.display}</a></p></div></li>}
             {whatsappHref && <li><Icon name="chat" /><div><strong>{t.wa}</strong><p><a href={whatsappHref} rel="noopener" target="_blank">{t.waLink}</a></p></div></li>}
-            {main && <li><Icon name="pin" /><div><strong>{main.name}</strong><p>{main.address}{main.hours && <><br />{main.hours}</>}</p></div></li>}
+            {main && <li><Icon name="pin" /><div><strong>{main.name}</strong><p>{main.address}<br />{en ? site.hours.labelEn : main.hours || site.hours.labelShortDe}</p></div></li>}
           </ul>
           <a class="btn" href={u(en ? '/en/location/' : '/standorte/')}>{t.all}</a>
         </div>

@@ -88,32 +88,17 @@ const tickClock = () => clocks.forEach((c) => {
 $$('[data-time-now]').forEach((el) => (el.textContent = fmt.format(new Date())));
 if (clocks.length) { tickClock(); setInterval(tickClock, 15000); }
 
-/* Day cycle: short scroll-scrubbed 24 h scene. The clock runs through the day, the sky blends,
-   sun and moon follow arcs, the machine glows at night. Reduced motion → static list. */
+/* Day cycle: four real photos crossfade while the clock runs through the day. Reduced motion → static list. */
 const day = document.querySelector<HTMLElement>('[data-day]');
 if (day && !reduce) {
   day.classList.add('is-live');
   const moments = $$('[data-moment]', day);
+  const shots = $$('[data-shot]', day);
   const clock = day.querySelector('[data-day-time]');
   const mins: number[] = JSON.parse(day.dataset.mins || '[]');
   const n = moments.length;
   const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
   const ease = (t: number) => t * t * (3 - 2 * t);
-  const hex = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
-  const mix = (a: string, b: string, t: number) => `rgb(${hex(a).map((v, i) => Math.round(v + (hex(b)[i] - v) * t)).join(' ')})`;
-  // Sky by minute of day: [minute, top, horizon]
-  const SKY: [number, string, string][] = [
-    [0, '#04060d', '#0e1428'], [270, '#05081a', '#141a3a'], [330, '#121a3d', '#4a2f55'], [375, '#2b3a6e', '#f08a3c'],
-    [450, '#4b7fb5', '#f4c58e'], [600, '#3f86c8', '#a9d2ef'], [960, '#3a7fc0', '#b8dcf2'], [1110, '#4a6fa8', '#f3c07a'],
-    [1185, '#3a3470', '#ff7a2b'], [1240, '#1a1d45', '#7a3550'], [1320, '#090d22', '#1a1c3a'], [1440, '#04060d', '#0e1428'],
-  ];
-  const sky = (m: number) => {
-    let i = SKY.findIndex(([t]) => t > m); if (i < 1) i = SKY.length - 1;
-    const [t0, a0, b0] = SKY[i - 1], [t1, a1, b1] = SKY[i];
-    const t = ease(clamp((m - t0) / (t1 - t0)));
-    return [mix(a0, a1, t), mix(b0, b1, t)];
-  };
-  const RISE = 375, SET = 1195; // 06:15 – 19:55
   const fmt = (m: number) => { const d = ((Math.round(m) % 1440) + 1440) % 1440; return `${String(Math.floor(d / 60)).padStart(2, '0')}:${String(d % 60).padStart(2, '0')}`; };
   let lastClock = '', lastIdx = -1, visible = false, ticking = false;
 
@@ -123,26 +108,17 @@ if (day && !reduce) {
     const p = clamp(-r.top / (r.height - innerHeight));
     const seg = Math.min(n - 1, Math.floor(p * n));
     const local = clamp(p * n - seg);
-    // Time: hold each moment briefly, then run to the next one
-    const m = seg < n - 1 ? mins[seg] + (mins[seg + 1] - mins[seg]) * ease(clamp((local - 0.3) / 0.7)) : mins[n - 1];
-    const md = ((m % 1440) + 1440) % 1440;
-    const [top, bot] = sky(md);
-    const night = 1 - clamp(Math.min((md - 270) / 150, (1290 - md) / 120)); // dark 21:30–04:30, dusk from 19:30
-    const sf = clamp((md - RISE) / (SET - RISE));
-    const sunUp = md > RISE - 20 && md < SET + 20;
-    const mf = clamp(((md < 720 ? md + 1440 : md) - 1200) / 600); // moon 20:00 – 06:00
-    const s = day.style;
-    s.setProperty('--top', top); s.setProperty('--bot', bot);
-    s.setProperty('--night', night.toFixed(3));
-    s.setProperty('--sun-x', `${8 + sf * 84}%`); s.setProperty('--sun-y', `${78 - Math.sin(Math.PI * sf) * 46}%`);
-    s.setProperty('--sun-o', sunUp ? clamp(Math.min(sf, 1 - sf) * 14 + 0.15).toFixed(3) : '0');
-    s.setProperty('--moon-x', `${12 + mf * 76}%`); s.setProperty('--moon-y', `${70 - Math.sin(Math.PI * mf) * 36}%`);
-    s.setProperty('--moon-o', (night * clamp(Math.min(mf, 1 - mf) * 10)).toFixed(3));
+    // Hold each moment briefly, then the clock runs and the next photo fades in
+    const t = seg < n - 1 ? ease(clamp((local - 0.25) / 0.75)) : 0;
+    const m = seg < n - 1 ? mins[seg] + (mins[seg + 1] - mins[seg]) * t : mins[n - 1];
+    day.style.setProperty('--p', p.toFixed(4));
+    shots.forEach((el, i) => { el.style.opacity = i === seg ? '1' : i === seg + 1 ? t.toFixed(3) : '0'; });
     const label = fmt(m);
     if (clock && label !== lastClock) { clock.textContent = label; lastClock = label; }
-    if (seg !== lastIdx) {
-      moments.forEach((el, i) => { el.classList.toggle('is-active', i === seg); el.classList.toggle('is-past', i < seg); });
-      lastIdx = seg;
+    const idx = t > 0.5 ? seg + 1 : seg;
+    if (idx !== lastIdx) {
+      moments.forEach((el, i) => { el.classList.toggle('is-active', i === idx); el.classList.toggle('is-past', i < idx); });
+      lastIdx = idx;
     }
   };
   const request = () => { if (visible && !ticking) { ticking = true; requestAnimationFrame(render); } };

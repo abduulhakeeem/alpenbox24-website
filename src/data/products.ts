@@ -30,8 +30,8 @@ export const productCats: {
   },
   {
     id: 'regional',
-    de: { name: 'Regionales', line: 'Eier, Käse, Honig und mehr aus der Region. Woher was kommt, steht dabei.' },
-    en: { name: 'Local produce', line: 'Eggs, cheese, honey and more from the region, with where it comes from.' },
+    de: { name: 'Regionales', line: 'Eier, Käse, Honig und mehr aus der Region.' },
+    en: { name: 'Local produce', line: 'Eggs, cheese, honey and more from the region.' },
     photos: [
       { name: 'produkt-eier', altDe: 'Braune Eier in einem grauen Eierkarton', altEn: 'Brown eggs in a grey egg carton' },
       { name: 'produkt-bergkaese', altDe: 'Ein Stück Bergkäse mit dunkler Rinde auf einem Holzbrett', altEn: 'A piece of mountain cheese with a dark rind on a wooden board' },
