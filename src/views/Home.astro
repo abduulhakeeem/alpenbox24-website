@@ -1,0 +1,142 @@
+---
+/**
+ * Home page (DE + EN). Flow: what (products) → when (day cycle) → where (map) → who (about) → offer a location.
+ */
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import Horizon from '../components/Horizon.astro';
+import SplitText from '../components/SplitText.astro';
+import Marquee from '../components/Marquee.astro';
+import DayCycle from '../components/DayCycle.astro';
+import MapBlock from '../components/MapBlock.astro';
+import Highlight from '../components/Highlight.astro';
+import StandortCta from '../components/StandortCta.astro';
+import Icon from '../components/Icon.astro';
+import { productCats } from '../data/products';
+import { site } from '../data/site';
+import { u } from '../lib/url';
+
+interface Props { lang: 'de' | 'en' }
+const { lang } = Astro.props;
+const en = lang === 'en';
+const main = site.locations[0];
+const P = en ? '/en/products/' : '/produkte/';
+const L = en ? '/en/location/' : '/standorte/';
+const A = en ? '/en/about/' : '/ueber-uns/';
+
+// Six tiles across the four categories, in bento order (big tile first).
+const tiles = [
+  ['getraenke', 0], ['snacks', 0], ['regional', 0], ['brotzeit', 0], ['snacks', 1], ['regional', 2],
+].map(([id, n]) => {
+  const c = productCats.find((x) => x.id === id)!;
+  const ph = c.photos[n as number];
+  return { id: c.id, name: c[lang].name, line: c[lang].line, photo: ph.name, alt: en ? ph.altEn : ph.altDe };
+});
+
+const t = en
+  ? {
+      title: 'AlpenBox24 – 24/7 vending machines in Miesbach, Bavaria',
+      desc: 'Cold drinks, snacks and local produce from our vending machines in Miesbach, Upper Bavaria. Open 24 hours, every day, right on the B 472.',
+      big: 'Never closed.', sub: 'Vending machines in Miesbach, day and night.',
+      lead: 'Cold drinks, snacks and local produce to take away. Right on the B 472 in Miesbach, on the way to the mountains.',
+      cta1: 'See products', cta2: 'Directions',
+      marquee: ['Snacks', 'Drinks', 'Local produce', '24 hours', 'Miesbach'],
+      whatH: 'What’s <em>inside.</em>', whatLink: 'All products',
+      note: 'Example photos from Wikimedia Commons until we have our own.', credits: 'Photo credits',
+      marquee2: ['24 hours', '7 days', 'Self-service', 'No closing time'],
+      whereK: 'Location', whereH: 'Easy to find', whereP: 'Right on the B 472 towards Schliersee and Bayrischzell. By car you drive straight past; from Miesbach station it is about a 10-minute walk.',
+      whereCta: 'Location & directions', route: 'Directions',
+      whoH: 'From Miesbach, <em>for the region.</em>', whoP: 'We set up our machines ourselves, keep them stocked and fix things when something jams. The local products come from the area, and we tell you where from.', whoCta: 'About us',
+    }
+  : {
+      title: 'AlpenBox24 – 24/7 Automaten in Miesbach und Umgebung',
+      desc: 'Kalte Getränke, Snacks und Regionales aus dem Automaten, Tag und Nacht. AlpenBox24 in Miesbach, direkt an der B 472. Hier siehst du, was es gibt und wo.',
+      big: 'Bei uns ist nie zu.', sub: 'Automaten in Miesbach, Tag und Nacht.',
+      lead: 'Kalte Getränke, Snacks und Regionales zum Mitnehmen. Direkt an der B 472 in Miesbach, auf dem Weg in die Berge.',
+      cta1: 'Produkte ansehen', cta2: 'Route planen',
+      marquee: ['Snacks', 'Getränke', 'Regionales', '24 Stunden', 'Miesbach'],
+      whatH: 'Was du bei uns <em>rausziehen</em> kannst.', whatLink: 'Alle Produkte',
+      note: 'Noch Beispielfotos von Wikimedia Commons, eigene Bilder kommen bald.', credits: 'Bildnachweise',
+      marquee2: ['24 Stunden', '7 Tage', 'Selbstbedienung', 'Kein Ladenschluss'],
+      whereK: 'Standort', whereH: 'So findest du hin', whereP: 'Direkt an der B 472 Richtung Schliersee und Bayrischzell. Mit dem Auto fährst du praktisch dran vorbei, vom Bahnhof Miesbach sind es rund 10 Minuten zu Fuß.',
+      whereCta: 'Standort & Anfahrt', route: 'Route planen',
+      whoH: 'Aus Miesbach, <em>für die Gegend.</em>', whoP: 'Wir stellen unsere Automaten selbst auf, füllen sie nach und kümmern uns, wenn mal was klemmt. Das Regionale kommt aus der Umgebung, und wir sagen dir, woher.', whoCta: 'Über uns',
+    };
+---
+<Base lang={lang} title={t.title} description={t.desc} hero>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__media">
+      <Photo name="automat-drei-nacht" alt="" eager credit={false} widths={[640, 960, 1280, 1600, 1920]} quality={55} sizes="100vw" position="62% 50%" />
+    </div>
+    <div class="hero__shade" aria-hidden="true"></div>
+    <div class="hero__grain" aria-hidden="true"></div>
+    <div class="wrap hero__content">
+      <h1 id="hero-title">
+        <span class="hero__big"><SplitText text={t.big} base={40} /></span>
+        <span class="hero__sub">{t.sub}</span>
+      </h1>
+      <p class="lead">{t.lead}</p>
+      <div class="cta-row">
+        <span class="signpost-wrap"><a class="signpost" href={u(P)}>{t.cta1}</a></span>
+        {main && <a class="btn" href={main.mapsUrl} rel="noopener" target="_blank"><Icon name="route" />{t.cta2}</a>}
+      </div>
+    </div>
+    <Horizon />
+    <div class="hero__credit"><a class="photo__credit" href={u('/bildnachweise/#automat-drei-nacht')} hreflang={en ? 'de' : undefined}>{en ? 'Example photo' : 'Beispielfoto'}: mrhayata · CC BY-SA 2.0</a></div>
+  </section>
+
+  <Marquee items={t.marquee} />
+
+  <section class="section" id="produkte" aria-labelledby="what-title">
+    <div class="wrap">
+      <div class="section-top">
+        <h2 id="what-title" class="statement" data-reveal set:html={t.whatH} />
+        <a class="btn" href={u(P)}>{t.whatLink}</a>
+      </div>
+      <div class="bento mt-7">
+        {tiles.map((m, i) => (
+          <a class:list={['bento__tile', `bento__tile--${i}`]} href={u(`${P}#${m.id}`)} data-reveal="clip" style={`--d:${i * 90}`}>
+            <Photo name={m.photo as any} alt={m.alt} credit={false} widths={[400, 700, 1000, 1400]} sizes={i === 0 ? '(min-width: 900px) min(50vw, 672px), 100vw' : i === 2 || i === 3 ? '(min-width: 900px) min(25vw, 336px), 50vw' : '(min-width: 900px) min(50vw, 672px), 50vw'} />
+            <span class="bento__label"><strong>{m.name}</strong><span>{m.line}</span></span>
+          </a>
+        ))}
+      </div>
+      <p class="muted mt-5" style="font-size:var(--fs-small)">{t.note} <a href={u('/bildnachweise/')} hreflang={en ? 'de' : undefined}>{t.credits}</a></p>
+    </div>
+  </section>
+
+  <Highlight lang={lang} compact />
+
+  <DayCycle lang={lang} />
+
+  <section class="section" aria-labelledby="where-title">
+    <div class="wrap grid-2">
+      <div class="stack">
+        <p class="kicker" data-reveal>{t.whereK}</p>
+        <h2 id="where-title" data-reveal style="--d:80">{t.whereH}</h2>
+        {main && <p class="where-nap" data-reveal style="--d:140"><strong>{main.name}</strong><br />{main.address}{main.hours && <><br /><span class="c-laerche">{main.hours}</span></>}</p>}
+        <p class="muted" data-reveal style="--d:200">{t.whereP}</p>
+        <div class="cta-row" data-reveal style="--d:240">
+          {main && <span class="signpost-wrap"><a class="signpost" href={main.mapsUrl} rel="noopener" target="_blank"><Icon name="route" />{t.route}</a></span>}
+          <a class="btn" href={u(L)}>{t.whereCta}</a>
+        </div>
+      </div>
+      <div data-reveal style="--d:120"><MapBlock lang={lang} /></div>
+    </div>
+  </section>
+
+  <Marquee sun items={t.marquee2} speed={44} />
+
+  <section class="section" aria-labelledby="who-title">
+    <div class="wrap who">
+      <Photo name="schliersee-abend" alt="" credit={false} widths={[480, 800, 1200]} sizes="(min-width: 900px) 45vw, 100vw" crop={4 / 3} reveal="clip" />
+      <div class="stack">
+        <h2 id="who-title" class="statement" data-reveal set:html={t.whoH} />
+        <p class="lead muted" data-reveal style="--d:120">{t.whoP}</p>
+        <p data-reveal style="--d:200"><a class="btn" href={u(A)}>{t.whoCta}</a></p>
+      </div>
+    </div>
+  </section>
+
+  <StandortCta lang={lang} />
+</Base>

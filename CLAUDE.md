@@ -55,7 +55,8 @@ Full detail: `docs/08-tech-spec.md`.
 
 ## 4. Pages
 
-`/` · `/automaten/` · `/galerie/` · `/standorte/` · `/ueber-uns/` · `/kontakt/` (+ `/kontakt/danke/`) · `/en/`
+`/` · `/produkte/` · `/standorte/` · `/ueber-uns/` · `/kontakt/` (+ `/kontakt/danke/`)
+· EN mirrors: `/en/` · `/en/products/` · `/en/location/` · `/en/about/` · `/en/contact/` (+ `/en/contact/thanks/`)
 · `/impressum/` · `/datenschutz/` · `/barrierefreiheit/` · `/bildnachweise/` · `404` · admin: `/admin/` (PHP)
 
 Sitemap, wireframes, components: `docs/03-information-architecture.md`. Final copy: `docs/05-content-copy-de.md`.
@@ -66,7 +67,7 @@ Follow `docs/09-build-plan-and-qa.md`. Short version:
 1. Scaffold (Astro, tokens, fonts, layout, `site.ts`, header/footer, 404).
 2. Home + Kontakt (the two money pages) — get them to "done" including schema and images.
 3. Sortiment, Regional, So geht's, FAQ.
-4. Galerie (collection + lightbox), Über uns, EN.
+4. Über uns, EN versions (page bodies live in `src/views/*.astro` with a `lang` prop; pairs in `src/data/nav.ts`).
 5. Legal pages, contact PHP, `.htaccess`, sitemap/robots, OG images, favicons.
 6. QA gate (skill `launch-qa`), then deploy pipeline.
 

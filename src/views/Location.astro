@@ -1,0 +1,103 @@
+---
+/**
+ * Location page (DE /standorte/, EN /en/location/). Car-first: the B 472 comes first, walking/bus after.
+ * Flow: address + map → more locations → offer a location → next: about us.
+ */
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import MapBlock from '../components/MapBlock.astro';
+import OpenNow from '../components/OpenNow.astro';
+import StandortCta from '../components/StandortCta.astro';
+import NextStep from '../components/NextStep.astro';
+import Icon from '../components/Icon.astro';
+import { site, appleDirectionsUrl } from '../data/site';
+
+interface Props { lang: 'de' | 'en' }
+const { lang } = Astro.props;
+const en = lang === 'en';
+const [main, ...more] = site.locations;
+const several = more.length > 0;
+const self = en ? '/en/location/' : '/standorte/';
+const d = site.directions;
+const t = en
+  ? {
+      title: several ? 'Locations – AlpenBox24 vending machines in Miesbach' : 'Location – AlpenBox24 vending machines in Miesbach',
+      desc: `AlpenBox24 in Miesbach: ${site.address.street}, right on the B 472 towards Schliersee. Open 24/7. Directions by car, on foot and by bus.`,
+      h1: several ? 'Our locations' : 'Our location in Miesbach', crumb: several ? 'Locations' : 'Location',
+      lead: 'Right on the B 472. Open 24 hours, every day.',
+      car: 'By car', carD: 'Right on the B 472 (Bayrischzeller Straße), towards Schliersee', foot: 'On foot', footD: `About ${d.walkMinutesFromStation} min from Miesbach station`,
+      bus: 'By bus', busD: `“${d.nearestBusStop}” stop`, park: 'Parking', open: 'Open', google: 'Google Maps', apple: 'Apple Maps',
+      moreH: 'More locations', route: 'Directions',
+      nextLabel: 'Next', nextTitle: 'Who is behind AlpenBox24', nextLine: 'A small vending business from Miesbach.',
+    }
+  : {
+      title: several ? 'Standorte: 24/7-Automaten in Miesbach – AlpenBox24' : 'Standort: 24/7-Automaten in Miesbach – AlpenBox24',
+      desc: `AlpenBox24 in Miesbach: ${site.address.street}, direkt an der B 472 Richtung Schliersee. Rund um die Uhr offen. Anfahrt mit Auto, Bus oder zu Fuß.`,
+      h1: several ? 'Unsere Standorte' : 'Unser Standort in Miesbach', crumb: several ? 'Standorte' : 'Standort',
+      lead: 'Direkt an der B 472. Rund um die Uhr offen, jeden Tag.',
+      car: 'Mit dem Auto', carD: 'Direkt an der B 472 (Bayrischzeller Straße), Richtung Schliersee', foot: 'Zu Fuß', footD: `Rund ${d.walkMinutesFromStation} Min. vom Bahnhof Miesbach`,
+      bus: 'Mit dem Bus', busD: `Haltestelle „${d.nearestBusStop}“`, park: 'Parken', open: 'Geöffnet', google: 'Google Maps', apple: 'Apple Karten',
+      moreH: 'Weitere Standorte', route: 'Route planen',
+      nextLabel: 'Als Nächstes', nextTitle: 'Wer hinter AlpenBox24 steckt', nextLine: 'Ein kleiner Automatenbetrieb aus Miesbach.',
+    };
+---
+<Base lang={lang} title={t.title} description={t.desc} breadcrumbs={[{ name: t.crumb, href: self }]}>
+  <PageHead lang={lang} title={t.h1} lead={t.lead} crumbs={[{ name: t.crumb, href: self }]} />
+
+  {main && (
+    <section class="section" style="padding-top:0" aria-labelledby="loc-0">
+      <div class="wrap grid-2" style="align-items:start">
+        <div class="card-nap">
+          <OpenNow lang={lang} />
+          <address><strong id="loc-0">{main.name}</strong>{main.street}<br />{main.zip} {main.city}</address>
+          {main.note && <p class="muted">{main.note}</p>}
+          <ul class="icon-list" role="list">
+            <li><Icon name="car" /><div><strong>{t.car}</strong><p>{t.carD}</p></div></li>
+            {d.parkingDe && <li><Icon name="pin" /><div><strong>{t.park}</strong><p>{d.parkingDe}</p></div></li>}
+            <li><Icon name="clock" /><div><strong>{t.open}</strong><p>{main.hours || (en ? site.hours.labelEn : site.hours.labelDe)}</p></div></li>
+            <li><Icon name="train" /><div><strong>{t.foot}</strong><p>{t.footD}</p></div></li>
+            <li><Icon name="bus" /><div><strong>{t.bus}</strong><p>{t.busD}</p></div></li>
+          </ul>
+          <div class="cta-row">
+            <span class="signpost-wrap"><a class="signpost" href={main.mapsUrl} rel="noopener" target="_blank"><Icon name="route" />{t.google}</a></span>
+            <a class="btn" href={appleDirectionsUrl} rel="noopener" target="_blank">{t.apple}</a>
+          </div>
+        </div>
+        <MapBlock lang={lang} />
+      </div>
+    </section>
+  )}
+
+  {several && (
+    <section class="section section--fels" aria-labelledby="weitere">
+      <div class="wrap">
+        <h2 id="weitere">{t.moreH}</h2>
+        <ul class="locs mt-7" role="list">
+          {more.map((l) => (
+            <li class="loc" data-reveal>
+              <Icon name="pin" />
+              <div>
+                <h3>{l.name}</h3>
+                <p class="muted">{l.address}</p>
+                {l.hours && <p class="c-laerche">{l.hours}</p>}
+                {l.note && <p class="muted">{l.note}</p>}
+                <p class="mt-4"><a class="link" href={l.mapsUrl} rel="noopener" target="_blank">{t.route}</a></p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <StandortCta lang={lang} />
+
+  <NextStep lang={lang} href={en ? '/en/about/' : '/ueber-uns/'} label={t.nextLabel} title={t.nextTitle} line={t.nextLine} photo="miesbach-stadtplatz" />
+</Base>
+<style>
+  .locs { display: grid; gap: 1px; background: var(--c-grat); border: 1px solid var(--c-grat); border-radius: 6px; overflow: hidden; list-style: none; padding: 0; }
+  @media (min-width: 760px) { .locs { grid-template-columns: repeat(2, 1fr); } }
+  .loc { display: grid; grid-template-columns: 2.4rem 1fr; gap: 1rem; padding: 1.5rem; background: var(--c-nacht); }
+  .loc > :global(svg) { width: 2.4rem; height: 2.4rem; padding: .55rem; border-radius: 50%; background: var(--c-grat); color: var(--c-sonne); }
+  .loc h3 { margin-bottom: .3rem; }
+</style>

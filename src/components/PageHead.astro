@@ -1,16 +1,17 @@
 ---
 import SplitText from './SplitText.astro';
 import { u } from '../lib/url';
-interface Props { title: string; lead?: string; crumbs?: { name: string; href: string }[]; kicker?: string }
-const { title, lead, crumbs, kicker } = Astro.props;
+interface Props { title: string; lead?: string; crumbs?: { name: string; href: string }[]; kicker?: string; lang?: 'de' | 'en' }
+const { title, lead, crumbs, kicker, lang = 'de' } = Astro.props;
+const en = lang === 'en';
 ---
 <header class="page-head">
   <div class="page-head__glow" aria-hidden="true"></div>
   <div class="wrap">
     {crumbs && (
-      <nav class="breadcrumbs" aria-label="Brotkrumen">
+      <nav class="breadcrumbs" aria-label={en ? 'Breadcrumb' : 'Brotkrumen'}>
         <ol>
-          <li><a href={u('/')}>Start</a></li>
+          <li><a href={u(en ? '/en/' : '/')}>{en ? 'Home' : 'Start'}</a></li>
           {crumbs.map((c, i) => <li>{i === crumbs.length - 1 ? <span aria-current="page">{c.name}</span> : <a href={u(c.href)}>{c.name}</a>}</li>)}
         </ol>
       </nav>

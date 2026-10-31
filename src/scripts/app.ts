@@ -1,7 +1,7 @@
 /**
  * AlpenBox24 — progressive enhancement only. Every feature below has a no-JS fallback:
  * reveals (content visible), clock (static "24/7 geöffnet"), day cycle (stacked list),
- * vending machine (slot links), lightbox (direct image links), form (native validation + POST).
+ * form (native validation + POST).
  */
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const $$ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => [...r.querySelectorAll<T>(s)] as T[];
@@ -150,87 +150,6 @@ if (day && !reduce) {
   addEventListener('scroll', request, { passive: true });
   addEventListener('resize', () => { visible = true; request(); });
   render();
-}
-
-/* Vending machine: pick a slot by click or by typing its code on the keypad */
-$$('[data-machine]').forEach((m) => {
-  const slots = $$<HTMLAnchorElement>('[data-slot]', m);
-  const screen = m.querySelector('[data-screen]');
-  const tray = m.querySelector<HTMLElement>('[data-tray]');
-  const info = m.querySelector<HTMLElement>('[data-info]');
-  let code = '';
-  const pick = (slot: HTMLAnchorElement) => {
-    slots.forEach((s) => s.classList.toggle('is-picked', s === slot));
-    if (screen) screen.textContent = `${slot.dataset.slot} · ${slot.dataset.name}`;
-    slot.classList.remove('is-dropping'); void slot.offsetWidth; slot.classList.add('is-dropping');
-    if (tray) { tray.classList.remove('is-full'); void tray.offsetWidth; tray.classList.add('is-full'); tray.dataset.item = slot.dataset.name || ''; }
-    if (info) {
-      const tpl = m.querySelector<HTMLElement>(`[data-for="${slot.dataset.slot}"]`);
-      info.replaceChildren(...(tpl ? [...tpl.cloneNode(true).childNodes] : [])); // our own build-time markup
-      info.classList.remove('is-in'); void info.offsetWidth; info.classList.add('is-in');
-    }
-  };
-  slots.forEach((s) => s.addEventListener('click', (e) => { e.preventDefault(); pick(s); }));
-  $$<HTMLButtonElement>('[data-key]', m).forEach((k) => k.addEventListener('click', () => {
-    const v = k.dataset.key!;
-    if (v === 'DEL') code = '';
-    else if (v === 'OK') {
-      const s = slots.find((x) => x.dataset.slot === code);
-      if (s) pick(s); else if (screen) screen.textContent = code ? `${code}? Gibt's nicht.` : 'Fach wählen';
-      code = ''; return;
-    } else code = (code + v).slice(-2);
-    if (screen) screen.textContent = code || 'Fach wählen';
-  }));
-  if (slots[0]) pick(slots[0]);
-});
-
-/* Gallery filter (chips), keeps hash in sync */
-const filterBar = document.querySelector('[data-filter-bar]');
-if (filterBar) {
-  const items = $$('[data-cat]');
-  const apply = (cat: string) => {
-    $$('[data-filter]', filterBar).forEach((b) => (b.dataset.filter === cat ? b.setAttribute('aria-current', 'true') : b.removeAttribute('aria-current')));
-    items.forEach((it) => (it.hidden = cat !== 'alle' && it.dataset.cat !== cat));
-    $$('[data-cat-head]').forEach((h) => (h.hidden = cat !== 'alle' ? h.dataset.catHead !== cat : false));
-  };
-  $$('[data-filter]', filterBar).forEach((b) => b.addEventListener('click', (e) => {
-    e.preventDefault(); apply(b.dataset.filter!); history.replaceState(null, '', b.dataset.filter === 'alle' ? location.pathname : '#' + b.dataset.filter);
-  }));
-  const h = location.hash.slice(1);
-  if (h && filterBar.querySelector(`[data-filter="${h}"]`)) apply(h);
-}
-
-/* Lightbox */
-const lb = document.querySelector<HTMLDialogElement>('[data-lightbox]');
-const links = $$<HTMLAnchorElement>('a[data-lb]');
-if (lb && links.length) {
-  const img = lb.querySelector<HTMLImageElement>('[data-lb-img]')!;
-  const cap = lb.querySelector('[data-lb-cap]')!;
-  const count = lb.querySelector('[data-lb-count]')!;
-  let i = 0, opener: HTMLElement | null = null;
-  const visible = () => links.filter((a) => !a.closest('[hidden]'));
-  const show = (n: number) => {
-    const list = visible(); i = (n + list.length) % list.length;
-    const a = list[i];
-    img.src = a.href; img.alt = a.dataset.alt || '';
-    const title = document.createElement('strong');
-    title.textContent = a.dataset.caption || '';
-    cap.replaceChildren(title, a.dataset.credit || ''); // text nodes only: credits come from external photo metadata
-    count.textContent = `Bild ${i + 1} von ${list.length}`;
-    const next = list[(i + 1) % list.length]; if (next) { const pre = new Image(); pre.src = next.href; }
-  };
-  links.forEach((a) => a.addEventListener('click', (e) => {
-    e.preventDefault(); opener = a; show(visible().indexOf(a)); lb.showModal();
-  }));
-  lb.querySelector('[data-lb-close]')?.addEventListener('click', () => lb.close());
-  lb.querySelector('[data-lb-prev]')?.addEventListener('click', () => show(i - 1));
-  lb.querySelector('[data-lb-next]')?.addEventListener('click', () => show(i + 1));
-  lb.addEventListener('close', () => opener?.focus());
-  lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
-  lb.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') show(i + 1); if (e.key === 'ArrowLeft') show(i - 1); });
-  let x0 = 0;
-  lb.addEventListener('pointerdown', (e) => (x0 = e.clientX));
-  lb.addEventListener('pointerup', (e) => { const dx = e.clientX - x0; if (Math.abs(dx) > 50) show(i + (dx < 0 ? 1 : -1)); });
 }
 
 /* Contact form: time trap, preselect from ?anliegen=, error notice */

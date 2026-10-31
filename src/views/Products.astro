@@ -1,0 +1,92 @@
+---
+/**
+ * Products page (DE /produkte/, EN /en/products/). Flow: Produkt der Woche → categories (with the owner's
+ * products and their origin) → next: where to find us.
+ * Tobacco/e-cigarettes: only the approved factual sentence, no heading, no photo (§ 19 TabakerzG, CLAUDE.md R4).
+ */
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Photo from '../components/Photo.astro';
+import Highlight from '../components/Highlight.astro';
+import OriginList from '../components/OriginList.astro';
+import NextStep from '../components/NextStep.astro';
+import Icon from '../components/Icon.astro';
+import { productCats } from '../data/products';
+import { site } from '../data/site';
+
+interface Props { lang: 'de' | 'en' }
+const { lang } = Astro.props;
+const en = lang === 'en';
+const self = en ? '/en/products/' : '/produkte/';
+const t = en
+  ? {
+      title: 'Products: drinks, snacks, local produce – AlpenBox24',
+      desc: 'What you can get from the AlpenBox24 vending machines in Miesbach: cold drinks, snacks, local produce from the region and Bavarian snacks. Open 24/7.',
+      h1: 'Our products', lead: 'What you can get from our machines. The range changes now and then, so it is worth a look.',
+      crumb: 'Products', nav: 'Categories', more: 'Currently in stock', origin: 'Where it comes from',
+      tobacco: 'Tobacco products and e-cigarettes are also available. The machine only releases them after a successful age check. Sale to persons under 18 is not possible.',
+      nextLabel: 'Next', nextTitle: 'Where to find us', nextLine: `${site.address.street}, right on the B 472. Open 24 hours.`,
+    }
+  : {
+      title: 'Produkte: Getränke, Snacks, Regionales – AlpenBox24',
+      desc: 'Das gibt’s bei AlpenBox24 in Miesbach aus dem Automaten: kalte Getränke, Snacks, Regionales aus der Gegend und Brotzeit. Rund um die Uhr.',
+      h1: 'Unsere Produkte', lead: 'Was du bei uns aus dem Automaten ziehen kannst. Das Sortiment wechselt immer wieder, reinschauen lohnt sich.',
+      crumb: 'Produkte', nav: 'Kategorien', more: 'Gerade im Automaten', origin: 'Woher es kommt',
+      tobacco: 'Im Sortiment sind auch Tabakwaren und E-Zigaretten. Diese Produkte gibt der Automat nur nach erfolgreicher Altersprüfung aus. Eine Abgabe an Personen unter 18 Jahren ist ausgeschlossen.',
+      nextLabel: 'Als Nächstes', nextTitle: 'Wo du uns findest', nextLine: `${site.address.street}, direkt an der B 472. Rund um die Uhr offen.`,
+    };
+const icons: Record<string, 'bottle' | 'cookie' | 'cheese' | 'pretzel'> = { getraenke: 'bottle', snacks: 'cookie', regional: 'cheese', brotzeit: 'pretzel' };
+---
+<Base lang={lang} title={t.title} description={t.desc} breadcrumbs={[{ name: t.crumb, href: self }]}>
+  <PageHead lang={lang} title={t.h1} lead={t.lead} crumbs={[{ name: t.crumb, href: self }]}>
+    <nav class="cta-row mt-6" aria-label={t.nav}>
+      {productCats.map((c) => <a class="chip" href={`#${c.id}`}><Icon name={icons[c.id]} />{c[lang].name}</a>)}
+    </nav>
+  </PageHead>
+
+  <Highlight lang={lang} />
+
+  <div class="cats">
+    {productCats.map((c, i) => {
+      const items = site.products.filter((p) => p.cat === c.id);
+      const [first, ...rest] = c.photos;
+      return (
+        <section class:list={['cat', { 'cat--flip': i % 2 === 1 }]} id={c.id} aria-labelledby={`h-${c.id}`}>
+          <div class="wrap cat__grid">
+            <div class:list={['cat__photos', `cat__photos--${c.photos.length}`]}>
+              <Photo name={first.name as any} alt={en ? first.altEn : first.altDe} eager={i === 0} reveal={i === 0 ? undefined : 'clip'} crop={4 / 3} widths={[480, 800, 1200]} sizes="(min-width: 900px) 50vw, 100vw" />
+              {rest.map((p) => <Photo name={p.name as any} alt={en ? p.altEn : p.altDe} reveal="clip" crop={1} widths={[320, 600]} sizes="(min-width: 900px) 22vw, 45vw" />)}
+            </div>
+            <div class="cat__text">
+              <span class="cat__icon" aria-hidden="true"><Icon name={icons[c.id]} /></span>
+              <h2 id={`h-${c.id}`} data-reveal>{c[lang].name}</h2>
+              <p class="lead muted" data-reveal style="--d:100">{c[lang].line}</p>
+              {items.length > 0 && (
+                <div class="mt-6" data-reveal style="--d:160">
+                  <h3 class="cat__sub">{t.more}</h3>
+                  <ul class="items" role="list">
+                    {items.map((p) => (
+                      <li><strong>{p.name}</strong>{p.note && <span class="muted"> · {p.note}</span>}{(p.from || p.place) && <span class="items__from"><Icon name="pin" />{[p.from, p.place].filter(Boolean).join(', ')}</span>}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {c.id === 'regional' && !items.length && (
+                <div class="mt-6">
+                  <h3 class="cat__sub">{t.origin}</h3>
+                  <OriginList lang={lang} />
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      );
+    })}
+  </div>
+
+  <section class="wrap tobacco" aria-label={en ? 'Note on age-restricted products' : 'Hinweis zu Produkten mit Altersprüfung'}>
+    <p class="muted"><Icon name="id" />{t.tobacco}</p>
+  </section>
+
+  <NextStep lang={lang} href={en ? '/en/location/' : '/standorte/'} label={t.nextLabel} title={t.nextTitle} line={t.nextLine} photo="automat-outdoor-nacht" />
+</Base>

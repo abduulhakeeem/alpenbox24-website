@@ -1,0 +1,23 @@
+---
+/** "Du hast Platz für einen Automaten?": photo-led call to action for people offering a location. */
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { telHref, site } from '../data/site';
+import { u } from '../lib/url';
+interface Props { lang?: 'de' | 'en' }
+const en = Astro.props.lang === 'en';
+const t = en
+  ? { h: 'Got space for a vending machine?', em: 'Let’s talk.', p: 'In front of your shop, at your company, on your farm or by your car park. We set it up, keep it stocked and look after it. You just provide the space.', cta: 'Offer a location', href: '/en/contact/?anliegen=standort#formular', call: 'Call us' }
+  : { h: 'Du hast Platz für einen Automaten?', em: 'Meld dich.', p: 'Vor deinem Laden, im Betrieb, am Hof oder am Parkplatz. Wir stellen ihn auf, füllen ihn nach und kümmern uns drum. Du brauchst nur den Platz.', cta: 'Standort anbieten', href: '/kontakt/?anliegen=standort#formular', call: 'Lieber anrufen' };
+---
+<section class="offer" aria-labelledby="offer-title">
+  <Photo name="automat-outdoor-nacht" alt="" credit={false} widths={[800, 1280, 1920]} sizes="100vw" position="50% 45%" />
+  <div class="wrap offer__inner">
+    <h2 id="offer-title" class="statement" data-reveal>{t.h} <em>{t.em}</em></h2>
+    <p class="lead" data-reveal style="--d:120">{t.p}</p>
+    <div class="cta-row" data-reveal style="--d:200">
+      <span class="signpost-wrap"><a class="signpost" href={u(t.href)}>{t.cta} <Icon name="arrowRight" /></a></span>
+      {telHref && <a class="btn" href={telHref}><Icon name="phone" />{t.call}: {site.phone.display}</a>}
+    </div>
+  </div>
+</section>

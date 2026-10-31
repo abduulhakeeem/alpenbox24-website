@@ -19,7 +19,7 @@ export default defineConfig({
   build: { format: 'directory', inlineStylesheets: 'always' }, // CSS inline: no render-blocking request
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/kontakt/danke/') && !page.endsWith('/404/'),
+      filter: (page) => !page.includes('/kontakt/danke/') && !page.includes('/contact/thanks/') && !page.endsWith('/404/') && !/\/(automaten|galerie)\/$/.test(page),
       lastmod: new Date(),
       changefreq: 'monthly',
     }),

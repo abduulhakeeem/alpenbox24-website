@@ -8,15 +8,6 @@
     "width": 3840,
     "height": 2158
   },
-  "tegernsee-panorama-nacht": {
-    "title": "Tegernsee, Panorama at Night.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Tegernsee,_Panorama_at_Night.jpg",
-    "author": "Sebastian Grünwald",
-    "license": "CC BY 3.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
-    "width": 3840,
-    "height": 493
-  },
   "wendelstein-sonne": {
     "title": "Wendelstein sonnenuntergang.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Wendelstein_sonnenuntergang.jpg",
@@ -44,33 +35,6 @@
     "width": 3840,
     "height": 2563
   },
-  "hofautomat-eier": {
-    "title": "Werrabronn Eierautomat.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Werrabronn_Eierautomat.jpg",
-    "author": "Ikar.us",
-    "license": "CC BY 3.0 de",
-    "licenseUrl": "https://creativecommons.org/licenses/by/3.0/de/deed.en",
-    "width": 3840,
-    "height": 2797
-  },
-  "milchautomat": {
-    "title": "Milk and cheese vending machine in Niedeck, district Göttingen, Milchautomat 01.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Milk_and_cheese_vending_machine_in_Niedeck,_district_G%C3%B6ttingen,_Milchautomat_01.jpg",
-    "author": "Nemracc",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "width": 3840,
-    "height": 2880
-  },
-  "automat-tokio-nacht": {
-    "title": "Vending machines at night in Tokyo.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Vending_machines_at_night_in_Tokyo.jpg",
-    "author": "LHOON from Mechelen",
-    "license": "CC BY-SA 2.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-    "width": 2848,
-    "height": 2136
-  },
   "automat-drei-nacht": {
     "title": "Three Vending Machines Japan Night.jpg",
     "page": "https://commons.wikimedia.org/wiki/File:Three_Vending_Machines_Japan_Night.jpg",
@@ -79,33 +43,6 @@
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
     "width": 3504,
     "height": 2336
-  },
-  "automat-reihe-strasse": {
-    "title": "Vending Machines III (4042424351).jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Vending_Machines_III_(4042424351).jpg",
-    "author": "Kojach",
-    "license": "CC BY 2.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-    "width": 2816,
-    "height": 1880
-  },
-  "automat-bunt-nah": {
-    "title": "Vending Machines 2016 (32119594781).jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Vending_Machines_2016_(32119594781).jpg",
-    "author": "Laika ac",
-    "license": "CC BY-SA 2.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
-    "width": 3840,
-    "height": 2880
-  },
-  "automat-reihe-akita": {
-    "title": "Beverage vending machines in Akita City.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Beverage_vending_machines_in_Akita_City.jpg",
-    "author": "掬茶",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "width": 3264,
-    "height": 2448
   },
   "automat-outdoor-nacht": {
     "title": "Outdoor vending machine in Slovakia.jpg",
@@ -116,121 +53,76 @@
     "width": 3840,
     "height": 2880
   },
-  "automat-pizza-nacht": {
-    "title": "Pizza vending machine Eglise.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Pizza_vending_machine_Eglise.jpg",
-    "author": "Emilius123",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "width": 3840,
-    "height": 2880
-  },
-  "automat-metro": {
-    "title": "Automatic snack machine.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Automatic_snack_machine.jpg",
-    "author": "Donna Alvita",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "width": 1920,
-    "height": 2560
-  },
-  "automat-grabgo": {
-    "title": "Automatenshop Luzern Grab&Go.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Automatenshop_Luzern_Grab%26Go.jpg",
-    "author": "Sinnigg",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "width": 3840,
-    "height": 5120
-  },
-  "regiomat-holz": {
-    "title": "20250417 Regiomat, Stuttgart - A6402389.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:20250417_Regiomat,_Stuttgart_-_A6402389.jpg",
-    "author": "Zinnmann",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "width": 3606,
-    "height": 5409
-  },
-  "regiomat-nacht": {
-    "title": "Regiomat in Neunkirchen (2).jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Regiomat_in_Neunkirchen_(2).jpg",
-    "author": "Gripweed",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "width": 1920,
-    "height": 2560
-  },
-  "regiomat-landau": {
-    "title": "Regiomat Landau.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Regiomat_Landau.jpg",
-    "author": "Holder",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "width": 3024,
-    "height": 4032
-  },
-  "brotautomat": {
-    "title": "Brotautomat frontal.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Brotautomat_frontal.jpg",
-    "author": "AutomatenFlechte",
+  "produkt-getraenke": {
+    "title": "Frugo drinks 3.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Frugo_drinks_3.jpg",
+    "author": "Mx. Granger",
     "license": "CC0",
     "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-    "width": 3024,
-    "height": 4032
+    "width": 1920,
+    "height": 1397
   },
-  "automatenshop-laden": {
-    "title": "Automatenshop.png",
-    "page": "https://commons.wikimedia.org/wiki/File:Automatenshop.png",
-    "author": "TheGoodEndedHappily",
+  "produkt-chips": {
+    "title": "Traditionelle kartoffelchips.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Traditionelle_kartoffelchips.jpg",
+    "author": "GeoTrinity",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "width": 1493,
+    "height": 1437
+  },
+  "produkt-schokolade": {
+    "title": "Green and Black's dark chocolate bar 2.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Green_and_Black%27s_dark_chocolate_bar_2.jpg",
+    "author": "Mx. Granger",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "width": 1920,
+    "height": 1440
+  },
+  "produkt-eier": {
+    "title": "Eier in Eierkarton 5.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Eier_in_Eierkarton_5.jpg",
+    "author": "IgorCalzone1",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "width": 2560,
-    "height": 3840
+    "width": 1920,
+    "height": 1440
   },
-  "snackautomat-spiralen": {
-    "title": "Snack machine 3538.JPG",
-    "page": "https://commons.wikimedia.org/wiki/File:Snack_machine_3538.JPG",
-    "author": "Nenyedi at English Wikipedia",
-    "license": "Public domain",
-    "licenseUrl": "",
-    "width": 2592,
-    "height": 1944
+  "produkt-bergkaese": {
+    "title": "Cheese retail portion Tiroler Bergkäse 2025-02-10 09.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Cheese_retail_portion_Tiroler_Bergk%C3%A4se_2025-02-10_09.jpg",
+    "author": "Leonhard Lenz",
+    "license": "CC0",
+    "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+    "width": 1920,
+    "height": 1281
   },
-  "kartoffelautomat": {
-    "title": "Kartoffelautomat Übach.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Kartoffelautomat_%C3%9Cbach.jpg",
-    "author": "LoKiLeCh",
-    "license": "CC BY-SA 3.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
-    "width": 3840,
-    "height": 2880
+  "produkt-honig": {
+    "title": "Gläser mit Echtem Deutschen Honig.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Gl%C3%A4ser_mit_Echtem_Deutschen_Honig.jpg",
+    "author": "Millos55",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "width": 1342,
+    "height": 1396
   },
-  "automat-reihe-gruen": {
-    "title": "Vending Machines in Japan (43679427685).jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Vending_Machines_in_Japan_(43679427685).jpg",
-    "author": "Daniel Ramirez from Honolulu, USA",
-    "license": "CC BY 2.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
-    "width": 3226,
-    "height": 1815
+  "produkt-leberkaessemmel": {
+    "title": "Leberkaesesemmel.jpg",
+    "page": "https://commons.wikimedia.org/wiki/File:Leberkaesesemmel.jpg",
+    "author": "Gvjekoslav",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+    "width": 1148,
+    "height": 2040
   },
-  "automat-befuellen": {
-    "title": "Filling the vending machine IMG 5056 C.JPG",
-    "page": "https://commons.wikimedia.org/wiki/File:Filling_the_vending_machine_IMG_5056_C.JPG",
-    "author": "Anneli Salo",
-    "license": "CC BY-SA 3.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
-    "width": 3840,
-    "height": 2880
-  },
-  "faecherautomat": {
-    "title": "Bregenz-Food vending machine \"Snack-Break\"-01ASD.jpg",
-    "page": "https://commons.wikimedia.org/wiki/File:Bregenz-Food_vending_machine_%22Snack-Break%22-01ASD.jpg",
-    "author": "Asurnipal",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "width": 2448,
-    "height": 3264
+  "produkt-brezn": {
+    "title": "Pretzel-Prague.JPG",
+    "page": "https://commons.wikimedia.org/wiki/File:Pretzel-Prague.JPG",
+    "author": "Tamorlan",
+    "license": "CC BY 3.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+    "width": 1920,
+    "height": 1280
   }
 }

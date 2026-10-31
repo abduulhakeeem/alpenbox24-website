@@ -1,0 +1,38 @@
+---
+/**
+ * "Produkt der Woche / des Monats", set by the owner in the admin panel (site.highlight).
+ * Not set: hidden on the live site; on staging/dev a marked placeholder shows where it will appear.
+ */
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+import { u, STAGING } from '../lib/url';
+interface Props { lang?: 'de' | 'en'; compact?: boolean }
+const { lang = 'de', compact = false } = Astro.props;
+const en = lang === 'en';
+const hl = site.highlight;
+const label = en ? (hl.period === 'Monat' ? 'Product of the month' : 'Product of the week') : hl.period === 'Monat' ? 'Produkt des Monats' : 'Produkt der Woche';
+const show = hl.name !== '' || STAGING;
+---
+{show && (
+  <section class:list={['wrap', 'pick', { 'pick--compact': compact, 'pick--empty': !hl.name }]} aria-labelledby="pick-title">
+    <div class="pick__media">
+      {hl.image ? <img src={u('/' + hl.image)} alt={hl.name} loading="lazy" decoding="async" /> : <span class="pick__plate" aria-hidden="true"><Icon name="sparkle" /></span>}
+      <span class="pick__sticker" aria-hidden="true">{label}</span>
+    </div>
+    <div class="pick__text">
+      <p class="visually-hidden">{label}</p>
+      {hl.name ? (
+        <>
+          <h2 id="pick-title">{hl.name}</h2>
+          {hl.text && <p class="lead">{hl.text}</p>}
+          <p class="mt-5"><a class="link" href={u(en ? '/en/location/' : '/standorte/')}>{en ? 'Where to get it' : 'Wo du es bekommst'}</a></p>
+        </>
+      ) : (
+        <>
+          <h2 id="pick-title">{en ? 'Coming soon' : 'Folgt'}</h2>
+          <p class="muted">Vorschau: Hier steht das {label}, sobald es in der Verwaltung (/admin/ → „Produkt der Woche“) eingetragen ist. Auf der Live-Seite ist dieser Platzhalter unsichtbar.</p>
+        </>
+      )}
+    </div>
+  </section>
+)}

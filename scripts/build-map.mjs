@@ -1,7 +1,7 @@
 /**
  * Generates the self-hosted dark map of the shop surroundings from OpenStreetMap data (ODbL).
  * Input: .research/osm.json (Overpass "out geom") + .research/route.json (OSRM foot route).
- * Output: src/assets/map/karte-miesbach.svg (dark base map, cropped to station → shop, lazy-loaded)
+ * Output: src/assets/map/karte-miesbach.svg (dark base map, cropped around the shop, lazy-loaded)
  *       + src/data/map-overlay.json (route, pins, labels, crop).
  * Run once: node scripts/build-map.mjs  — re-run only if the map area changes.
  */
@@ -57,11 +57,11 @@ const overlay = {
 fs.writeFileSync('src/data/map-overlay.json', JSON.stringify(overlay, null, 1));
 console.log('map', VW + 'x' + VH, (svg.length / 1024).toFixed(0) + ' KB', overlay.labels, overlay.routeMinutes + ' min');
 
-// Crop around station → shop (same formula as MapBlock.astro) and drop paths outside the crop.
+// Crop centred on the shop (MapBlock.astro reads overlay.crop) and drop paths outside the crop.
 {
-  const [sx, sy] = overlay.shop, [tx, ty] = overlay.station;
-  const x0 = Math.min(sx, tx) - 200, x1 = Math.max(sx, tx) + 260, w = x1 - x0, h = Math.round(w * 0.75), y0 = Math.round((sy + ty) / 2 - h / 2);
-  const inBox = (d) => { const n = d.match(/-?d+(.d+)?/g).map(Number); for (let i = 0; i < n.length; i += 2) if (n[i] >= x0 - 40 && n[i] <= x1 + 40 && n[i + 1] >= y0 - 40 && n[i + 1] <= y0 + h + 40) return true; return false; };
+  const [sx, sy] = overlay.shop;
+  const w = 1000, h = 750, x0 = Math.round(sx - w / 2), x1 = x0 + w, y0 = Math.round(sy - h / 2);
+  const inBox = (d) => { const n = (d.match(/-?\d+(\.\d+)?/g) ?? []).map(Number); for (let i = 0; i < n.length; i += 2) if (n[i] >= x0 - 40 && n[i] <= x1 + 40 && n[i + 1] >= y0 - 40 && n[i + 1] <= y0 + h + 40) return true; return false; };
   const cropped = svg
     .replace(/viewBox="[^"]+"/, `viewBox="${Math.round(x0)} ${y0} ${Math.round(w)} ${h}" width="${Math.round(w)}" height="${h}"`)
     .replace('<rect width="100%" height="100%" fill="#0d0c0b"/>', `<rect x="${Math.round(x0)}" y="${y0}" width="${Math.round(w)}" height="${h}" fill="#0d0c0b"/>`)

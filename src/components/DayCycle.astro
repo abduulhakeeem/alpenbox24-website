@@ -5,12 +5,21 @@
  * No JS or prefers-reduced-motion: a plain list of the four moments (real, indexable text).
  * Scene engine: src/scripts/app.ts ("Day cycle"). Styles: src/styles/daycycle.css.
  */
-const moments = [
-  { time: '06:30', min: 390, title: 'Vor der Bergtour', text: 'Noch schnell Wasser und Brotzeit holen.' },
-  { time: '12:30', min: 750, title: 'Mittagspause', text: 'Kurz rüber, was rausziehen, weiter geht’s.' },
-  { time: '20:30', min: 1230, title: 'Die Läden sind zu', text: 'Am Automaten brennt noch Licht.' },
-  { time: '02:00', min: 1560, title: 'Schicht vorbei', text: 'Was Kaltes zu trinken, dann heim.' },
-];
+interface Props { lang?: 'de' | 'en' }
+const en = Astro.props.lang === 'en';
+const moments = en
+  ? [
+      { time: '06:30', min: 390, title: 'Before the hike', text: 'Grab water and a snack for the mountain.' },
+      { time: '12:30', min: 750, title: 'Lunch break', text: 'Pop over, pick something, carry on.' },
+      { time: '20:30', min: 1230, title: 'The shops are shut', text: 'Our machine is still lit.' },
+      { time: '02:00', min: 1560, title: 'Night shift over', text: 'Something cold to drink, then home.' },
+    ]
+  : [
+      { time: '06:30', min: 390, title: 'Vor der Bergtour', text: 'Noch schnell Wasser und Brotzeit holen.' },
+      { time: '12:30', min: 750, title: 'Mittagspause', text: 'Kurz rüber, was rausziehen, weiter geht’s.' },
+      { time: '20:30', min: 1230, title: 'Die Läden sind zu', text: 'Am Automaten brennt noch Licht.' },
+      { time: '02:00', min: 1560, title: 'Schicht vorbei', text: 'Was Kaltes zu trinken, dann heim.' },
+    ];
 const ridge = 'M0 90.8L60.8 51.9L88.1 67.2L142.8 0L185.3 54.3L212.7 30.7L273.4 86.1';
 ---
 <section class="day" data-day aria-labelledby="day-title" data-mins={JSON.stringify(moments.map((m) => m.min))}>
@@ -42,7 +51,7 @@ const ridge = 'M0 90.8L60.8 51.9L88.1 67.2L142.8 0L185.3 54.3L212.7 30.7L273.4 8
   </div>
 
   <div class="wrap dc-intro">
-    <h2 id="day-title">Ein Tag am Automaten</h2>
+    <h2 id="day-title">{en ? 'A day at the machine' : 'Ein Tag am Automaten'}</h2>
   </div>
 
   <div class="dc-fore">

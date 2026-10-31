@@ -40,5 +40,12 @@
       "hours": "Täglich 0–24 Uhr",
       "note": "Unser 24/7-Minimarkt: Snacks, Getränke und Regionales."
     }
-  ]
+  ],
+  "highlight": {
+    "period": "Woche",
+    "name": "",
+    "text": "",
+    "image": ""
+  },
+  "products": []
 }

@@ -5,8 +5,8 @@ import '../styles/daycycle.css';
 import archivoUrl from '../assets/fonts/archivo.woff2?url';
 import atkinsonUrl from '../assets/fonts/atkinson.woff2?url';
 import ogDefault from '../assets/og/og-default.jpg';
-import { site, has, telHref, mailHref, fullAddress } from '../data/site';
-import { mainNav, footerNav } from '../data/nav';
+import { site, has, telHref, mailHref, fullAddress, googleDirectionsUrl } from '../data/site';
+import { navFor, footerFor, otherLang, pairOf } from '../data/nav';
 import { u, abs, route, STAGING } from '../lib/url';
 import Mark from '../components/Mark.astro';
 import Icon from '../components/Icon.astro';
@@ -28,6 +28,10 @@ const canonical = abs(here, Astro.site);
 const og = ogImage ?? new URL(ogDefault.src, Astro.site).href;
 const year = new Date().getFullYear();
 const isEn = lang === 'en';
+const nav = navFor(lang);
+const foot = footerFor(lang);
+const switchTo = otherLang(here, lang);
+const pair = pairOf(here);
 const fav = site.branding.favicon;
 const favType = fav.endsWith('.svg') ? 'image/svg+xml' : fav.endsWith('.ico') ? 'image/x-icon' : 'image/png';
 const socials = [
@@ -83,7 +87,7 @@ const website = {
 const crumbs = breadcrumbs && {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
-  itemListElement: [{ name: 'Start', href: '/' }, ...breadcrumbs].map((b, i) => ({ '@type': 'ListItem', position: i + 1, name: b.name, item: abs(b.href, Astro.site) })),
+  itemListElement: [{ name: lang === 'en' ? 'Home' : 'Start', href: lang === 'en' ? '/en/' : '/' }, ...breadcrumbs].map((b, i) => ({ '@type': 'ListItem', position: i + 1, name: b.name, item: abs(b.href, Astro.site) })),
 };
 const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-image-preview:large';
 ---
@@ -96,11 +100,11 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
     <meta name="description" content={description} />
     <meta name="robots" content={robots} />
     {here !== "/404/" && <link rel="canonical" href={canonical} />}
-    {(here === '/' || here === '/en/') && (
+    {pair && !noindex && (
       <>
-        <link rel="alternate" hreflang="de" href={abs('/', Astro.site)} />
-        <link rel="alternate" hreflang="en" href={abs('/en/', Astro.site)} />
-        <link rel="alternate" hreflang="x-default" href={abs('/', Astro.site)} />
+        <link rel="alternate" hreflang="de" href={abs(pair[0], Astro.site)} />
+        <link rel="alternate" hreflang="en" href={abs(pair[1], Astro.site)} />
+        <link rel="alternate" hreflang="x-default" href={abs(pair[0], Astro.site)} />
       </>
     )}
     <meta name="theme-color" content="#0D0C0B" />
@@ -150,34 +154,30 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
             <><Mark /><span class="brand__word" aria-hidden="true">ALPEN BOX <b>24</b></span></>
           )}
         </a>
-        {!isEn && (
-          <nav class="nav" aria-label="Hauptnavigation">
-            {mainNav.map((n) => <a href={u(n.href)} aria-current={here === n.href ? 'page' : undefined}>{n.label}</a>)}
-          </nav>
-        )}
+        <nav class="nav" aria-label={isEn ? 'Main navigation' : 'Hauptnavigation'}>
+          {nav.map((n) => <a href={u(n.href)} aria-current={here === n.href ? 'page' : undefined}>{n.label}</a>)}
+        </nav>
         <div class="header-actions">
-          <a class="lang-link" href={u(isEn ? '/' : '/en/')} hreflang={isEn ? 'de' : 'en'} lang={isEn ? 'de' : 'en'}>{isEn ? 'DE' : 'EN'}</a>
-          <span class="signpost-wrap header-cta"><a class="signpost" href={u('/standorte/')}>{isEn ? 'Locations' : 'Standorte'}</a></span>
-          {!isEn && (
-            <details class="menu">
-              <summary><span class="menu__burger" aria-hidden="true"></span><span>Menü</span></summary>
-              <div class="menu__panel">
-                <OpenNow />
-                <nav aria-label="Menü">
-                  <ul role="list">
-                    {[{ href: '/', label: 'Start', hint: '' }, ...mainNav].map((n, i) => (
-                      <li style={`--i:${i}`}><a class="menu__big" href={u(n.href)} aria-current={here === n.href ? 'page' : undefined}>{n.label}<small>{n.hint}</small></a></li>
-                    ))}
-                  </ul>
-                </nav>
-                <div class="menu__meta">
-                  <span>{fullAddress}</span>
-                  <span>{site.hours.labelDe}</span>
-                  <a href={u('/en/')} hreflang="en" lang="en">English version</a>
-                </div>
+          <a class="lang-link" href={u(switchTo)} hreflang={isEn ? 'de' : 'en'} lang={isEn ? 'de' : 'en'} aria-label={isEn ? 'Diese Seite auf Deutsch' : 'This page in English'}>{isEn ? 'DE' : 'EN'}</a>
+          <span class="signpost-wrap header-cta"><a class="signpost" href={googleDirectionsUrl} rel="noopener" target="_blank">{isEn ? 'Directions' : 'Route planen'}</a></span>
+          <details class="menu">
+            <summary><span class="menu__burger" aria-hidden="true"></span><span>{isEn ? 'Menu' : 'Menü'}</span></summary>
+            <div class="menu__panel">
+              <OpenNow lang={lang} />
+              <nav aria-label={isEn ? 'Menu' : 'Menü'}>
+                <ul role="list">
+                  {[{ href: isEn ? '/en/' : '/', label: isEn ? 'Home' : 'Start', hint: '' }, ...nav].map((n, i) => (
+                    <li style={`--i:${i}`}><a class="menu__big" href={u(n.href)} aria-current={here === n.href ? 'page' : undefined}>{n.label}<small>{n.hint}</small></a></li>
+                  ))}
+                </ul>
+              </nav>
+              <div class="menu__meta">
+                <span>{fullAddress}</span>
+                <span>{isEn ? site.hours.labelEn : site.hours.labelDe}</span>
+                <a href={u(switchTo)} hreflang={isEn ? 'de' : 'en'} lang={isEn ? 'de' : 'en'}>{isEn ? 'Deutsche Version' : 'English version'}</a>
               </div>
-            </details>
-          )}
+            </div>
+          </details>
         </div>
       </div>
     </header>
@@ -200,7 +200,7 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
             {telHref && <><a href={telHref}>{site.phone.display}</a>{' · '}</>}
             {mailHref && <a href={mailHref}>{site.email}</a>}
           </p>
-          <p class="muted">{isEn ? 'Open 24 hours, every day' : site.hours.labelDe}</p>
+          <p class="muted">{isEn ? site.hours.labelEn : site.hours.labelDe}</p>
           {socials.length > 0 && (
             <ul class="socials" role="list">
               {socials.map((x) => <li><a href={x.href} rel="noopener me" target="_blank" aria-label={x.label}><Icon name={x.icon} /></a></li>)}
@@ -209,15 +209,15 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
         </div>
         <nav aria-label="AlpenBox24">
           <h2>AlpenBox24</h2>
-          <ul>{footerNav.laden.map((n) => <li><a href={u(n.href)}>{n.label}</a></li>)}</ul>
+          <ul>{foot.main.map((n) => <li><a href={u(n.href)}>{n.label}</a></li>)}</ul>
         </nav>
         <nav aria-label="Infos">
           <h2>Infos</h2>
-          <ul>{footerNav.infos.map((n) => <li><a href={u(n.href)}>{n.label}</a></li>)}</ul>
+          <ul>{foot.infos.map((n) => <li><a href={u(n.href)} hreflang={n.href === '/' ? 'de' : n.href === '/en/' ? 'en' : undefined}>{n.label}</a></li>)}</ul>
         </nav>
         <nav aria-label={isEn ? 'Legal' : 'Rechtliches'}>
           <h2>{isEn ? 'Legal' : 'Rechtliches'}</h2>
-          <ul>{footerNav.recht.map((n) => <li><a href={u(n.href)}>{n.label}</a></li>)}</ul>
+          <ul>{foot.legal.map((n) => <li><a href={u(n.href)} hreflang={isEn ? 'de' : undefined}>{n.label}</a></li>)}</ul>
         </nav>
       </div>
       <div class="wrap footer-mega" aria-hidden="true"><span>Alpen</span><span>24/7</span></div>
@@ -230,20 +230,10 @@ const robots = noindex || STAGING ? 'noindex, nofollow' : 'index, follow, max-im
     </footer>
 
     <nav class="mobile-bar" aria-label={isEn ? 'Quick actions' : 'Schnellzugriff'}>
-      <a href={u('/standorte/')}><Icon name="pin" />{isEn ? 'Locations' : 'Standorte'}</a>
-      <a href={u('/automaten/')}><Icon name="sparkle" />{isEn ? 'Machines' : 'Automaten'}</a>
-      {telHref ? <a href={telHref}><Icon name="phone" />{isEn ? 'Call' : 'Anrufen'}</a> : <a href={u('/kontakt/')}><Icon name="mail" />{isEn ? 'Contact' : 'Kontakt'}</a>}
+      <a href={googleDirectionsUrl} rel="noopener" target="_blank"><Icon name="route" />{isEn ? 'Directions' : 'Route'}</a>
+      <a href={u(nav[0].href)}><Icon name="sparkle" />{nav[0].label}</a>
+      {telHref ? <a href={telHref}><Icon name="phone" />{isEn ? 'Call' : 'Anrufen'}</a> : <a href={u(nav[3].href)}><Icon name="mail" />{nav[3].label}</a>}
     </nav>
-
-    <dialog class="lightbox" aria-label="Bildansicht" data-lightbox>
-      <div class="lightbox__bar"><span data-lb-count></span><button class="icon-btn" type="button" data-lb-close aria-label="Schließen"><Icon name="close" /></button></div>
-      <div class="lightbox__stage">
-        <button class="icon-btn lightbox__nav lightbox__nav--prev" type="button" data-lb-prev aria-label="Vorheriges Bild"><Icon name="arrowLeft" /></button>
-        <img alt="" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-lb-img />
-        <button class="icon-btn lightbox__nav lightbox__nav--next" type="button" data-lb-next aria-label="Nächstes Bild"><Icon name="arrowRight" /></button>
-      </div>
-      <p class="lightbox__cap" data-lb-cap></p>
-    </dialog>
 
     <script src="../scripts/app.ts"></script>
   </body>

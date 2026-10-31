@@ -1,0 +1,19 @@
+---
+/** End-of-page link to the next page in the flow: Start → Produkte → Standort → Über uns → Kontakt. */
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { u } from '../lib/url';
+interface Props { href: string; label: string; title: string; line: string; photo: string; lang?: 'de' | 'en' }
+const { href, label, title, line, photo } = Astro.props;
+---
+<section class="next" aria-label={label}>
+  <a class="next__link" href={u(href)}>
+    <div class="next__text">
+      <span class="next__label">{label}</span>
+      <strong class="next__title">{title}</strong>
+      <span class="next__line">{line}</span>
+    </div>
+    <div class="next__media"><Photo name={photo as any} alt="" credit={false} widths={[400, 700, 1000]} sizes="(min-width: 900px) 40vw, 100vw" crop={4 / 3} /></div>
+    <span class="next__go" aria-hidden="true"><Icon name="arrowRight" /></span>
+  </a>
+</section>

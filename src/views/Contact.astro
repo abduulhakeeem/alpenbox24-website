@@ -1,0 +1,188 @@
+---
+/**
+ * Contact page (DE /kontakt/, EN /en/contact/). The form posts to public/api/kontakt.php; the hidden "lang"
+ * field sends English visitors back to the English thank-you/error page.
+ * Reason values must match $anliegenMap in public/api/kontakt.php.
+ */
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Icon from '../components/Icon.astro';
+import { site, telHref, mailHref, whatsappHref } from '../data/site';
+import { u, STAGING } from '../lib/url';
+
+interface Props { lang: 'de' | 'en' }
+const { lang } = Astro.props;
+const en = lang === 'en';
+const self = en ? '/en/contact/' : '/kontakt/';
+const main = site.locations[0];
+const t = en
+  ? {
+      title: 'Contact – AlpenBox24 Miesbach',
+      desc: 'Problem at a vending machine, a product wish or space for a new location? Write to AlpenBox24 in Miesbach and we will get back to you as soon as we can.',
+      crumb: 'Contact', h1: 'Write to us.', lead: 'A machine playing up, something missing, or space for a new one? Write to us and we will get back to you as soon as we can.',
+      formLabel: 'Contact form', error: 'That did not work. Please try again or email us directly at', preview: 'Preview: the form only sends emails on the live server. Until then, reach us at',
+      legend: 'What is it about?',
+      reasons: [
+        { value: 'frage', icon: 'hand', title: 'Problem at a machine', line: 'Lost money or a stuck slot? Tell us where the machine is.' },
+        { value: 'wunsch', icon: 'cookie', title: 'Product wish', line: 'What are you missing?' },
+        { value: 'standort', icon: 'pin', title: 'Offer a location', line: 'In front of your shop, at your company or on your farm? Tell us about it.' },
+        { value: 'sonstiges', icon: 'chat', title: 'Something else', line: 'Praise, criticism or an idea: send it over.' },
+      ],
+      name: 'Your name', nameErr: 'Please enter your name.', email: 'Your email address', emailErr: 'Please enter a valid email address, e.g. name@example.com.',
+      phone: 'Phone', optional: '(optional)', phoneHint: 'In case you would rather we called you.',
+      ort: 'Where is the space for the machine?', ortPh: 'Address or town', ortHint: 'Indoors or outdoors? Is there power nearby? Feel free to add it to your message.',
+      msg: 'Your message', hintFrage: 'Ideally with the location and, if you can see it, the number on the machine.', hintWunsch: 'Brand and flavour help, and which machine.', msgErr: 'Please tell us briefly what it is about.',
+      privacyA: 'I have read the', privacyLink: 'privacy policy (German)', privacyB: '. My details are only used to handle my message.',
+      send: 'Send message', required: 'All fields without “optional” are required.',
+      direct: 'Prefer to reach us directly?', mail: 'Email', tel: 'Phone', wa: 'WhatsApp', waLink: 'Send a message', all: 'Location & directions',
+    }
+  : {
+      title: 'Kontakt – AlpenBox24 Miesbach',
+      desc: 'Problem am Automaten, ein Produktwunsch oder Platz für einen neuen Standort? Schreib AlpenBox24 in Miesbach, wir melden uns so schnell es geht.',
+      crumb: 'Kontakt', h1: 'Schreib uns.', lead: 'Ein Automat spinnt, dir fehlt was, oder du hast Platz für einen neuen? Schreib uns, wir melden uns so schnell es geht.',
+      formLabel: 'Kontaktformular', error: 'Das hat leider nicht geklappt. Bitte versuch es noch einmal oder schreib direkt an', preview: 'Vorschau: Das Formular verschickt erst auf dem Live-Server E-Mails. Bis dahin erreichst du uns unter',
+      legend: 'Worum geht’s?',
+      reasons: [
+        { value: 'frage', icon: 'hand', title: 'Problem am Automaten', line: 'Geld weg oder Fach klemmt? Sag uns, wo der Automat steht.' },
+        { value: 'wunsch', icon: 'cookie', title: 'Produktwunsch', line: 'Was fehlt dir bei uns?' },
+        { value: 'standort', icon: 'pin', title: 'Standort anbieten', line: 'Vor deinem Laden, im Betrieb oder am Hof? Erzähl uns davon.' },
+        { value: 'sonstiges', icon: 'chat', title: 'Etwas anderes', line: 'Lob, Kritik oder eine Idee: immer her damit.' },
+      ],
+      name: 'Dein Name', nameErr: 'Bitte gib deinen Namen an.', email: 'Deine E-Mail-Adresse', emailErr: 'Bitte gib eine gültige E-Mail-Adresse an, z. B. name@beispiel.de.',
+      phone: 'Telefon', optional: '(optional)', phoneHint: 'Falls wir dich lieber anrufen sollen.',
+      ort: 'Wo ist der Platz für den Automaten?', ortPh: 'Adresse oder Ort', ortHint: 'Drinnen oder draußen? Gibt es Strom in der Nähe? Gern auch in die Nachricht.',
+      msg: 'Deine Nachricht', hintFrage: 'Am besten mit Standort und, wenn du sie siehst, der Nummer am Automaten.', hintWunsch: 'Gern mit Marke und Sorte und an welchem Automaten.', msgErr: 'Bitte schreib uns kurz, worum es geht.',
+      privacyA: 'Ich habe die', privacyLink: 'Datenschutzerklärung', privacyB: ' gelesen. Meine Angaben werden nur zur Bearbeitung meiner Nachricht verwendet.',
+      send: 'Nachricht senden', required: 'Alle Felder ohne „optional“ sind Pflicht.',
+      direct: 'Lieber direkt?', mail: 'E-Mail', tel: 'Telefon', wa: 'WhatsApp', waLink: 'Nachricht schreiben', all: 'Standort & Anfahrt',
+    };
+---
+<Base lang={lang} title={t.title} description={t.desc} breadcrumbs={[{ name: t.crumb, href: self }]}>
+  <PageHead lang={lang} title={t.h1} lead={t.lead} crumbs={[{ name: t.crumb, href: self }]} />
+
+  <section class="section contact" style="padding-top:0" id="formular" aria-label={t.formLabel}>
+    <div class="wrap contact__grid">
+      <div>
+        <p class="notice" data-form-error hidden role="alert">{t.error} <a href={mailHref}>{site.email}</a>.</p>
+        {STAGING && <p class="notice">{t.preview} <a href={mailHref}>{site.email}</a>.</p>}
+
+        <form class="form contact__form" method="post" action={u('/api/kontakt.php')} data-form>
+          <input type="hidden" name="lang" value={lang} />
+          <fieldset class="reasons">
+            <legend>{t.legend}</legend>
+            <div class="reasons__grid">
+              {t.reasons.map((r, i) => (
+                <label class="reason">
+                  <input type="radio" name="anliegen" value={r.value} checked={i === 0} required />
+                  <span class="reason__box">
+                    <Icon name={r.icon as any} />
+                    <strong>{r.title}</strong>
+                    <span>{r.line}</span>
+                  </span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <div class="contact__row">
+            <div class="field">
+              <label for="name">{t.name}</label>
+              <input class="input" type="text" id="name" name="name" autocomplete="name" required maxlength="120" />
+              <span class="error">{t.nameErr}</span>
+            </div>
+            <div class="field">
+              <label for="email">{t.email}</label>
+              <input class="input" id="email" name="email" type="email" inputmode="email" autocomplete="email" required maxlength="200" />
+              <span class="error">{t.emailErr}</span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="telefon">{t.phone} <span class="muted">{t.optional}</span></label>
+            <input class="input" id="telefon" name="telefon" type="tel" inputmode="tel" autocomplete="tel" maxlength="40" />
+            <span class="hint">{t.phoneHint}</span>
+          </div>
+
+          <div class="field field--ort">
+            <label for="ort">{t.ort}</label>
+            <input class="input" type="text" id="ort" name="ort" maxlength="120" placeholder={t.ortPh} />
+            <span class="hint">{t.ortHint}</span>
+          </div>
+
+          <div class="field">
+            <label for="nachricht">{t.msg}</label>
+            <textarea class="textarea" id="nachricht" name="nachricht" required maxlength="4000" rows="6"></textarea>
+            <span class="hint hint--frage">{t.hintFrage}</span>
+            <span class="hint hint--wunsch">{t.hintWunsch}</span>
+            <span class="error">{t.msgErr}</span>
+          </div>
+
+          <div class="hp" aria-hidden="true"><label for="website">Website</label><input type="text" id="website" name="website" tabindex="-1" autocomplete="off" /></div>
+          <input type="hidden" name="_ts" value="" />
+
+          <div class="check">
+            <input type="checkbox" id="dsgvo" name="dsgvo" required />
+            <label for="dsgvo">{t.privacyA} <a href={u('/datenschutz/#kontakt')} hreflang={en ? 'de' : undefined}>{t.privacyLink}</a>{t.privacyB}</label>
+          </div>
+
+          <div class="contact__submit">
+            <span class="signpost-wrap"><button class="signpost" type="submit">{t.send} <Icon name="arrowRight" /></button></span>
+            <span class="muted">{t.required}</span>
+          </div>
+        </form>
+      </div>
+
+      <aside class="contact__aside" aria-label={t.direct}>
+        <div class="card-nap">
+          <h2>{t.direct}</h2>
+          <ul class="icon-list" role="list">
+            <li><Icon name="mail" /><div><strong>{t.mail}</strong><p><a href={mailHref}>{site.email}</a></p></div></li>
+            {telHref && <li><Icon name="phone" /><div><strong>{t.tel}</strong><p><a href={telHref}>{site.phone.display}</a></p></div></li>}
+            {whatsappHref && <li><Icon name="chat" /><div><strong>{t.wa}</strong><p><a href={whatsappHref} rel="noopener" target="_blank">{t.waLink}</a></p></div></li>}
+            {main && <li><Icon name="pin" /><div><strong>{main.name}</strong><p>{main.address}{main.hours && <><br />{main.hours}</>}</p></div></li>}
+          </ul>
+          <a class="btn" href={u(en ? '/en/location/' : '/standorte/')}>{t.all}</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>
+<style>
+  .contact__grid { display: grid; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+  @media (min-width: 1000px) { .contact__grid { grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); } .contact__aside { position: sticky; top: calc(var(--header-h) + 1.5rem); } }
+  .contact__form { margin-top: var(--s-5); gap: var(--s-6); }
+  .contact__row { display: grid; gap: var(--s-5); }
+  @media (min-width: 700px) { .contact__row { grid-template-columns: 1fr 1fr; } }
+  .contact__aside h2 { font-size: var(--fs-3); }
+
+  .reasons { border: 0; padding: 0; margin: 0; min-width: 0; }
+  .reasons legend { font-weight: 700; margin-bottom: var(--s-4); font-size: 1.1rem; }
+  .reasons__grid { display: grid; gap: 0.75rem; }
+  @media (min-width: 560px) { .reasons__grid { grid-template-columns: 1fr 1fr; } }
+  .reason { position: relative; display: block; cursor: pointer; }
+  .reason input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .reason__box {
+    display: grid; grid-template-columns: 2.4rem 1fr; column-gap: 0.85rem; row-gap: 0.2rem; height: 100%;
+    padding: 1rem 1.1rem; border: 1px solid var(--c-grat-2); border-radius: 8px; background: var(--c-fels);
+    transition: border-color var(--t-fast), background var(--t-base), transform 300ms var(--ease-spring);
+  }
+  .reason__box :global(svg) { grid-row: span 2; width: 2.4rem; height: 2.4rem; padding: 0.55rem; border-radius: 50%; background: var(--c-grat); color: var(--c-stein); transition: background var(--t-base), color var(--t-base); }
+  .reason__box strong { font-size: 1.02rem; line-height: 1.3; }
+  .reason__box span { color: var(--c-stein); font-size: var(--fs-small); line-height: 1.45; }
+  .reason:hover .reason__box { border-color: var(--c-stein); }
+  .reason input:checked + .reason__box { border-color: var(--c-laerche); background: color-mix(in srgb, var(--c-laerche) 9%, var(--c-fels)); }
+  .reason input:checked + .reason__box :global(svg) { background: var(--c-laerche); color: var(--c-nacht); }
+  .reason input:focus-visible + .reason__box { outline: 2px solid var(--c-sonne); outline-offset: 3px; }
+  .reason input:active + .reason__box { transform: scale(0.985); }
+
+  /* Context: the location field and message hints follow the chosen reason (no JS needed) */
+  .field--ort, .hint--frage, .hint--wunsch { display: none; }
+  .contact__form:has(input[value='standort']:checked) .field--ort { display: grid; animation: field-in 400ms var(--ease-out); }
+  .contact__form:has(input[value='frage']:checked) .hint--frage,
+  .contact__form:has(input[value='wunsch']:checked) .hint--wunsch { display: block; }
+  @keyframes field-in { from { opacity: 0; transform: translateY(-6px); } }
+
+  .contact__submit { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: center; }
+  .contact__submit .signpost { border: 0; cursor: pointer; }
+  .contact__submit .muted { font-size: var(--fs-small); }
+</style>

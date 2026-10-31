@@ -9,6 +9,8 @@ The owner can change the basic company details without touching code:
 | Social Media & Google | Instagram, Facebook, TikTok, Google Business Profile link | Footer icons, JSON-LD `sameAs` / `hasMap` |
 | Standorte | Up to 8 locations: Name, Straße, PLZ, Ort, Öffnungszeiten, Kurzbeschreibung | /standorte/, home page, JSON-LD (first = Miesbach box with map) |
 | Anfahrt (Miesbach) | Parken, Fahrradstellplätze, Barrierefreiheit | /standorte/ (each only shown when filled) |
+| Produkt der Woche / des Monats | Period, product name, one or two sentences, optional photo (JPG/PNG/WebP ≤ 1 MB). Empty name = hidden | Top of /produkte/ and the home page (DE + EN) |
+| Produkte | Up to 30 rows: Name, Kategorie, Kurz dazu, Hof / Erzeuger, Ort / Region (5 empty rows after the last one) | /produkte/ per category; regional products with farm/place also on /ueber-uns/ |
 | Logo & Favicon | Upload PNG/SVG/WebP logo, PNG/SVG/ICO favicon (≤ 1 MB) | Header logo; favicon + generated app icons (32/180/192/512 px) |
 
 ## How it works (and why the site stays static)

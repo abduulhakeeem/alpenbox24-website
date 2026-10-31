@@ -1,0 +1,99 @@
+---
+/**
+ * About page (DE /ueber-uns/, EN /en/about/). Flow: who we are → where the regional products come from
+ * (owner-entered: product → farm → place) → what the logo means → next: contact.
+ */
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Photo from '../components/Photo.astro';
+import Mark from '../components/Mark.astro';
+import OriginList from '../components/OriginList.astro';
+import NextStep from '../components/NextStep.astro';
+import { site } from '../data/site';
+import { u, STAGING } from '../lib/url';
+
+interface Props { lang: 'de' | 'en' }
+const { lang } = Astro.props;
+const en = lang === 'en';
+const self = en ? '/en/about/' : '/ueber-uns/';
+const hasOrigins = site.products.some((p) => p.cat === 'regional' && (p.from || p.place));
+const t = en
+  ? {
+      title: 'About us – AlpenBox24 from Miesbach',
+      desc: 'AlpenBox24 is a small vending business from Miesbach. We set up and stock our machines ourselves, with local produce from the area.',
+      h1: 'About AlpenBox24', lead: 'A small vending business from Miesbach.', crumb: 'About',
+      whoH: 'Who we are',
+      who1: 'We set up our machines ourselves, keep them stocked and make sure everything works. If something jams, we sort it out.',
+      who2: 'We are based in Miesbach, between Schliersee and Tegernsee. Our machines are for everyone who heads into the mountains early, comes home late from a shift or realises on a Sunday that the fridge is empty.',
+      originH: 'Where our local products come from', originP: 'We want you to know who made it. That is why every local product shows the farm or producer and the place.',
+      logoH: 'And the logo?', logoP: 'The sun behind the mountain ridge, the way you see it here in the evening. The 24 stands for the hours we are open: all of them.',
+      nextLabel: 'Next', nextTitle: 'Write to us', nextLine: 'Problem at a machine, a product wish or space for a new one.',
+    }
+  : {
+      title: 'Über uns – AlpenBox24 aus Miesbach',
+      desc: 'AlpenBox24 ist ein kleiner Automatenbetrieb aus Miesbach. Wir stellen unsere Automaten selbst auf und füllen sie nach, mit Regionalem aus der Gegend.',
+      h1: 'Über AlpenBox24', lead: 'Ein kleiner Automatenbetrieb aus Miesbach.', crumb: 'Über uns',
+      whoH: 'Wer wir sind',
+      who1: 'Wir stellen unsere Automaten selbst auf, füllen sie nach und schauen, dass alles läuft. Wenn mal was klemmt, kümmern wir uns drum.',
+      who2: 'Daheim sind wir in Miesbach, zwischen Schliersee und Tegernsee. Unsere Automaten sind für alle, die früh in die Berge fahren, spät von der Schicht kommen oder am Sonntag merken, dass der Kühlschrank leer ist.',
+      originH: 'Woher unsere regionalen Sachen kommen', originP: 'Du sollst wissen, wer’s gemacht hat. Deshalb steht bei jedem regionalen Produkt, von welchem Hof oder Erzeuger es ist und aus welchem Ort.',
+      logoH: 'Und das Logo?', logoP: 'Die Sonne hinter dem Bergrücken, so wie man sie hier abends sieht. Die 24 steht für die Stunden, die wir offen haben: alle.',
+      nextLabel: 'Als Nächstes', nextTitle: 'Schreib uns', nextLine: 'Problem am Automaten, ein Produktwunsch oder Platz für einen neuen.',
+    };
+---
+<Base lang={lang} title={t.title} description={t.desc} breadcrumbs={[{ name: t.crumb, href: self }]}>
+  <PageHead lang={lang} title={t.h1} lead={t.lead} crumbs={[{ name: t.crumb, href: self }]} />
+
+  <section class="section" style="padding-top:0" aria-labelledby="who-h">
+    <div class="wrap story">
+      <Photo name="wendelstein-sonne" alt={en ? 'The sun sets beside the Wendelstein, the summit a dark silhouette against an orange sky' : 'Die Sonne geht neben dem Wendelstein unter, der Gipfel steht als dunkle Silhouette vor orangem Himmel'} eager widths={[480, 800, 1200]} />
+      <div class="stack">
+        <h2 id="who-h" data-reveal>{t.whoH}</h2>
+        <p class="lead" data-reveal style="--d:120">{t.who1}</p>
+        <p class="muted" data-reveal style="--d:160">{t.who2}</p>
+      </div>
+    </div>
+  </section>
+
+  {(hasOrigins || STAGING) && (
+    <section class="section section--fels" aria-labelledby="origin-h">
+      <div class="wrap origin-grid">
+        <div class="stack">
+          <h2 id="origin-h" class="statement" data-reveal>{t.originH}</h2>
+          <p class="muted" data-reveal style="--d:100">{t.originP}</p>
+          <p data-reveal style="--d:160"><a class="link" href={u(en ? '/en/products/#regional' : '/produkte/#regional')}>{en ? 'All local products' : 'Alles Regionale ansehen'}</a></p>
+        </div>
+        <div>
+          <div class="origin-photos" aria-hidden="true">
+            <Photo name="produkt-eier" alt="" credit={false} crop={1} widths={[300, 500]} sizes="20vw" />
+            <Photo name="produkt-bergkaese" alt="" credit={false} crop={1} widths={[300, 500]} sizes="20vw" />
+            <Photo name="produkt-honig" alt="" credit={false} crop={1} widths={[300, 500]} sizes="20vw" />
+          </div>
+          <OriginList lang={lang} />
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="section" aria-labelledby="logo-h">
+    <div class="wrap logo-row">
+      <div class="logo-demo" data-reveal><Mark label="AlpenBox24 Logo" /></div>
+      <div class="stack">
+        <h2 id="logo-h" data-reveal>{t.logoH}</h2>
+        <p class="lead muted" data-reveal style="--d:120">{t.logoP}</p>
+      </div>
+    </div>
+  </section>
+
+  <NextStep lang={lang} href={en ? '/en/contact/' : '/kontakt/'} label={t.nextLabel} title={t.nextTitle} line={t.nextLine} photo="tegernsee-nacht" />
+</Base>
+<style>
+  .logo-row { display: grid; gap: clamp(2rem, 5vw, 5rem); align-items: center; }
+  @media (min-width: 800px) { .logo-row { grid-template-columns: minmax(0, 20rem) 1fr; } }
+  .logo-demo { padding: 2rem; background: var(--c-fels); border: 1px solid var(--c-grat); border-radius: 6px; }
+  .logo-demo :global(.mark__sun) { animation: logo-sun 3s var(--ease-out) both; transform-box: fill-box; transform-origin: center; }
+  .logo-demo :global(.mark__ridge) { stroke-dasharray: 400; stroke-dashoffset: 400; animation: logo-ridge 2.2s .3s var(--ease-in-out) forwards; }
+  @keyframes logo-sun { from { transform: translateY(40%); opacity: 0; } }
+  @keyframes logo-ridge { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) { .logo-demo :global(.mark__sun), .logo-demo :global(.mark__ridge) { animation: none; stroke-dashoffset: 0; } }
+</style>

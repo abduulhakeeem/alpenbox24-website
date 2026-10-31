@@ -145,15 +145,21 @@ export const site = {
       };
     }),
 
-  /** Regional producers — only real, consenting partners. Empty → "im Aufbau" fallback. */
-  producers: [] as {
-    name: string;
-    village: string;
-    distanceKm: number;
-    productsDe: string;
-    blurbDe: string;
-    url?: string;
-  }[],
+  /**
+   * Products entered by the owner in the admin panel (never invented here). `from` = farm/producer,
+   * `place` = village/region. Regional products with an origin appear on /produkte/ and /ueber-uns/.
+   */
+  products: ((settings.products ?? []) as { name: string; cat: string; note: string; from: string; place: string }[])
+    .map((p) => ({ name: p.name.trim(), cat: p.cat.trim(), note: p.note.trim(), from: p.from.trim(), place: p.place.trim() }))
+    .filter((p) => p.name),
+
+  /** "Produkt der Woche/des Monats", set in the admin panel. Empty name = hidden. Image path relative to public/. */
+  highlight: {
+    period: settings.highlight?.period === 'Monat' ? ('Monat' as const) : ('Woche' as const),
+    name: (settings.highlight?.name ?? '').trim(),
+    text: (settings.highlight?.text ?? '').trim(),
+    image: (settings.highlight?.image ?? '').trim(),
+  },
 };
 
 export const isTbc = (v: unknown): boolean =>

@@ -41,6 +41,8 @@ check "honeypot filled → fake success" "/kontakt/danke/" "$(post "${VALID[@]}"
 check "sent within 3 s → fake success" "/kontakt/danke/" "$(post -d anliegen=frage -d name=Max -d email=max@example.com -d nachricht=x -d dsgvo=on -d _ts=$NOW)"
 check "foreign Origin → error page" "fehler=1" "$(post "${VALID[@]}" -H 'Origin: https://evil.example')"
 check "foreign Referer → error page" "fehler=1" "$(post "${VALID[@]}" -H 'Referer: https://evil.example/form')"
+check "English form → English error page" "/en/contact/?fehler=1" "$(post -d lang=en -d anliegen=hack -d name=Max -d email=max@example.com -d nachricht=x -d dsgvo=on -d _ts=$OLD)"
+check "English honeypot → English thank-you page" "/en/contact/thanks/" "$(post "${VALID[@]}" -d lang=en -d website=spam)"
 check "oversized request → error page" "fehler=1" "$(post "${VALID[@]}" --data-urlencode "nachricht=$(head -c 30000 /dev/zero | tr '\0' 'a')")"
 for i in 1 2 3 4 5 6; do post "${VALID[@]}" -H "Origin: $B" > /dev/null; done
 check "valid messages reach the mailer (5 attempts logged)" "5" "$(grep -c 'mail failed' "$LOG")"

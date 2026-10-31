@@ -371,9 +371,10 @@
   }
   @keyframes sunrise { from { transform: translateY(18%) scale(0.86); opacity: 0; } }
 
-  .breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 0.4rem; font-size: var(--fs-tiny); color: var(--c-stein); padding: 0; list-style: none; margin-bottom: var(--s-5); }
-  .breadcrumbs li + li::before { content: '/'; margin-right: 0.4rem; color: var(--c-grat-2); }
-  .breadcrumbs a { color: var(--c-stein); text-decoration: none; }
+  .breadcrumbs ol { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem); font-weight: 600; color: var(--c-stein); padding: 0; list-style: none; margin-bottom: var(--s-5); }
+  .breadcrumbs li + li::before { content: '/'; margin-right: 0.6rem; color: var(--c-grat-2); }
+  .breadcrumbs a { display: inline-block; padding-block: 0.35rem; color: var(--c-stein); text-decoration: none; }
+  .breadcrumbs [aria-current] { color: var(--c-schnee); }
   .breadcrumbs a:hover { color: var(--c-schnee); }
 
   /* Kicker: a short context line before a heading — used sparingly, sentence case, never uppercase */
@@ -541,19 +542,14 @@
   .map__base { object-fit: cover; object-position: 50% 50%; }
   .map__base { opacity: 0.35; transition: opacity 1.4s var(--ease-out); }
   .map.is-in .map__base, html:not(.js) .map__base { opacity: 1; }
-  .map__route { fill: none; stroke: var(--c-laerche); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; filter: drop-shadow(0 0 6px rgb(199 226 34 / 0.6)); }
-  .map.is-in .map__route { animation: draw 2.6s 0.4s var(--ease-in-out) forwards; }
-  html:not(.js) .map__route { stroke-dashoffset: 0; }
-  .map__walker { fill: var(--c-leuchte); offset-rotate: 0deg; opacity: 0; }
-  .map.is-in .map__walker { animation: walk 2.6s 0.4s var(--ease-in-out) forwards; }
   @keyframes walk { 0% { offset-distance: 0%; opacity: 1; } 96% { opacity: 1; } 100% { offset-distance: 100%; opacity: 0; } }
   .map__pin-pulse { fill: var(--c-sonne); transform-box: fill-box; transform-origin: center; animation: pin 2.4s var(--ease-out) infinite; }
   @keyframes pin { 0% { opacity: 0.7; transform: scale(1); } 100% { opacity: 0; transform: scale(5); } }
   .map__label { font-family: var(--ff-text); font-weight: 700; fill: var(--c-stein); font-size: 26px; paint-order: stroke; stroke: var(--c-nacht); stroke-width: 6px; }
   .map__label--shop { fill: var(--c-schnee); font-family: var(--ff-display); font-stretch: 118%; font-weight: 800; font-size: 38px; }
-  .map__label--route { fill: var(--c-laerche); }
+  .map__label--road { fill: #e8b27a; font-family: var(--ff-display); font-stretch: 118%; font-size: 30px; }
   .map__attr { position: absolute; right: 0.5rem; bottom: 0.5rem; font-size: 0.72rem; color: var(--c-stein); background: rgb(13 12 11 / 0.8); padding: 0.15rem 0.45rem; border-radius: 3px; text-decoration: none; }
-  @media (prefers-reduced-motion: reduce) { .map__route { stroke-dashoffset: 0; animation: none !important; } .map__walker { display: none; } .map__pin-pulse { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { .map__pin-pulse { animation: none; } }
 
   /* Address card */
   .card-nap { display: grid; gap: var(--s-5); padding: clamp(1.5rem, 3vw, 2.5rem); background: var(--c-fels); border: 1px solid var(--c-grat); border-radius: var(--r-media); }

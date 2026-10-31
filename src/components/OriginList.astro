@@ -1,0 +1,33 @@
+---
+/**
+ * Regional products and where they come from (product → farm/producer → place), from the admin panel.
+ * Never filled with invented producers: empty → hidden live, marked placeholder on staging/dev.
+ */
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+import { STAGING } from '../lib/url';
+interface Props { lang?: 'de' | 'en'; cat?: string }
+const { lang = 'de', cat = 'regional' } = Astro.props;
+const en = lang === 'en';
+const items = site.products.filter((p) => p.cat === cat && (p.from || p.place));
+const demo = [
+  { name: en ? 'Sausage' : 'Wurst', from: en ? 'Farm / butcher' : 'Hof oder Metzgerei', place: en ? 'Village' : 'Ort' },
+  { name: en ? 'Mountain cheese' : 'Bergkäse', from: en ? 'Dairy' : 'Sennerei', place: en ? 'Village' : 'Ort' },
+  { name: en ? 'Honey' : 'Honig', from: en ? 'Beekeeper' : 'Imkerei', place: en ? 'Village' : 'Ort' },
+];
+const list = items.length ? items : STAGING ? demo : [];
+---
+{list.length > 0 && (
+  <ul class:list={['origins', { 'origins--demo': !items.length }]} role="list">
+    {list.map((p) => (
+      <li class="origin">
+        <strong class="origin__name">{p.name}</strong>
+        {p.from && <span class="origin__from">{en ? 'from' : 'von'} {p.from}</span>}
+        {p.place && <span class="origin__place"><Icon name="pin" />{p.place}</span>}
+      </li>
+    ))}
+  </ul>
+)}
+{!items.length && STAGING && (
+  <p class="muted mt-4" style="font-size:var(--fs-small)">Vorschau mit Beispielzeilen: Echte Produkte mit Hof und Ort trägst du in der Verwaltung ein (/admin/ → „Produkte“, Kategorie „Regionales“). Bis dahin ist dieser Teil auf der Live-Seite ausgeblendet.</p>
+)}

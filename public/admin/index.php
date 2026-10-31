@@ -4,7 +4,8 @@ declare(strict_types=1);
 /**
  * AlpenBox24 — Verwaltung (admin panel)
  *
- * Lets the owner edit company details, contact data, social links, locations, directions, logo and favicon.
+ * Lets the owner edit company details, contact data, social links, locations, directions, products (with origin),
+ * the "Produkt der Woche/des Monats", logo and favicon.
  * Saving commits src/data/settings.json (and uploaded images under public/uploads/) to GitHub in one
  * commit. GitHub Actions then rebuilds the static site and Hostinger deploys it (≈ 2–3 minutes).
  *
@@ -22,6 +23,8 @@ const SETTINGS_PATH = 'src/data/settings.json';
 const UPLOAD_DIR = 'public/uploads';
 const MAX_UPLOAD = 1024 * 1024; // 1 MB
 const MAX_LOCATIONS = 8;
+const MAX_PRODUCTS = 30;
+const PRODUCT_CATS = ['getraenke' => 'Getränke', 'snacks' => 'Snacks & Süßes', 'regional' => 'Regionales', 'brotzeit' => 'Brotzeit'];
 const IDLE_TIMEOUT = 1800;     // 30 min without activity → log out
 const MAX_SESSION  = 28800;    // 8 h absolute session lifetime
 
@@ -215,9 +218,26 @@ function build_settings(array $cur, array $post, array $files): array
     if (!$locs) $errors[] = 'Mindestens ein Standort ist nötig.';
     $s['locations'] = $locs;
 
+    $products = [];
+    for ($i = 0; $i < MAX_PRODUCTS; $i++) {
+        $p = [];
+        foreach (['name' => 80, 'note' => 120, 'from' => 100, 'place' => 80] as $k => $max) $p[$k] = $in("prod_{$i}_{$k}", $max);
+        $cat = (string) ($post["prod_{$i}_cat"] ?? '');
+        if ($p['name'] === '') continue;
+        $products[] = ['name' => $p['name'], 'cat' => isset(PRODUCT_CATS[$cat]) ? $cat : 'snacks', 'note' => $p['note'], 'from' => $p['from'], 'place' => $p['place']];
+    }
+    $s['products'] = $products;
+
+    $hl = is_array($s['highlight'] ?? null) ? $s['highlight'] : [];
+    $hl['period'] = (($post['hl_period'] ?? '') === 'Monat') ? 'Monat' : 'Woche';
+    $hl['name'] = $in('hl_name', 80);
+    $hl['text'] = $in('hl_text', 240);
+    $hl['image'] = !empty($post['remove_hl_image']) ? '' : (string) ($hl['image'] ?? '');
+    $s['highlight'] = $hl;
+
     $out = [];
-    foreach (['logo' => ['png', 'svg', 'webp'], 'favicon' => ['png', 'svg', 'ico']] as $k => $exts) {
-        if (!empty($post['remove_' . $k])) $s['branding'][$k] = '';
+    foreach (['logo' => ['png', 'svg', 'webp'], 'favicon' => ['png', 'svg', 'ico'], 'hl_image' => ['jpg', 'png', 'webp']] as $k => $exts) {
+        if ($k !== 'hl_image' && !empty($post['remove_' . $k])) $s['branding'][$k] = '';
         $f = $files[$k] ?? null;
         if (!$f || ($f['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) continue;
         if ($f['error'] !== UPLOAD_ERR_OK) { $errors[] = "Upload {$k} fehlgeschlagen."; continue; }
@@ -226,9 +246,10 @@ function build_settings(array $cur, array $post, array $files): array
         $ext = detect_image($data);
         if (!$ext || !in_array($ext, $exts, true)) { $errors[] = "{$k}: erlaubt sind " . strtoupper(implode(', ', $exts)) . '.'; continue; }
         if ($ext === 'svg' && !svg_safe($data)) { $errors[] = "{$k}: Die SVG-Datei enthält Skripte oder externe Verweise."; continue; }
-        $path = UPLOAD_DIR . "/{$k}-" . date('Ymd-His') . ".{$ext}";
+        $path = UPLOAD_DIR . '/' . ($k === 'hl_image' ? 'produkt' : $k) . '-' . date('Ymd-His') . ".{$ext}";
         $out[$path] = $data;
-        $s['branding'][$k] = substr($path, strlen('public/'));
+        if ($k === 'hl_image') $s['highlight']['image'] = substr($path, strlen('public/'));
+        else $s['branding'][$k] = substr($path, strlen('public/'));
     }
 
     $s['updatedAt'] = gmdate('c');
@@ -238,6 +259,7 @@ function build_settings(array $cur, array $post, array $files): array
 function detect_image(string $d): ?string
 {
     if (str_starts_with($d, "\x89PNG\r\n\x1a\n")) return 'png';
+    if (str_starts_with($d, "\xFF\xD8\xFF")) return 'jpg';
     if (str_starts_with($d, 'RIFF') && substr($d, 8, 4) === 'WEBP') return 'webp';
     if (str_starts_with($d, "\x00\x00\x01\x00")) return 'ico';
     if (preg_match('/^\s*(<\?xml[^>]*>\s*)?(<!--.*?-->\s*)*(<!DOCTYPE svg[^>]*>\s*)?<svg[\s>]/is', $d)) return 'svg';
@@ -331,6 +353,35 @@ function locations_form(array $locs): string
     return $out . '</section>';
 }
 
+function products_form(array $items, array $hl): string
+{
+    $per = (string) ($hl['period'] ?? 'Woche');
+    $out = '<section class="card"><h2>Produkt der Woche / des Monats</h2><p class="muted">Erscheint oben auf der Produktseite und auf der Startseite. Name leer lassen = ausgeblendet.</p><div class="grid">'
+        . '<label class="f"><span>Zeitraum</span><select name="hl_period"><option value="Woche"' . ($per !== 'Monat' ? ' selected' : '') . '>Produkt der Woche</option><option value="Monat"' . ($per === 'Monat' ? ' selected' : '') . '>Produkt des Monats</option></select></label>'
+        . field('hl_name', 'Produkt', (string) ($hl['name'] ?? ''), 'text', 'z. B. Bergkäse vom Hof Huber')
+        . field('hl_text', 'Ein, zwei Sätze dazu', (string) ($hl['text'] ?? ''), 'text', 'Was ist besonders? Woher kommt es?')
+        . '<div class="f"><span>Foto</span>' . (!empty($hl['image']) ? '<img src="/' . h((string) $hl['image']) . '" alt="" class="prev">' : '<span class="muted">Kein Foto</span>')
+        . '<input type="file" name="hl_image" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"><small>JPG, PNG oder WebP, max. 1 MB, am besten quadratisch.</small>'
+        . (!empty($hl['image']) ? '<label class="chk"><input type="checkbox" name="remove_hl_image" value="1"> Foto entfernen</label>' : '') . '</div>'
+        . '</div></section>';
+    $out .= '<section class="card"><h2>Produkte</h2><p class="muted">Was gerade im Automaten ist. Bei regionalen Produkten bitte Hof/Erzeuger und Ort eintragen, das erscheint auch unter „Über uns“. Leere Zeilen werden ignoriert.</p>';
+    $rows = min(MAX_PRODUCTS, count($items) + 5);
+    for ($i = 0; $i < $rows; $i++) {
+        $p = $items[$i] ?? [];
+        $v = fn(string $k) => (string) ($p[$k] ?? '');
+        $opts = '';
+        foreach (PRODUCT_CATS as $id => $label) $opts .= '<option value="' . $id . '"' . ($v('cat') === $id ? ' selected' : '') . '>' . h($label) . '</option>';
+        $out .= '<fieldset class="loc"><legend>Produkt ' . ($i + 1) . '</legend><div class="grid">'
+            . field("prod_{$i}_name", 'Name', $v('name'), 'text', $i === 0 ? 'z. B. Bergkäse' : '')
+            . '<label class="f"><span>Kategorie</span><select name="prod_' . $i . '_cat">' . $opts . '</select></label>'
+            . field("prod_{$i}_note", 'Kurz dazu', $v('note'), 'text', 'Optional, z. B. 200 g, mild')
+            . field("prod_{$i}_from", 'Hof / Erzeuger', $v('from'), 'text', 'z. B. Hof Huber, Sennerei, Imkerei')
+            . field("prod_{$i}_place", 'Ort / Region', $v('place'), 'text', 'z. B. Irschenberg')
+            . '</div></fieldset>';
+    }
+    return $out . '<p class="muted">Mehr Zeilen? Erst speichern, dann kommen fünf neue dazu (max. ' . MAX_PRODUCTS . ').</p></section>';
+}
+
 function login_form(string $error): string
 {
     return '<form method="post" class="card narrow"><h1>Verwaltung</h1><p class="muted">AlpenBox24 Website</p>'
@@ -371,6 +422,7 @@ function dashboard(array $s, ?array $flash, string $csrf): string
         . field('social_tiktok', 'TikTok', $g($so, 'tiktok'), 'url', 'https://www.tiktok.com/@…')
         . field('social_googleBusiness', 'Google-Unternehmensprofil', $g($so, 'googleBusiness'), 'url', 'Teilen-Link aus Google Maps')
         . '</div></section>'
+        . products_form($s['products'] ?? [], $s['highlight'] ?? [])
         . locations_form($s['locations'] ?? [])
         . '<section class="card"><h2>Anfahrt (Miesbach)</h2><div class="grid">'
         . field('directions_parking', 'Parken', $g($d, 'parking'), 'text', 'z. B. „Kostenlose Parkplätze direkt vor dem Laden.“ Leer = wird nicht angezeigt.')
@@ -404,6 +456,6 @@ input:focus{outline:2px solid var(--o);outline-offset:2px}input[type=file]{color
 .btn{min-height:3rem;padding:.7rem 1.4rem;border:0;border-radius:4px;background:var(--l);color:var(--n);font-weight:800;font-size:1rem;cursor:pointer}.btn:hover{background:#d7ff00}
 .bar{position:sticky;bottom:0;display:flex;gap:1rem;align-items:center;flex-wrap:wrap;padding:1rem 0;background:var(--n);border-top:1px solid var(--g)}
 .msg{padding:.8rem 1rem;border-radius:6px;border-left:4px solid}.ok{background:#1b2208;border-color:var(--l)}.err{background:#2a1608;border-color:var(--o)}
-.muted{color:var(--st)}fieldset.loc{border:1px solid var(--g);border-radius:6px;padding:1rem;margin:0 0 1rem}fieldset.loc legend{color:var(--o);font-weight:700;padding:0 .4rem}.prev{max-height:64px;max-width:220px;background:#000;padding:.4rem;border-radius:6px;border:1px solid var(--g2)}.chk{display:flex;gap:.5rem;align-items:center;color:var(--st)}
+.muted{color:var(--st)}select{width:100%;padding:.6rem .7rem;border-radius:6px;border:1px solid var(--g2);background:var(--n);color:var(--s);font:inherit}fieldset.loc{border:1px solid var(--g);border-radius:6px;padding:1rem;margin:0 0 1rem}fieldset.loc legend{color:var(--o);font-weight:700;padding:0 .4rem}.prev{max-height:64px;max-width:220px;background:#000;padding:.4rem;border-radius:6px;border:1px solid var(--g2)}.chk{display:flex;gap:.5rem;align-items:center;color:var(--st)}
 </style></head><body><main>' . $body . '</main></body></html>';
 }

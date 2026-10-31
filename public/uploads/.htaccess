@@ -1,9 +1,9 @@
-# Admin uploads (logo, favicon): images only, never executable, never scriptable.
+# Admin uploads (logo, favicon, product photo): images only, never executable, never scriptable.
 Options -Indexes -ExecCGI
 RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8 .phar .pl .py .cgi
 RemoveType .php .phtml .php3 .php4 .php5 .php7 .php8 .phar
 
-<FilesMatch "\.(?!(png|svg|webp|ico)$)[^.]+$">
+<FilesMatch "\.(?!(png|jpg|svg|webp|ico)$)[^.]+$">
   Require all denied
 </FilesMatch>
 
