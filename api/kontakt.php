@@ -32,6 +32,8 @@ header('X-Robots-Tag: noindex');
 
 function go(string $url): never
 {
+    // English form (hidden field lang=en) → English thank-you / error page
+    if (($_POST['lang'] ?? '') === 'en') $url = strtr($url, ['/kontakt/danke/' => '/en/contact/thanks/', '/kontakt/' => '/en/contact/']);
     header('Location: ' . $url, true, 303);
     exit;
 }
